@@ -1,17 +1,17 @@
 import PageHeader from "../../components/PageHeader";
-import StudentForm from "../../components/StudentForm";
+import Table from "../../components/Table";
+import FilterBar from "../../components/FilterBar";
 
 import { Container, Content } from './styles';
 
 export default function NewStudent() {
   return (
     <Container>
-    <PageHeader
-      title="Novo estudante"
-    />
+    <PageHeader title="Alunos"/>
     <Content>
-   <StudentForm buttonLabel="Cadastrar"/>
-   </Content>
+    <FilterBar/>
+    <Table />
+    </Content>
     </Container>
   );
 }

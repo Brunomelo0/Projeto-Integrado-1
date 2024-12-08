@@ -18,12 +18,12 @@ export default function Header() {
     </Menu>
     <UserContainer>
       <div className="info">
-      <span classname="name">Maria Lívia</span>
-      <span className="role">Diretor(a)</span>
+      <span classname="name">Helioneide Azevedo</span>
+      <span className="role">Diretora</span>
       </div>
       <img
         src="https://via.placeholder.com/40"
-        alt="Maria Isabel"
+        alt="Helioneide Azevedo"
       />
     </UserContainer>
   </NavbarContainer>
