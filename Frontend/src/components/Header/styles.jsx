@@ -1,29 +1,52 @@
 import styled from "styled-components";
 
-export const Container = styled.header`
-  margin-top: 74px;
+export const NavbarContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-
+  background-color: ${({ theme }) => theme.colors.primary.main}; /* Cor de fundo */
+  padding: 10px 20px;
 `;
 
-export const InputSearchContainer = styled.div`
-  margin-top: 48px;
-  width: 100%;
+export const Menu = styled.div`
+  display: flex;
+  gap: 20px;
 
-  input {
-    width: 100%;
-    background: #fff;
-    border: none;
-    border-radius: 25px;
-    height: 58px;
-    box-shadow: 8px 4px 10px rgba(0, 0, 0, 0.04);
-    outline: 0;
-    padding: 0 16px;
+  a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
 
-    &::placeholder {
-      color: #BCBCBC
+    &:hover {
+      color: ${({ theme }) => theme.colors.primary.light}; /* Cor ao passar o mouse */
     }
   }
-`
+`;
+
+export const UserContainer = styled.div`
+  display: flex;
+  align-items: center;
+  color: white;
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-right: 10px;
+
+    .name {
+      font-weight: bold;
+    }
+
+    .role {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  }
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+`;

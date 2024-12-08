@@ -2,15 +2,34 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  .link-style {
+    text-decoration: none;
+    color: inherit;
+    padding: 16px;
+  }
+`;
+
+export const Content = styled.div`
+  width: 80%;
 `;
 
 export const Header = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 32px;
 
   strong {
     font-size: 24px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 16px;
   }
 
   a {
@@ -65,7 +84,7 @@ export const Card = styled.div`
   }
 
   .info {
-    .student-name {
+    .classroom-name {
       display: flex;
       align-items: center;
 
@@ -97,4 +116,22 @@ export const Card = styled.div`
         margin-left: 8px;
       }
     }
+`
+export const InputSearchContainer = styled.div`
+  width: 100%;
+
+  input {
+    width: 100%;
+    background: #fff;
+    border: none;
+    border-radius: 25px;
+    height: 58px;
+    box-shadow: 8px 4px 10px rgba(0, 0, 0, 0.04);
+    outline: 0;
+    padding: 0 16px;
+
+    &::placeholder {
+      color: #BCBCBC
+    }
+  }
 `;
