@@ -1,2 +1,16 @@
+# Ignorar arquivos de log
+*.log
+
+# Ignorar diretório node_modules
 node_modules/
+
+# Ignorar arquivos gerados pelo sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar binários ou pastas específicas
+/bin/
+/obj/
+
+# Ignorar arquivos de configuração de ambiente
 .env
