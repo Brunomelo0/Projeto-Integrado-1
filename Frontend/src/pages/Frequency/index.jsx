@@ -4,14 +4,14 @@ import FilterBar from "../../components/FilterBar";
 
 import { Container, Content } from './styles';
 
-export default function Student() {
+export default function Frequency() {
   return (
     <Container>
-    <PageHeader title="Alunos"/>
-    <Content>
-    <FilterBar showDateFilter={false} showCreateButton/>
-    <Table />
-    </Content>
+      <PageHeader title="Alunos" />
+      <Content>
+        <FilterBar showDateFilter={true} showCreateButton={false}/>
+        <Table />
+      </Content>
     </Container>
   );
 }

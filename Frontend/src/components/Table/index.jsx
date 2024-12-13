@@ -26,6 +26,8 @@ const Table = () => {
             <th>Matrícula</th>
             <th>Nome</th>
             <th>Telefone</th>
+            <th>Frequência</th>
+            <th>Turma</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -35,6 +37,8 @@ const Table = () => {
               <td>{row.matricula}</td>
               <td>{row.nome}</td>
               <td>{row.telefone}</td>
+              <td>{row.frequencia}</td>
+              <td>{row.turma}</td>
               <td>
                 <ActionButton>
                   <FaEdit />

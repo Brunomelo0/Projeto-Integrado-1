@@ -21,6 +21,7 @@ export const LeftGroup = styled.div`
 export const RightGroup = styled.div`
   display: flex;
   align-items: center;
+  gap: 10px;
 `;
 
 // Estilização dos rótulos
@@ -44,6 +45,13 @@ export const SearchInput = styled.input`
   border-radius: 4px;
 `;
 
+// Input de data
+export const DateInput = styled.input`
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
 // Botão de cadastrar
 export const Button = styled.a`
   padding: 8px 16px;
@@ -59,4 +67,16 @@ export const Button = styled.a`
   &:hover {
     background-color: #45a049;
   }
+`;
+
+// Mensagem de carregamento
+export const Loading = styled.div`
+  font-size: 18px;
+  color: #555;
+`;
+
+// Mensagem de erro
+export const ErrorMessage = styled.div`
+  color: red;
+  font-size: 18px;
 `;
