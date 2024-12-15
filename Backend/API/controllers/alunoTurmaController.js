@@ -1,34 +1,38 @@
-// controllers/alunoTurmaController.js
-const pool = require('../models/db');
+const db = require('../models/db');
 
-// Listar todos os alunos matriculados em uma turma
-const getAlunosTurma = async (req, res) => {
-  const { id_turma } = req.params;
+exports.getAlunosTurmas = async (req, res) => {
   try {
-    const result = await pool.query(
-      'SELECT a.matricula, a.nome FROM alunos a JOIN alunos_turmas at ON a.matricula = at.matricula WHERE at.id_turma = $1',
-      [id_turma]
+    const result = await db.query(
+      `SELECT at.aluno_id, at.turma_id, a.nome AS aluno_nome, t.nome AS turma_nome 
+       FROM Aluno_Turma at 
+       INNER JOIN Aluno a ON at.aluno_id = a.id 
+       INNER JOIN Turma t ON at.turma_id = t.id`
     );
     res.json(result.rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Erro ao buscar alunos da turma' });
+    res.status(500).json({ error: err.message });
   }
 };
 
-// Matrícula de aluno em uma turma
-const matricularAluno = async (req, res) => {
-  const { matricula, id_turma } = req.body;
+exports.addAlunoToTurma = async (req, res) => {
   try {
-    const result = await pool.query(
-      'INSERT INTO alunos_turmas (matricula, id_turma) VALUES ($1, $2) RETURNING *',
-      [matricula, id_turma]
+    const { aluno_id, turma_id } = req.body;
+    const result = await db.query(
+      'INSERT INTO Aluno_Turma (aluno_id, turma_id) VALUES ($1, $2) RETURNING *',
+      [aluno_id, turma_id]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Erro ao matricular aluno' });
+    res.status(500).json({ error: err.message });
   }
 };
 
-module.exports = { getAlunosTurma, matricularAluno };
+exports.removeAlunoFromTurma = async (req, res) => {
+  try {
+    const { aluno_id, turma_id } = req.body;
+    await db.query('DELETE FROM Aluno_Turma WHERE aluno_id = $1 AND turma_id = $2', [aluno_id, turma_id]);
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

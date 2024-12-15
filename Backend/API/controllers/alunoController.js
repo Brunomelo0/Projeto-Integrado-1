@@ -1,30 +1,57 @@
-// controllers/alunoController.js
-const pool = require('../models/db');
+const db = require('../models/db');
 
-// Listar todos os alunos
-const getAlunos = async (req, res) => {
+exports.getAlunos = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM alunos');
+    const result = await db.query('SELECT * FROM Aluno');
     res.json(result.rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Erro ao buscar alunos' });
+    res.status(500).json({ error: err.message });
   }
 };
 
-// Criar aluno
-const createAluno = async (req, res) => {
-  const { nome, data_nascimento, endereco, email, telefone } = req.body;
+exports.getAlunoById = async (req, res) => {
   try {
-    const result = await pool.query(
-      'INSERT INTO alunos (nome, data_nascimento, endereco, email, telefone) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [nome, data_nascimento, endereco, email, telefone]
+    const { id } = req.params;
+    const result = await db.query('SELECT * FROM Aluno WHERE id = $1', [id]);
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createAluno = async (req, res) => {
+  try {
+    const { nome, data_nascimento, contato, matricula } = req.body;
+    const result = await db.query(
+      'INSERT INTO Aluno (nome, data_nascimento, contato, matricula) VALUES ($1, $2, $3, $4) RETURNING *',
+      [nome, data_nascimento, contato, matricula]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Erro ao criar aluno' });
+    res.status(500).json({ error: err.message });
   }
 };
 
-module.exports = { getAlunos, createAluno };
+exports.updateAluno = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nome, data_nascimento, contato, matricula } = req.body;
+    const result = await db.query(
+      'UPDATE Aluno SET nome = $1, data_nascimento = $2, contato = $3, matricula = $4 WHERE id = $5 RETURNING *',
+      [nome, data_nascimento, contato, matricula, id]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteAluno = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await db.query('DELETE FROM Aluno WHERE id = $1', [id]);
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

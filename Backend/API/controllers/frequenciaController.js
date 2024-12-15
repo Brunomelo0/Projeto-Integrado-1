@@ -1,31 +1,57 @@
-// controllers/frequenciaController.js
-const pool = require('../models/db');
+const db = require('../models/db');
 
-// Listar frequências de uma aula
-const getFrequencias = async (req, res) => {
-  const { id_aula } = req.params;
+exports.getFrequencias = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM frequencia WHERE id_aula = $1', [id_aula]);
+    const result = await db.query('SELECT * FROM Frequencia');
     res.json(result.rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Erro ao buscar frequências' });
+    res.status(500).json({ error: err.message });
   }
 };
 
-// Registrar frequência de um aluno
-const createFrequencia = async (req, res) => {
-  const { matricula, id_aula, presente } = req.body;
+exports.getFrequenciaById = async (req, res) => {
   try {
-    const result = await pool.query(
-      'INSERT INTO frequencia (matricula, id_aula, presente) VALUES ($1, $2, $3) RETURNING *',
-      [matricula, id_aula, presente]
+    const { id } = req.params;
+    const result = await db.query('SELECT * FROM Frequencia WHERE id = $1', [id]);
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createFrequencia = async (req, res) => {
+  try {
+    const { data, porcentagem, turma_id } = req.body;
+    const result = await db.query(
+      'INSERT INTO Frequencia (data, porcentagem, turma_id) VALUES ($1, $2, $3) RETURNING *',
+      [data, porcentagem, turma_id]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Erro ao registrar frequência' });
+    res.status(500).json({ error: err.message });
   }
 };
 
-module.exports = { getFrequencias, createFrequencia };
+exports.updateFrequencia = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { data, porcentagem, turma_id } = req.body;
+    const result = await db.query(
+      'UPDATE Frequencia SET data = $1, porcentagem = $2, turma_id = $3 WHERE id = $4 RETURNING *',
+      [data, porcentagem, turma_id, id]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteFrequencia = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await db.query('DELETE FROM Frequencia WHERE id = $1', [id]);
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

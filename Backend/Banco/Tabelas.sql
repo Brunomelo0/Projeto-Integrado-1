@@ -1,69 +1,68 @@
-CREATE TABLE alunos (
-    matricula SERIAL PRIMARY KEY,  -- Chave primária
+CREATE TABLE Diretor (
+    ID SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    contato VARCHAR(15),
+    senha VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Professor (
+    ID SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    contato VARCHAR(15),
+    senha VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Aluno (
+    ID SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     data_nascimento DATE NOT NULL,
-    endereco VARCHAR(255),
-    email VARCHAR(100),
-    telefone VARCHAR(15)
+    contato VARCHAR(15),
+    matricula VARCHAR(20) NOT NULL UNIQUE
 );
-CREATE TABLE professores (
-    id_professor SERIAL PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    data_nascimento DATE NOT NULL,
-    endereco VARCHAR(255),
-    email VARCHAR(100),
-    telefone VARCHAR(15)
+
+CREATE TABLE Turma (
+    ID SERIAL PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    periodo VARCHAR(50) NOT NULL
 );
-CREATE TABLE turmas (
-    id_turma SERIAL PRIMARY KEY,
-    nome_turma VARCHAR(100) NOT NULL,
-    ano_letivo INT NOT NULL,
-    periodo VARCHAR(50) NOT NULL,  -- Ex: "Manhã", "Tarde"
-    id_professor_principal INT,
-    FOREIGN KEY (id_professor_principal) REFERENCES professores(id_professor)
+
+CREATE TABLE Aluno_Turma (
+    aluno_id INT NOT NULL REFERENCES Aluno(ID),
+    turma_id INT NOT NULL REFERENCES Turma(ID),
+    PRIMARY KEY (aluno_id, turma_id)
 );
-CREATE TABLE disciplinas (
-    id_disciplina SERIAL PRIMARY KEY,
-    nome_disciplina VARCHAR(100) NOT NULL
+
+CREATE TABLE Professor_Turma (
+    professor_id INT NOT NULL REFERENCES Professor(ID),
+    turma_id INT NOT NULL REFERENCES Turma(ID),
+    PRIMARY KEY (professor_id, turma_id)
 );
-CREATE TABLE alunos_turmas (
-    matricula INT,
-    id_turma INT,
-    PRIMARY KEY (matricula, id_turma),
-    FOREIGN KEY (matricula) REFERENCES alunos(matricula),
-    FOREIGN KEY (id_turma) REFERENCES turmas(id_turma)
+
+CREATE TABLE Diario (
+    ID SERIAL PRIMARY KEY,
+    titulo VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    professor_id INT NOT NULL REFERENCES Professor(ID)
 );
-CREATE TABLE aulas (
-    id_aula SERIAL PRIMARY KEY,
-    id_turma INT,
-    id_disciplina INT,
+
+CREATE TABLE Frequencia (
+    ID SERIAL PRIMARY KEY,
     data DATE NOT NULL,
-    horario TIME NOT NULL,
-    FOREIGN KEY (id_turma) REFERENCES turmas(id_turma),
-    FOREIGN KEY (id_disciplina) REFERENCES disciplinas(id_disciplina)
+    porcentagem DECIMAL(5, 2) NOT NULL,
+    turma_id INT NOT NULL REFERENCES Turma(ID)
 );
-CREATE TABLE frequencia (
-    id_frequencia SERIAL PRIMARY KEY,
-    matricula INT,
-    id_aula INT,
-    presente BOOLEAN NOT NULL,  -- Presença ou ausência
-    FOREIGN KEY (matricula) REFERENCES alunos(matricula),
-    FOREIGN KEY (id_aula) REFERENCES aulas(id_aula)
+
+CREATE TABLE Relatorio (
+    ID SERIAL PRIMARY KEY,
+    arquivo BYTEA,
+    data DATE NOT NULL,
+    descricao TEXT,
+    professor_id INT NOT NULL REFERENCES Professor(ID)
 );
-CREATE TABLE notas (
-    id_nota SERIAL PRIMARY KEY,
-    matricula INT,
-    id_disciplina INT,
-    nota DECIMAL(5, 2),
-    FOREIGN KEY (matricula) REFERENCES alunos(matricula),
-    FOREIGN KEY (id_disciplina) REFERENCES disciplinas(id_disciplina)
-);
-CREATE TABLE anotacoes (
-    id_anotacao SERIAL PRIMARY KEY,
-    id_professor INT,
-    matricula INT,
-    anotacao TEXT,
-    data_anotacao DATE DEFAULT CURRENT_DATE,
-    FOREIGN KEY (id_professor) REFERENCES professores(id_professor),
-    FOREIGN KEY (matricula) REFERENCES alunos(matricula)
+
+CREATE TABLE Diagnostico (
+    ID SERIAL PRIMARY KEY,
+    descricao TEXT NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    aluno_id INT NOT NULL REFERENCES Aluno(ID)
 );

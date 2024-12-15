@@ -1,30 +1,57 @@
-// controllers/turmaController.js
-const pool = require('../models/db');
+const db = require('../models/db');
 
-// Listar todas as turmas
-const getTurmas = async (req, res) => {
+exports.getTurmas = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM turmas');
+    const result = await db.query('SELECT * FROM Turma');
     res.json(result.rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Erro ao buscar turmas' });
+    res.status(500).json({ error: err.message });
   }
 };
 
-// Criar turma
-const createTurma = async (req, res) => {
-  const { nome_turma, ano_letivo, periodo, id_professor_principal } = req.body;
+exports.getTurmaById = async (req, res) => {
   try {
-    const result = await pool.query(
-      'INSERT INTO turmas (nome_turma, ano_letivo, periodo, id_professor_principal) VALUES ($1, $2, $3, $4) RETURNING *',
-      [nome_turma, ano_letivo, periodo, id_professor_principal]
+    const { id } = req.params;
+    const result = await db.query('SELECT * FROM Turma WHERE id = $1', [id]);
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createTurma = async (req, res) => {
+  try {
+    const { nome, periodo } = req.body;
+    const result = await db.query(
+      'INSERT INTO Turma (nome, periodo) VALUES ($1, $2) RETURNING *',
+      [nome, periodo]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Erro ao criar turma' });
+    res.status(500).json({ error: err.message });
   }
 };
 
-module.exports = { getTurmas, createTurma };
+exports.updateTurma = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nome, periodo } = req.body;
+    const result = await db.query(
+      'UPDATE Turma SET nome = $1, periodo = $2 WHERE id = $3 RETURNING *',
+      [nome, periodo, id]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteTurma = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await db.query('DELETE FROM Turma WHERE id = $1', [id]);
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
