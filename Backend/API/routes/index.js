@@ -7,8 +7,6 @@ const diarioController = require('../controllers/diarioController');
 const frequenciaController = require('../controllers/frequenciaController');
 const relatorioController = require('../controllers/relatorioController');
 const diagnosticoController = require('../controllers/diagnosticoController');
-const alunoTurmaController = require('../controllers/alunoTurmaController');
-const professorTurmaController = require('../controllers/professorTurmaController');
 
 const router = express.Router();
 
@@ -67,15 +65,5 @@ router.get('/diagnosticos/:id', diagnosticoController.getDiagnosticoById);
 router.post('/diagnosticos', diagnosticoController.createDiagnostico);
 router.put('/diagnosticos/:id', diagnosticoController.updateDiagnostico);
 router.delete('/diagnosticos/:id', diagnosticoController.deleteDiagnostico);
-
-// Rotas para Aluno_Turma
-router.get('/alunos-turmas', alunoTurmaController.getAlunosTurmas);
-router.post('/alunos-turmas', alunoTurmaController.addAlunoToTurma);
-router.delete('/alunos-turmas', alunoTurmaController.removeAlunoFromTurma);
-
-// Rotas para Professor_Turma
-router.get('/professores-turmas', professorTurmaController.getProfessoresTurmas);
-router.post('/professores-turmas', professorTurmaController.addProfessorToTurma);
-router.delete('/professores-turmas', professorTurmaController.removeProfessorFromTurma);
 
 module.exports = router;

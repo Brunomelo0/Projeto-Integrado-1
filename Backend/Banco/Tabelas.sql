@@ -5,11 +5,18 @@ CREATE TABLE Diretor (
     senha VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE Turma (
+    ID SERIAL PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    periodo VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE Professor (
     ID SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     contato VARCHAR(15),
-    senha VARCHAR(100) NOT NULL
+    senha VARCHAR(100) NOT NULL,
+    turma_id INT REFERENCES Turma(ID)
 );
 
 CREATE TABLE Aluno (
@@ -17,14 +24,10 @@ CREATE TABLE Aluno (
     nome VARCHAR(100) NOT NULL,
     data_nascimento DATE NOT NULL,
     contato VARCHAR(15),
-    matricula VARCHAR(20) NOT NULL UNIQUE
+    matricula VARCHAR(20) NOT NULL UNIQUE,
+    turma_id INT REFERENCES Turma(ID)
 );
 
-CREATE TABLE Turma (
-    ID SERIAL PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL,
-    periodo VARCHAR(50) NOT NULL
-);
 
 CREATE TABLE Aluno_Turma (
     aluno_id INT NOT NULL REFERENCES Aluno(ID),

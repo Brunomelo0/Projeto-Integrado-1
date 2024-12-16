@@ -21,10 +21,10 @@ exports.getAlunoById = async (req, res) => {
 
 exports.createAluno = async (req, res) => {
   try {
-    const { nome, data_nascimento, contato, matricula } = req.body;
+    const { nome, data_nascimento, contato, matricula, turma_id } = req.body;
     const result = await db.query(
-      'INSERT INTO Aluno (nome, data_nascimento, contato, matricula) VALUES ($1, $2, $3, $4) RETURNING *',
-      [nome, data_nascimento, contato, matricula]
+      'INSERT INTO Aluno (nome, data_nascimento, contato, matricula, turma_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [nome, data_nascimento, contato, matricula, turma_id]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -35,10 +35,10 @@ exports.createAluno = async (req, res) => {
 exports.updateAluno = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nome, data_nascimento, contato, matricula } = req.body;
+    const { nome, data_nascimento, contato, matricula, turma_id } = req.body;
     const result = await db.query(
-      'UPDATE Aluno SET nome = $1, data_nascimento = $2, contato = $3, matricula = $4 WHERE id = $5 RETURNING *',
-      [nome, data_nascimento, contato, matricula, id]
+      'UPDATE Aluno SET nome = $1, data_nascimento = $2, contato = $3, matricula = $4, turma_id = $5 WHERE id = $6 RETURNING *',
+      [nome, data_nascimento, contato, matricula, turma_id, id]
     );
     res.json(result.rows[0]);
   } catch (err) {
