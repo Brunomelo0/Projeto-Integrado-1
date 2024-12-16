@@ -18,7 +18,7 @@ export default function Header() {
     </Menu>
     <UserContainer>
       <div className="info">
-      <span classname="name">Helioneide Azevedo</span>
+      <span className="name">Helioneide Azevedo</span>
       <span className="role">Diretora</span>
       </div>
       <img

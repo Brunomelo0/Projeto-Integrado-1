@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import NewStudent from './pages/NewStudent';
 import Students from './pages/Students';
 import Frequency from './pages/Frequency';
+import NewClass from './pages/NewClass';
 
 
 export default function Routes() {
@@ -13,6 +14,7 @@ export default function Routes() {
       <Route path="/new" element={<NewStudent />} />
       <Route path="/alunos" element={<Students />}/>
       <Route path="/frequencia" element={<Frequency />}/>
+      <Route path="/newClass" element={<NewClass />}/>
     </RoutesDOM>
   );
 }

@@ -3,21 +3,7 @@ import { FaTrash, FaEdit } from 'react-icons/fa';
 
 import { TableContainer, ActionButton, StyledTable } from './styles';
 
-const data = [
-  { id: 1, matricula: '001', nome: 'Ana Silva', telefone: '(85) 99999-9999' },
-  { id: 1, matricula: '001', nome: 'Ana Silva', telefone: '(85) 99999-9999' },
-  { id: 1, matricula: '001', nome: 'Ana Silva', telefone: '(85) 99999-9999' },
-  { id: 1, matricula: '001', nome: 'Ana Silva', telefone: '(85) 99999-9999' },
-  { id: 1, matricula: '001', nome: 'Ana Silva', telefone: '(85) 99999-9999' },
-  { id: 1, matricula: '001', nome: 'Ana Silva', telefone: '(85) 99999-9999' },
-  { id: 1, matricula: '001', nome: 'Ana Silva', telefone: '(85) 99999-9999' },
-  { id: 1, matricula: '001', nome: 'Ana Silva', telefone: '(85) 99999-9999' },
-  { id: 1, matricula: '001', nome: 'Ana Silva', telefone: '(85) 99999-9999' },
-  { id: 1, matricula: '001', nome: 'Ana Silva', telefone: '(85) 99999-9999' },
-  { id: 1, matricula: '001', nome: 'Ana Silva', telefone: '(85) 99999-9999' },
-];
-
-const Table = () => {
+const Table = ({data = []}) => {
   return (
     <TableContainer>
       <StyledTable>
@@ -26,8 +12,6 @@ const Table = () => {
             <th>Matrícula</th>
             <th>Nome</th>
             <th>Telefone</th>
-            <th>Frequência</th>
-            <th>Turma</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -36,9 +20,7 @@ const Table = () => {
             <tr key={row.id}>
               <td>{row.matricula}</td>
               <td>{row.nome}</td>
-              <td>{row.telefone}</td>
-              <td>{row.frequencia}</td>
-              <td>{row.turma}</td>
+              <td>{row.contato}</td>
               <td>
                 <ActionButton>
                   <FaEdit />

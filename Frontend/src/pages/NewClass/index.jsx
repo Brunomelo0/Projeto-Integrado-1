@@ -1,17 +1,17 @@
 import axios from "axios";
 
 import PageHeader from "../../components/PageHeader";
-import StudentForm from "../../components/StudentForm";
+import ClassForm from "../../components/ClassForm";
 
 import { Container, Content } from './styles';
 
-export default function NewStudent() {
-  const handleSubmit = async (nome, matricula, contato, dataNascimento, turma) => {
+export default function NewClass() {
+  const handleSubmit = async (nome, periodo, professor, alunos) => {
     try {
       const response = await axios({
-        url: "http://localhost:3000/api/alunos", 
+        url: "", 
         method: "POST",
-        data: {nome, matricula, contato, data_nascimento: dataNascimento, turma},
+        data: {nome, periodo, professor, alunos},
       });
       console.log(response.data);
     } catch (error) {
@@ -23,10 +23,10 @@ export default function NewStudent() {
   return (
     <Container>
     <PageHeader
-      title="Novo estudante"
+      title="Nova turma"
     />
     <Content>
-   <StudentForm onSubmit={handleSubmit} buttonLabel="Cadastrar"/>
+   <ClassForm onSubmit={handleSubmit} buttonLabel="Cadastrar"/>
    </Content>
     </Container>
   );

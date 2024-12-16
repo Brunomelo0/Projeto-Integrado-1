@@ -117,40 +117,21 @@ export const Card = styled.div`
       }
     }
 `
-
-export const LinkNew = styled.a`
+export const InputSearchContainer = styled.div`
   width: 100%;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-decoration: none;
-  border: none;
-  background: ${({ theme }) => theme.colors.primary.green};
-  font-size: 16px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
-  font-weight: bold;
-  color: #fff;
-  border-radius: 4px;
-  transition: background 0.2s ease-in;
 
-  &:hover {
-    background: ${({ theme }) => theme.colors.primary.greenlighter};
+  input {
+    width: 100%;
+    background: #fff;
+    border: none;
+    border-radius: 25px;
+    height: 58px;
+    box-shadow: 8px 4px 10px rgba(0, 0, 0, 0.04);
+    outline: 0;
+    padding: 0 16px;
+
+    &::placeholder {
+      color: #BCBCBC
+    }
   }
-
-  &:active {
-    background: ${({ theme }) => theme.colors.primary.green};
-  }
-
-  &[disabled] {
-    background: #ccc;
-    cursor: default;
-  }
-`
-
-export const ButtonContainer = styled.div`
-  margin-top: 24px;
-  width: 100%;
-  height: 52px;
 `;
