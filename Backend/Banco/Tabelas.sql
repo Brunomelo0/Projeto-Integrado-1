@@ -28,19 +28,6 @@ CREATE TABLE Aluno (
     turma_id INT REFERENCES Turma(ID)
 );
 
-
-CREATE TABLE Aluno_Turma (
-    aluno_id INT NOT NULL REFERENCES Aluno(ID),
-    turma_id INT NOT NULL REFERENCES Turma(ID),
-    PRIMARY KEY (aluno_id, turma_id)
-);
-
-CREATE TABLE Professor_Turma (
-    professor_id INT NOT NULL REFERENCES Professor(ID),
-    turma_id INT NOT NULL REFERENCES Turma(ID),
-    PRIMARY KEY (professor_id, turma_id)
-);
-
 CREATE TABLE Diario (
     ID SERIAL PRIMARY KEY,
     titulo VARCHAR(100) NOT NULL,
