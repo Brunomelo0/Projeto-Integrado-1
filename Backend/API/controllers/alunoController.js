@@ -24,7 +24,7 @@ exports.createAluno = async (req, res) => {
     const { nome, data_nascimento, contato, matricula, turma_id } = req.body;
     const result = await db.query(
       'INSERT INTO Aluno (nome, data_nascimento, contato, matricula, turma_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [nome, data_nascimento, contato, matricula, turma_id]
+      [nome, data_nascimento, contato, matricula, Number(turma_id)]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {

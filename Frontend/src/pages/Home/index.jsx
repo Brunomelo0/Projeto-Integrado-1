@@ -1,8 +1,29 @@
 import { Link } from 'react-router-dom';
 
 import { Container, Header, Card, Content, ButtonContainer, LinkNew } from './styles';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function Home() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axios({
+          url: "http://localhost:3000/api/turmas", 
+          method: "GET",
+        });
+        setData(response.data);
+      } catch (error) {
+        console.log(error);
+        
+      }
+    };
+    getData();
+  }, [])
+
+
   return (
     <Container>
       <Header>
@@ -10,42 +31,17 @@ export default function Home() {
       </Header>
       <Content>
 
-      <Link className='link-style'>
+      {data.map((turma, index) => <Link key={index} className='link-style'>
       <Card>
         <div className="info">
           <div className="classroom-name">
-            <strong>Turma V A</strong>
-            <small>Vespertino</small>
+            <strong>{turma.nome}</strong>
+            <small>{turma.periodo}</small>
           </div>
-          <span>Alunos: 12</span>
-          <span>Maria Lívia</span>
+          <span>Alunos: 0</span>
         </div>
       </Card>
-      </Link>
-      <Link className='link-style'>
-      <Card>
-        <div className="info">
-          <div className="classroom-name">
-            <strong>Turma V B</strong>
-            <small>Matutino</small>
-          </div>
-          <span>Alunos: 12</span>
-          <span>Maria Lívia</span>
-        </div>
-      </Card>
-      </Link>
-      <Link className='link-style'>
-      <Card>
-        <div className="info">
-          <div className="classroom-name">
-            <strong>Turma V C</strong>
-            <small>Vespertino</small>
-          </div>
-          <span>Alunos: 12</span>
-          <span>Maria Lívia</span>
-        </div>
-      </Card>
-      </Link>
+      </Link>)}
 
       <ButtonContainer>
           <LinkNew type="button" href="/newClass">Cadastrar turma</LinkNew>

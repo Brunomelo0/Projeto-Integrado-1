@@ -24,7 +24,7 @@ exports.createProfessor = async (req, res) => {
     const { nome, contato, senha, turma_id } = req.body;
     const result = await db.query(
       'INSERT INTO Professor (nome, contato, senha, turma_id) VALUES ($1, $2, $3, $4) RETURNING *',
-      [nome, contato, senha, turma_id]
+      [nome, contato, senha, Number(turma_id)]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {

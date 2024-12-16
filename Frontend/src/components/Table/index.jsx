@@ -9,6 +9,7 @@ const Table = ({data = []}) => {
       <StyledTable>
         <thead>
           <tr>
+            <th>ID da turma</th>
             <th>Matrícula</th>
             <th>Nome</th>
             <th>Telefone</th>
@@ -18,6 +19,7 @@ const Table = ({data = []}) => {
         <tbody>
           {data.map((row) => (
             <tr key={row.id}>
+              <td>{row.turma_id}</td>
               <td>{row.matricula}</td>
               <td>{row.nome}</td>
               <td>{row.contato}</td>

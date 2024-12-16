@@ -11,7 +11,7 @@ export default function NewStudent() {
       const response = await axios({
         url: "http://localhost:3000/api/alunos", 
         method: "POST",
-        data: {nome, matricula, contato, data_nascimento: dataNascimento, turma},
+        data: {nome, matricula, contato, data_nascimento: dataNascimento, turma_id: turma},
       });
       console.log(response.data);
     } catch (error) {

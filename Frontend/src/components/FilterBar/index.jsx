@@ -10,20 +10,35 @@ import {
   DateInput,
 } from "./styles";
 
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 export default function FilterBar({ showDateFilter, showCreateButton }) {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axios({
+          url: "http://localhost:3000/api/turmas", 
+          method: "GET",
+        });
+        setData(response.data);
+      } catch (error) {
+        console.log(error);
+        
+      }
+    };
+    getData();
+  }, [])
+
   return (
     <FilterContainer>
       <LeftGroup>
         <Label>Turma:</Label>
         <Select>
-          <option value="3A">Turma III A</option>
-          <option value="3B">Turma III B</option>
-          <option value="4A">Turma IV A</option>
-          <option value="4B">Turma IV B</option>
-          <option value="4C">Turma IV C</option>
-          <option value="5A">Turma V A</option>
-          <option value="5B">Turma V B</option>
-          <option value="5C">Turma V C</option>
+        <option value="">Selecione uma turma</option>
+        {data.map((turma, index) => <option key={index} value={turma.id}>{turma.nome}</option>)}
         </Select>
       </LeftGroup>
 
