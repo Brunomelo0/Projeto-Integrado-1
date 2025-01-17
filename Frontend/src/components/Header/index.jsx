@@ -12,6 +12,7 @@ export default function Header() {
       </a>
       <Link to="/alunos">Alunos</Link>
       <Link to="/frequencia">Frequência</Link>
+      <Link to="/professor/frequencia">Chamada</Link>
       <Link to="/diagnostico">Diagnóstico</Link>
       <Link to="/diario">Diário</Link>
       <Link to="/relatorios">Relatórios</Link>

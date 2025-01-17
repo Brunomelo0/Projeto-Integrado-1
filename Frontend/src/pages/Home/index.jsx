@@ -38,7 +38,6 @@ export default function Home() {
             <strong>{turma.nome}</strong>
             <small>{turma.periodo}</small>
           </div>
-          <span>Alunos: 0</span>
         </div>
       </Card>
       </Link>)}

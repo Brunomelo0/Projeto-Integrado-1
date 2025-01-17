@@ -4,12 +4,12 @@ import FilterBar from "../../components/FilterBar";
 
 import { Container, Content } from './styles';
 
-export default function Frequency() {
+export default function NewRollCall() {
   return (
     <Container>
       <PageHeader title="Alunos" />
       <Content>
-        <FilterBar showDateFilter={true} showCreateButton={false}/>
+        <FilterBar showDateFilter={true} showCreateButton={false} showCreateRollCall={true}/>
         <Table />
       </Content>
     </Container>
