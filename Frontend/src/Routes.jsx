@@ -1,11 +1,12 @@
-import { Routes as RoutesDOM, Route } from 'react-router-dom';
+import { Route, Routes as RoutesDOM } from 'react-router-dom';
 
-import Home from './pages/Home';
-import NewStudent from './pages/NewStudent';
-import Students from './pages/Students';
 import Attendance from './pages/Attendance';
+import Diagnostico from './pages/Diagnosis/Diagnostico';
+import Home from './pages/Home';
 import NewClass from './pages/NewClass';
 import NewRollCall from './pages/NewRollCall';
+import NewStudent from './pages/NewStudent';
+import Students from './pages/Students';
 
 
 export default function Routes() {
@@ -13,10 +14,12 @@ export default function Routes() {
     <RoutesDOM>
       <Route path="/" element={<Home />} />
       <Route path="/new" element={<NewStudent />} />
-      <Route path="/alunos" element={<Students />}/>
-      <Route path="/frequencia" element={<Attendance />}/>
-      <Route path="/newClass" element={<NewClass />}/>
+      <Route path="/alunos" element={<Students />} />
+      <Route path="/frequencia" element={<Attendance />} />
+      <Route path="/newClass" element={<NewClass />} />
       <Route path="/professor/frequencia" element={<NewRollCall />} />
+      <Route path="/diagnostico" element={<Diagnostico />} />
+
     </RoutesDOM>
   );
 }
