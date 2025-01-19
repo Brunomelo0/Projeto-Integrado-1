@@ -99,15 +99,19 @@ exports.getFrequenciaAluno = async (req, res) => {
     const query = `
       SELECT 
         COUNT(*) FILTER (WHERE presenca = TRUE) AS total_presencas,
-        COUNT(*) FILTER (WHERE presenca = FALSE) AS total_faltas
+        COUNT(*) FILTER (WHERE presenca = FALSE) AS total_faltas,
+        ROUND(
+          COUNT(*) FILTER (WHERE presenca = TRUE)::DECIMAL * 100 / NULLIF(COUNT(*), 0), 
+          2
+        ) AS porcentagem_presencas
       FROM Frequencia
       WHERE aluno_id = $1 AND turma_id = $2;
     `;
 
     const result = await db.query(query, [aluno_id, turma_id]);
 
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Nenhuma frequência encontrada para o aluno nesta turma" });
+    if (result.rows.length === 0 || !result.rows[0].total_presencas && !result.rows[0].total_faltas) {
+      return res.status(404).json({ error: "Nenhuma frequência encontrada para este aluno na turma" });
     }
 
     res.json(result.rows[0]);
@@ -115,5 +119,3 @@ exports.getFrequenciaAluno = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
