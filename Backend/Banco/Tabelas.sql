@@ -38,9 +38,11 @@ CREATE TABLE Diario (
 CREATE TABLE Frequencia (
     ID SERIAL PRIMARY KEY,
     data DATE NOT NULL,
-    porcentagem DECIMAL(5, 2) NOT NULL,
-    turma_id INT NOT NULL REFERENCES Turma(ID)
+    turma_id INT NOT NULL REFERENCES Turma(ID),
+    aluno_id INT REFERENCES Aluno(ID),
+    presenca BOOLEAN NOT NULL DEFAULT FALSE
 );
+
 
 CREATE TABLE Relatorio (
     ID SERIAL PRIMARY KEY,

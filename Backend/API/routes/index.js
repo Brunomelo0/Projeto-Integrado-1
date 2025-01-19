@@ -46,10 +46,11 @@ router.put('/diarios/:id', diarioController.updateDiario);
 router.delete('/diarios/:id', diarioController.deleteDiario);
 
 // Rotas para Frequencia
+router.get('/frequencias/:aluno_id/:turma_id', frequenciaController.getFrequenciaAluno);
+router.post('/frequencias/:aluno_id/:turma_id/:data', frequenciaController.createFrequencia);
+router.put('/frequencias/:aluno_id/:turma_id/:data', frequenciaController.updateFrequencia);
 router.get('/frequencias', frequenciaController.getFrequencias);
 router.get('/frequencias/:id', frequenciaController.getFrequenciaById);
-router.post('/frequencias', frequenciaController.createFrequencia);
-router.put('/frequencias/:id', frequenciaController.updateFrequencia);
 router.delete('/frequencias/:id', frequenciaController.deleteFrequencia);
 
 // Rotas para Relatorio
