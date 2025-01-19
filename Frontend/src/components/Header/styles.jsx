@@ -20,6 +20,10 @@ export const Menu = styled.div`
     &:hover {
       color: ${({ theme }) => theme.colors.primary.light}; /* Cor ao passar o mouse */
     }
+
+    &.active {
+      color: #7DEC6F; /* Apenas muda a cor do texto para a rota ativa */
+    }
   }
 `;
 
