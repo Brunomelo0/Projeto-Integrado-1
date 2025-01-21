@@ -9,7 +9,7 @@ export default function Header() {
     <NavbarContainer>
       <Menu>
         <a href="/">
-          <img src={home} alt="Home" />
+          <img src={home} alt="Home" style={{ filter: "invert(1)" }} />
         </a>
         <Link to="/alunos" className={location.pathname === "/alunos" ? "active" : ""}>
           Alunos
@@ -35,7 +35,7 @@ export default function Header() {
           <span className="name">Helioneide Azevedo</span>
           <span className="role">Diretora</span>
         </div>
-        <img src="https://via.placeholder.com/40" alt="Helioneide Azevedo" />
+        <img src="src/assets/images/img/logoDire.jpg" alt="Helioneide Azevedo" />
       </UserContainer>
     </NavbarContainer>
   );
