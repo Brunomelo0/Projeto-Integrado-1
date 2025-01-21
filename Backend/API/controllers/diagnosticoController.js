@@ -18,7 +18,6 @@ exports.getDiagnosticoById = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 exports.createDiagnostico = async (req, res) => {
   try {
     const { descricao, status, aluno_id } = req.body;
