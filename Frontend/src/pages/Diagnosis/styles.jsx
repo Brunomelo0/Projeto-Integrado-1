@@ -107,6 +107,7 @@ export const Form = styled.form`
 
 export const Modal = styled.div`
   position: fixed;
+  width: 66.67%; 
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -115,18 +116,29 @@ export const Modal = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   z-index: 1000;
-
+  
+  select {
+    width: auto;
+  }
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+  }
   h2 {
     margin-bottom: 20px;
-  }
+  }  
 
-  select {
-    margin-left: 10px;
+  .button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
   }
 
   button {
-    margin: 10px;
-    padding: 10px 20px;
+    padding: 5px 10px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -140,6 +152,17 @@ export const Modal = styled.div`
   button:last-of-type {
     background-color: #4caf50;
     color: white;
+  }
+
+  .modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .modal-buttons button {
+    padding: 5px 10px;
+    font-size: 14px;
   }
 `;
 

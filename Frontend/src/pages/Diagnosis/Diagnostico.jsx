@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -27,14 +28,17 @@ const Diagnostico = () => {
 
   useEffect(() => {
     const fetchAlunos = async () => {
-      const data = [
-        { matricula: "2023001", nome: "João Silva", semestre: "1", desenvolvimento: "Em Desenvolvimento" },
-        { matricula: "2023002", nome: "Maria Souza", semestre: "2", desenvolvimento: "Desenvolvido" },
-      ];
-      setAlunos(data);
+      try {
+        const response = await axios.get('http://localhost:3000/api/alunos');
+        setAlunos(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar alunos:', error);
+      }
     };
     fetchAlunos();
   }, []);
+
+
 
   const handleDelete = (matricula) => {
     toast(
@@ -53,23 +57,15 @@ const Diagnostico = () => {
     );
   };
 
-  const confirmDelete = (matricula, closeToast) => {
-    const novosAlunos = alunos.filter((aluno) => aluno.matricula !== matricula);
-    setAlunos(novosAlunos);
-    closeToast();
-  };
-
-  const handleCadastro = () => {
-    if (alunoSelecionado) {
-      const novosAlunos = alunos.map((aluno) =>
-        aluno.matricula === alunoSelecionado.matricula ? alunoSelecionado : aluno
-      );
+  const confirmDelete = async (matricula, closeToast) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/alunos/${matricula}`);
+      const novosAlunos = alunos.filter((aluno) => aluno.matricula !== matricula);
       setAlunos(novosAlunos);
-    } else {
-      setAlunos([...alunos, novoAluno]);
+      closeToast();
+    } catch (error) {
+      console.error('Erro ao excluir aluno:', error);
     }
-    setNovoAluno({ matricula: "", nome: "", semestre: "", desenvolvimento: "Não desenvolvido" });
-    setModalAberto(false);
   };
 
   const abrirModal = (aluno = null) => {
@@ -85,62 +81,58 @@ const Diagnostico = () => {
     setModalAberto(false);
   };
 
+  const handleSalvar = async () => {
+    if (alunoSelecionado) {
+      try {
+        const response = await axios.put(`http://localhost:3000/api/alunos/${alunoSelecionado.matricula}`, alunoSelecionado);
+        const novosAlunos = alunos.map((aluno) =>
+          aluno.matricula === alunoSelecionado.matricula ? response.data : aluno
+        );
+        setAlunos(novosAlunos);
+      } catch (error) {
+        console.error('Erro ao salvar diagnóstico:', error);
+      }
+    } else {
+      try {
+        const response = await axios.post('http://localhost:3000/api/alunos', novoAluno);
+        setAlunos([...alunos, response.data]);
+      } catch (error) {
+        console.error('Erro ao cadastrar novo aluno:', error);
+      }
+    }
+    setModalAberto(false);
+  };
+
+
   return (
     <Container>
       <Filter>
+        <label>Busca</label>
         <input
           type="text"
           placeholder="Filtrar por nome"
           value={filtroNome}
           onChange={(e) => setFiltroNome(e.target.value)}
         />
+        <label>Turma</label>
         <select value={turma} onChange={(e) => setTurma(e.target.value)}>
           <option value="5A">5 A</option>
           <option value="6B">6 B</option>
         </select>
         <button className="cadastrar" onClick={() => abrirModal()}>+ Cadastrar</button>
       </Filter>
-
       {modalAberto && (
         <Modal>
           <h2>{alunoSelecionado ? "Editar Diagnóstico" : "Cadastrar Novo Diagnóstico"}</h2>
           <Form>
-            <input
-              type="text"
-              placeholder="Matrícula"
-              value={alunoSelecionado ? alunoSelecionado.matricula : novoAluno.matricula}
-              onChange={(e) => {
-                if (alunoSelecionado) {
-                  setAlunoSelecionado({ ...alunoSelecionado, matricula: e.target.value });
-                } else {
-                  setNovoAluno({ ...novoAluno, matricula: e.target.value });
-                }
-              }}
-            />
+            <label>Nome</label>
             <input
               type="text"
               placeholder="Nome"
               value={alunoSelecionado ? alunoSelecionado.nome : novoAluno.nome}
-              onChange={(e) => {
-                if (alunoSelecionado) {
-                  setAlunoSelecionado({ ...alunoSelecionado, nome: e.target.value });
-                } else {
-                  setNovoAluno({ ...novoAluno, nome: e.target.value });
-                }
-              }}
+
             />
-            <input
-              type="text"
-              placeholder="Semestre"
-              value={alunoSelecionado ? alunoSelecionado.semestre : novoAluno.semestre}
-              onChange={(e) => {
-                if (alunoSelecionado) {
-                  setAlunoSelecionado({ ...alunoSelecionado, semestre: e.target.value });
-                } else {
-                  setNovoAluno({ ...novoAluno, semestre: e.target.value });
-                }
-              }}
-            />
+            <label>Desenvolvimento</label>
             <select
               value={alunoSelecionado ? alunoSelecionado.desenvolvimento : novoAluno.desenvolvimento}
               onChange={(e) => {
@@ -155,19 +147,30 @@ const Diagnostico = () => {
               <option value="Em Desenvolvimento">Em Desenvolvimento</option>
               <option value="Desenvolvido">Desenvolvido</option>
             </select>
-            <button type="button" onClick={fecharModal}>Cancelar</button>
-            <button type="button" onClick={handleCadastro}>{alunoSelecionado ? "Salvar" : "Cadastrar"}</button>
-
+            <label>Comentário</label>
+            <textarea
+              placeholder="Comentário do progresso do aluno"
+              value={alunoSelecionado ? alunoSelecionado.comentario : novoAluno.comentario}
+              onChange={(e) => {
+                if (alunoSelecionado) {
+                  setAlunoSelecionado({ ...alunoSelecionado, comentario: e.target.value });
+                } else {
+                  setNovoAluno({ ...novoAluno, comentario: e.target.value });
+                }
+              }}
+            />
+            <div className="modal-buttons">
+              <button type="button" onClick={fecharModal}>Cancelar</button>
+              <button type="button" onClick={handleSalvar}>Salvar</button>
+            </div>
           </Form>
         </Modal>
       )}
-
       <Table>
         <thead>
           <tr>
             <th>Matrícula</th>
             <th>Nome</th>
-            <th>Semestre</th>
             <th>Desenvolvimento</th>
             <th>Ações</th>
           </tr>
@@ -181,7 +184,6 @@ const Diagnostico = () => {
               <tr key={aluno.matricula}>
                 <td>{aluno.matricula}</td>
                 <td>{aluno.nome}</td>
-                <td>{aluno.semestre}</td>
                 <td>{aluno.desenvolvimento}</td>
                 <td>
                   <ActionButton
