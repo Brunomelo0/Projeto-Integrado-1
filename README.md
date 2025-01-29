@@ -1,7 +1,12 @@
 # Projeto Integrado 1
 
 ## Backend Setup
-
+criar o arquivo .env na dentro da pasta API as seguintes variáveis de ambiente
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=sua_senha
+DB_NAME=sistema_escolar
 ### Pasta API
 
 #### Instalar dependências
