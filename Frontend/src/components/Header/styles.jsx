@@ -6,6 +6,7 @@ export const NavbarContainer = styled.div`
   align-items: center;
   background-color: ${({ theme }) => theme.colors.primary.main}; /* Cor de fundo */
   padding: 10px 20px;
+  font-family: 'Merriweather Sans', sans-serif; /* Aplica a fonte Merriweather Sans */
 `;
 
 export const Menu = styled.div`

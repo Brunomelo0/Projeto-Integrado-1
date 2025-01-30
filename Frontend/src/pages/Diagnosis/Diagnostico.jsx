@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { FaEdit, FaTrash } from 'react-icons/fa'; // Importe os ícones
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -14,38 +15,48 @@ import {
 } from "./styles";
 
 const Diagnostico = () => {
-  const [alunos, setAlunos] = useState([]);
-  const [turma, setTurma] = useState("5A");
+  const [diagnosticos, setDiagnosticos] = useState([]); // Estado para armazenar os diagnósticos
+  const [turmas, setTurmas] = useState([]); // Estado para armazenar as turmas
+  const [turma, setTurma] = useState(""); // Estado para armazenar a turma selecionada
   const [filtroNome, setFiltroNome] = useState("");
   const [modalAberto, setModalAberto] = useState(false);
-  const [alunoSelecionado, setAlunoSelecionado] = useState(null);
-  const [novoAluno, setNovoAluno] = useState({
-    matricula: "",
-    nome: "",
-    semestre: "",
-    desenvolvimento: "Não desenvolvido",
+  const [diagnosticoSelecionado, setDiagnosticoSelecionado] = useState(null);
+  const [novoDiagnostico, setNovoDiagnostico] = useState({
+    descricao: "",
+    status: "Não desenvolvido",
+    aluno_id: null,
   });
 
   useEffect(() => {
-    const fetchAlunos = async () => {
+    const fetchDiagnosticos = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/alunos');
-        setAlunos(response.data);
+        const response = await axios.get('http://localhost:3000/api/diagnosticos');
+        setDiagnosticos(response.data);
       } catch (error) {
-        console.error('Erro ao buscar alunos:', error);
+        console.error('Erro ao buscar diagnósticos:', error);
       }
     };
-    fetchAlunos();
+    fetchDiagnosticos();
   }, []);
 
+  useEffect(() => {
+    const fetchTurmas = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/turmas');
+        setTurmas(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar turmas:', error);
+      }
+    };
+    fetchTurmas();
+  }, []);
 
-
-  const handleDelete = (matricula) => {
+  const handleDelete = (id) => {
     toast(
       ({ closeToast }) => (
         <div>
-          <p>Tem certeza que deseja excluir este aluno?</p>
-          <ToastButton onClick={() => confirmDelete(matricula, closeToast)}>Sim</ToastButton>
+          <p>Tem certeza que deseja excluir este diagnóstico?</p>
+          <ToastButton onClick={() => confirmDelete(id, closeToast)}>Sim</ToastButton>
           <ToastNoButton onClick={closeToast}>Não</ToastNoButton>
         </div>
       ),
@@ -57,56 +68,73 @@ const Diagnostico = () => {
     );
   };
 
-  const confirmDelete = async (matricula, closeToast) => {
+  const confirmDelete = async (id, closeToast) => {
     try {
-      await axios.delete(`http://localhost:3000/api/alunos/${matricula}`);
-      const novosAlunos = alunos.filter((aluno) => aluno.matricula !== matricula);
-      setAlunos(novosAlunos);
+      await axios.delete(`http://localhost:3000/api/diagnosticos/${id}`);
+      const novosDiagnosticos = diagnosticos.filter((diagnostico) => diagnostico.id !== id);
+      setDiagnosticos(novosDiagnosticos);
       closeToast();
     } catch (error) {
-      console.error('Erro ao excluir aluno:', error);
+      console.error('Erro ao excluir diagnóstico:', error);
     }
   };
 
-  const abrirModal = (aluno = null) => {
-    if (aluno) {
-      setAlunoSelecionado(aluno);
+  const abrirModal = (diagnostico = null) => {
+    if (diagnostico) {
+      setDiagnosticoSelecionado(diagnostico);
     } else {
-      setAlunoSelecionado(null);
+      setDiagnosticoSelecionado({
+        descricao: "",
+        status: "Não desenvolvido",
+        aluno_id: null,
+      });
     }
     setModalAberto(true);
   };
 
   const fecharModal = () => {
     setModalAberto(false);
+    setDiagnosticoSelecionado(null);
   };
 
   const handleSalvar = async () => {
-    if (alunoSelecionado) {
+    if (diagnosticoSelecionado) {
       try {
-        const response = await axios.put(`http://localhost:3000/api/alunos/${alunoSelecionado.matricula}`, alunoSelecionado);
-        const novosAlunos = alunos.map((aluno) =>
-          aluno.matricula === alunoSelecionado.matricula ? response.data : aluno
+        const response = await axios.put(`http://localhost:3000/api/diagnosticos/${diagnosticoSelecionado.id}`, {
+          descricao: diagnosticoSelecionado.descricao,
+          status: diagnosticoSelecionado.status,
+          aluno_id: diagnosticoSelecionado.aluno_id,
+        });
+        const novosDiagnosticos = diagnosticos.map((diagnostico) =>
+          diagnostico.id === diagnosticoSelecionado.id ? response.data : diagnostico
         );
-        setAlunos(novosAlunos);
+        setDiagnosticos(novosDiagnosticos);
       } catch (error) {
         console.error('Erro ao salvar diagnóstico:', error);
       }
     } else {
       try {
-        const response = await axios.post('http://localhost:3000/api/alunos', novoAluno);
-        setAlunos([...alunos, response.data]);
+        const response = await axios.post('http://localhost:3000/api/diagnosticos', novoDiagnostico);
+        setDiagnosticos([...diagnosticos, response.data]);
       } catch (error) {
-        console.error('Erro ao cadastrar novo aluno:', error);
+        console.error('Erro ao cadastrar novo diagnóstico:', error);
       }
     }
     setModalAberto(false);
   };
 
-
   return (
     <Container>
       <Filter>
+        <label>Turma:</label>
+        <select value={turma} onChange={(e) => setTurma(e.target.value)}>
+          <option value="">Selecione uma turma</option>
+          {turmas.map((turma) => (
+            <option key={turma.id} value={turma.nome}>
+              {turma.nome}
+            </option>
+          ))}
+        </select>
         <label>Busca</label>
         <input
           type="text"
@@ -114,32 +142,33 @@ const Diagnostico = () => {
           value={filtroNome}
           onChange={(e) => setFiltroNome(e.target.value)}
         />
-        <label>Turma</label>
-        <select value={turma} onChange={(e) => setTurma(e.target.value)}>
-          <option value="5A">5 A</option>
-          <option value="6B">6 B</option>
-        </select>
         <button className="cadastrar" onClick={() => abrirModal()}>+ Cadastrar</button>
       </Filter>
       {modalAberto && (
         <Modal>
-          <h2>{alunoSelecionado ? "Editar Diagnóstico" : "Cadastrar Novo Diagnóstico"}</h2>
+          <h2>{diagnosticoSelecionado ? "Editar Diagnóstico" : "Cadastrar Novo Diagnóstico"}</h2>
           <Form>
             <label>Nome</label>
             <input
               type="text"
               placeholder="Nome"
-              value={alunoSelecionado ? alunoSelecionado.nome : novoAluno.nome}
-
+              value={diagnosticoSelecionado ? diagnosticoSelecionado.nome : novoDiagnostico.nome}
+              onChange={(e) => {
+                if (diagnosticoSelecionado) {
+                  setDiagnosticoSelecionado({ ...diagnosticoSelecionado, nome: e.target.value });
+                } else {
+                  setNovoDiagnostico({ ...novoDiagnostico, nome: e.target.value });
+                }
+              }}
             />
             <label>Desenvolvimento</label>
             <select
-              value={alunoSelecionado ? alunoSelecionado.desenvolvimento : novoAluno.desenvolvimento}
+              value={diagnosticoSelecionado ? diagnosticoSelecionado.status : novoDiagnostico.status}
               onChange={(e) => {
-                if (alunoSelecionado) {
-                  setAlunoSelecionado({ ...alunoSelecionado, desenvolvimento: e.target.value });
+                if (diagnosticoSelecionado) {
+                  setDiagnosticoSelecionado({ ...diagnosticoSelecionado, status: e.target.value });
                 } else {
-                  setNovoAluno({ ...novoAluno, desenvolvimento: e.target.value });
+                  setNovoDiagnostico({ ...novoDiagnostico, status: e.target.value });
                 }
               }}
             >
@@ -150,12 +179,12 @@ const Diagnostico = () => {
             <label>Comentário</label>
             <textarea
               placeholder="Comentário do progresso do aluno"
-              value={alunoSelecionado ? alunoSelecionado.comentario : novoAluno.comentario}
+              value={diagnosticoSelecionado ? diagnosticoSelecionado.descricao : novoDiagnostico.descricao}
               onChange={(e) => {
-                if (alunoSelecionado) {
-                  setAlunoSelecionado({ ...alunoSelecionado, comentario: e.target.value });
+                if (diagnosticoSelecionado) {
+                  setDiagnosticoSelecionado({ ...diagnosticoSelecionado, descricao: e.target.value });
                 } else {
-                  setNovoAluno({ ...novoAluno, comentario: e.target.value });
+                  setNovoDiagnostico({ ...novoDiagnostico, descricao: e.target.value });
                 }
               }}
             />
@@ -176,27 +205,27 @@ const Diagnostico = () => {
           </tr>
         </thead>
         <tbody>
-          {alunos
-            .filter((aluno) =>
-              aluno.nome.toLowerCase().includes(filtroNome.toLowerCase())
+          {diagnosticos
+            .filter((diagnostico) =>
+              diagnostico.aluno_nome ? diagnostico.aluno_nome.toLowerCase().includes(filtroNome.toLowerCase()) : false
             )
-            .map((aluno) => (
-              <tr key={aluno.matricula}>
-                <td>{aluno.matricula}</td>
-                <td>{aluno.nome}</td>
-                <td>{aluno.desenvolvimento}</td>
+            .map((diagnostico) => (
+              <tr key={diagnostico.id}>
+                <td>{diagnostico.matricula}</td>
+                <td>{diagnostico.aluno_nome}</td>
+                <td>{diagnostico.status}</td>
                 <td>
                   <ActionButton
                     className="editar"
-                    onClick={() => abrirModal(aluno)}
+                    onClick={() => abrirModal(diagnostico)}
                   >
-                    ✏️
+                    <FaEdit />
                   </ActionButton>
                   <ActionButton
                     className="deletar"
-                    onClick={() => handleDelete(aluno.matricula)}
+                    onClick={() => handleDelete(diagnostico.id)}
                   >
-                    🗑️
+                    <FaTrash />
                   </ActionButton>
                 </td>
               </tr>
