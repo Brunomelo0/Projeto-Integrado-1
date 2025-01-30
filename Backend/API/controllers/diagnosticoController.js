@@ -2,7 +2,11 @@ const db = require('../models/db');
 
 exports.getDiagnosticos = async (req, res) => {
   try {
-    const result = await db.query('SELECT * FROM Diagnostico');
+    const result = await db.query(`
+      SELECT d.id, d.descricao, d.status, d.aluno_id, a.nome AS aluno_nome, a.matricula, a.data_nascimento, a.contato, a.turma_id
+      FROM Diagnostico d
+      JOIN Aluno a ON d.aluno_id = a.id
+    `);
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -12,12 +16,18 @@ exports.getDiagnosticos = async (req, res) => {
 exports.getDiagnosticoById = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await db.query('SELECT * FROM Diagnostico WHERE id = $1', [id]);
+    const result = await db.query(`
+      SELECT d.id, d.descricao, d.status, d.aluno_id, a.nome AS aluno_nome, a.matricula, a.data_nascimento, a.contato, a.turma_id
+      FROM Diagnostico d
+      JOIN Aluno a ON d.aluno_id = a.id
+      WHERE d.id = $1
+    `, [id]);
     res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 exports.createDiagnostico = async (req, res) => {
   try {
     const { descricao, status, aluno_id } = req.body;

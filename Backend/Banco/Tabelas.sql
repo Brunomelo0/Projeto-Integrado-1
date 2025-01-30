@@ -58,3 +58,15 @@ CREATE TABLE Diagnostico (
     status VARCHAR(50) NOT NULL,
     aluno_id INT NOT NULL REFERENCES Aluno(ID)
 );
+
+CREATE TABLE Aluno_Turma (
+    aluno_id INT NOT NULL REFERENCES Aluno(ID),
+    turma_id INT NOT NULL REFERENCES Turma(ID),
+    PRIMARY KEY (aluno_id, turma_id)
+);
+
+CREATE TABLE Professor_Turma (
+    professor_id INT NOT NULL REFERENCES Professor(ID),
+    turma_id INT NOT NULL REFERENCES Turma(ID),
+    PRIMARY KEY (professor_id, turma_id)
+);

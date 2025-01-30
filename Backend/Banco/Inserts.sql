@@ -14,6 +14,9 @@ INSERT INTO Aluno (nome, data_nascimento, contato, matricula) VALUES
 ('Fernanda Lima', '2004-07-21', '21933333333', 'MAT002'),
 ('Mariana Silva', '2006-11-15', '31922222222', 'MAT003'),
 ('Rafael Santos', '2005-05-05', '11911111111', 'MAT004');
+('Rafael Santos', '2005-05-05', '11911111111', 'MAT004');
+('Rafael Santos', '2005-05-05', '11911111111', 'MAT004');
+('Rafael Santos', '2005-05-05', '11911111111', 'MAT004');
 
 
 INSERT INTO Turma (nome, periodo) VALUES

@@ -13,13 +13,16 @@ export const Header = styled.header`
 
 export const Filter = styled.div`
   display: flex;
+  align-items: center; /* Centraliza os elementos verticalmente */
   gap: 10px;
+  margin-bottom: 20px; /* Adiciona um espaço abaixo do filtro */
 
   select,
   input {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    
   }
 
   .cadastrar {
@@ -40,17 +43,20 @@ export const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+ 
+  
 
   th,
   td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
+ 
   }
 
   th {
-    background: #4caf50;
-    color: white;
+    background: #ddd;
+    color: black;
   }
 `;
 
@@ -59,17 +65,19 @@ export const ActionButton = styled.button`
   border: none;
   cursor: pointer;
   font-size: 16px;
+  color: black; /* Cor padrão dos ícones */
 
   &.editar {
-    color: #2196f3;
+    color: black; /* Cor padrão dos ícones de edição */
   }
 
   &.deletar {
-    color: #f44336;
+    margin-left: 10px; /* Adiciona um espaço entre os ícones */
+    color: black; /* Cor padrão dos ícones de deleção */
   }
 
   &:hover {
-    opacity: 0.8;
+    color: red; /* Cor ao passar o mouse */
   }
 `;
 
