@@ -56,8 +56,8 @@ CREATE TABLE Diagnostico (
     ID SERIAL PRIMARY KEY,
     descricao TEXT NOT NULL,
     status VARCHAR(50) NOT NULL,
+    semestre VARCHAR(10),
     aluno_id INT NOT NULL REFERENCES Aluno(ID)
-    COLUMN semestre VARCHAR(10);
 );
 
 CREATE TABLE Aluno_Turma (
