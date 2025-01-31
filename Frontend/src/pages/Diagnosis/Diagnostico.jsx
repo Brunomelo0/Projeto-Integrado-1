@@ -6,12 +6,18 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   ActionButton,
   Container,
-  Filter,
   Form,
   Modal,
   Table,
   ToastButton,
   ToastNoButton,
+  FilterContainer,
+  LeftGroup,
+  RightGroup,
+  Label,
+  Select,
+  SearchInput,
+  Button,
 } from "./styles";
 
 const Diagnostico = () => {
@@ -25,8 +31,8 @@ const Diagnostico = () => {
   const [novoDiagnostico, setNovoDiagnostico] = useState({
     descricao: "",
     status: "Não desenvolvido",
-    aluno_id: "",
-    semestre: "",
+    aluno_id: "", // Use aluno_id em vez de aluno_matricula
+    semestre: "", // Adicione o atributo semestre
   });
   const [alunosSemDiagnostico, setAlunosSemDiagnostico] = useState([]);
 
@@ -110,7 +116,7 @@ const Diagnostico = () => {
           descricao: diagnosticoSelecionado.descricao,
           status: diagnosticoSelecionado.status,
           aluno_id: diagnosticoSelecionado.aluno_id,
-          semestre: diagnosticoSelecionado.semestre,
+          semestre: diagnosticoSelecionado.semestre, // Adicione o atributo semestre
         });
         const novosDiagnosticos = diagnosticos.map((d) =>
           d.id === diagnosticoSelecionado.id ? response.data : d
@@ -128,8 +134,8 @@ const Diagnostico = () => {
     setNovoDiagnostico({
       descricao: "",
       status: "Não desenvolvido",
-      aluno_id: "",
-      semestre: "",
+      aluno_id: "", // Use aluno_id em vez de aluno_matricula
+      semestre: "", // Adicione o atributo semestre
     });
     setModalCadastroAberto(true);
   };
@@ -145,8 +151,8 @@ const Diagnostico = () => {
       const response = await axios.post('http://localhost:3000/api/diagnosticos', {
         descricao: novoDiagnostico.descricao,
         status: novoDiagnostico.status,
-        aluno_id: novoDiagnostico.aluno_id,
-        semestre: novoDiagnostico.semestre,
+        aluno_id: novoDiagnostico.aluno_id, // Certifique-se de que está enviando aluno_id
+        semestre: novoDiagnostico.semestre, // Adicione o atributo semestre
       });
       setDiagnosticos([...diagnosticos, response.data]);
       setModalCadastroAberto(false);
@@ -157,25 +163,30 @@ const Diagnostico = () => {
 
   return (
     <Container>
-      <Filter>
-        <label>Turma:</label>
-        <select value={turma} onChange={(e) => setTurma(e.target.value)}>
-          <option value="">Selecione uma turma</option>
-          {turmas.map((turma) => (
-            <option key={turma.id} value={turma.nome}>
-              {turma.nome}
-            </option>
-          ))}
-        </select>
-        <label>Busca</label>
-        <input
-          type="text"
-          placeholder="Filtrar por nome"
-          value={filtroNome}
-          onChange={(e) => setFiltroNome(e.target.value)}
-        />
-        <button className="cadastrar" onClick={cadastrarDiagModal}>+ Cadastrar</button>
-      </Filter>
+      <FilterContainer>
+        <LeftGroup>
+          <Label>Turma:</Label>
+          <Select value={turma} onChange={(e) => setTurma(e.target.value)}>
+            <option value="">Selecione uma turma</option>
+            {turmas.map((turma) => (
+              <option key={turma.id} value={turma.nome}>
+                {turma.nome}
+              </option>
+            ))}
+          </Select>
+        </LeftGroup>
+        <RightGroup>
+          <Label>Busca:</Label>
+          <SearchInput
+            type="text"
+            placeholder="Filtrar por nome"
+            value={filtroNome}
+            onChange={(e) => setFiltroNome(e.target.value)}
+          />
+          <Button className="cadastrar" onClick={cadastrarDiagModal}>+ Cadastrar</Button>
+        </RightGroup>
+      </FilterContainer>
+
       {modalAberto && (
         <Modal>
           <h2>Editar Diagnóstico</h2>
@@ -189,18 +200,18 @@ const Diagnostico = () => {
               <option value="Em Desenvolvimento">Em Desenvolvimento</option>
               <option value="Desenvolvido">Desenvolvido</option>
             </select>
+            <label>Comentário</label>
+            <textarea
+              placeholder="Comentário do progresso do aluno"
+              value={diagnosticoSelecionado.descricao}
+              onChange={(e) => setDiagnosticoSelecionado({ ...diagnosticoSelecionado, descricao: e.target.value })}
+            />
             <label>Semestre</label>
             <input
               type="text"
               placeholder="Semestre (ex: 2023-1)"
               value={diagnosticoSelecionado.semestre}
               onChange={(e) => setDiagnosticoSelecionado({ ...diagnosticoSelecionado, semestre: e.target.value })}
-            />
-            <label>Comentário</label>
-            <textarea
-              placeholder="Comentário do progresso do aluno"
-              value={diagnosticoSelecionado.descricao}
-              onChange={(e) => setDiagnosticoSelecionado({ ...diagnosticoSelecionado, descricao: e.target.value })}
             />
             <div className="modal-buttons">
               <button type="button" onClick={fecharModal}>Cancelar</button>
@@ -234,12 +245,6 @@ const Diagnostico = () => {
               <option value="Em Desenvolvimento">Em Desenvolvimento</option>
               <option value="Desenvolvido">Desenvolvido</option>
             </select>
-            <input
-              type="text"
-              placeholder="Semestre (ex: 2023-1)"
-              value={novoDiagnostico.semestre}
-              onChange={(e) => setNovoDiagnostico({ ...novoDiagnostico, semestre: e.target.value })}
-            />
             <label>Comentário</label>
             <textarea
               placeholder="Comentário do progresso do aluno"
@@ -247,6 +252,12 @@ const Diagnostico = () => {
               onChange={(e) => setNovoDiagnostico({ ...novoDiagnostico, descricao: e.target.value })}
             />
             <label>Semestre</label>
+            <input
+              type="text"
+              placeholder="Semestre (ex: 2023-1)"
+              value={novoDiagnostico.semestre}
+              onChange={(e) => setNovoDiagnostico({ ...novoDiagnostico, semestre: e.target.value })}
+            />
             <div className="modal-buttons">
               <button type="button" onClick={fecharModal}>Cancelar</button>
               <button type="button" onClick={handleSalvar}>Salvar</button>
