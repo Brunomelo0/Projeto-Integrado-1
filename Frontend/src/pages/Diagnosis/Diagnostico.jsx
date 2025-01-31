@@ -5,19 +5,19 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   ActionButton,
+  Button,
   Container,
+  FilterContainer,
   Form,
+  Label,
+  LeftGroup,
   Modal,
+  RightGroup,
+  SearchInput,
+  Select,
   Table,
   ToastButton,
   ToastNoButton,
-  FilterContainer,
-  LeftGroup,
-  RightGroup,
-  Label,
-  Select,
-  SearchInput,
-  Button,
 } from "./styles";
 
 const Diagnostico = () => {
@@ -35,6 +35,7 @@ const Diagnostico = () => {
     semestre: "", // Adicione o atributo semestre
   });
   const [alunosSemDiagnostico, setAlunosSemDiagnostico] = useState([]);
+  const [alunosFiltrados, setAlunosFiltrados] = useState([]); // Estado para armazenar os alunos filtrados
 
   useEffect(() => {
     const fetchDiagnosticos = async () => {
@@ -59,6 +60,46 @@ const Diagnostico = () => {
     };
     fetchTurmas();
   }, []);
+
+  useEffect(() => {
+    if (turma) {
+      const fetchDiagnosticosByTurma = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3000/api/diagnosticos/turma/${turma}`);
+          setDiagnosticos(response.data);
+        } catch (error) {
+          console.error('Erro ao buscar diagnósticos por turma:', error);
+        }
+      };
+      fetchDiagnosticosByTurma();
+    } else {
+      const fetchDiagnosticos = async () => {
+        try {
+          const response = await axios.get('http://localhost:3000/api/diagnosticos');
+          setDiagnosticos(response.data);
+        } catch (error) {
+          console.error('Erro ao buscar diagnósticos:', error);
+        }
+      };
+      fetchDiagnosticos();
+    }
+  }, [turma]);
+
+  useEffect(() => {
+    if (turma) {
+      const fetchAlunosByTurma = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3000/api/alunos/turma/${turma}`);
+          setAlunosFiltrados(response.data);
+        } catch (error) {
+          console.error('Erro ao buscar alunos por turma:', error);
+        }
+      };
+      fetchAlunosByTurma();
+    } else {
+      setAlunosFiltrados([]);
+    }
+  }, [turma]);
 
   const fetchAlunosSemDiagnostico = async () => {
     try {
@@ -169,14 +210,14 @@ const Diagnostico = () => {
           <Select value={turma} onChange={(e) => setTurma(e.target.value)}>
             <option value="">Selecione uma turma</option>
             {turmas.map((turma) => (
-              <option key={turma.id} value={turma.nome}>
+              <option key={turma.id} value={turma.id}>
                 {turma.nome}
               </option>
             ))}
           </Select>
         </LeftGroup>
         <RightGroup>
-          <Label>Busca:</Label>
+          <Label>Busca</Label>
           <SearchInput
             type="text"
             placeholder="Filtrar por nome"

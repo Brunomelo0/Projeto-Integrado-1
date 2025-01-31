@@ -13,6 +13,22 @@ exports.getDiagnosticos = async (req, res) => {
   }
 };
 
+exports.getDiagnosticosByTurma = async (req, res) => {
+  try {
+    const { turma_id } = req.params;
+    const result = await db.query(`
+      SELECT d.id, d.descricao, d.status, d.aluno_id, d.semestre, a.nome AS aluno_nome, a.matricula, a.data_nascimento, a.contato
+      FROM Diagnostico d
+      JOIN Aluno a ON d.aluno_id = a.id
+      JOIN Aluno_Turma at ON a.id = at.aluno_id
+      WHERE at.turma_id = $1
+    `, [turma_id]);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 exports.getDiagnosticoById = async (req, res) => {
   try {
     const { id } = req.params;
