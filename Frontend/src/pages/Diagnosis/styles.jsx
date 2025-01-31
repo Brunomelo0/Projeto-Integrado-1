@@ -3,26 +3,34 @@ import styled from "styled-components";
 export const Container = styled.div`
   padding: 20px;
   background: #f9f9f9;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 
 export const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 10px;
+  }
 `;
 
 export const Filter = styled.div`
   display: flex;
-  align-items: center; /* Centraliza os elementos verticalmente */
+  align-items: center;
   gap: 10px;
-  margin-bottom: 20px; /* Adiciona um espaço abaixo do filtro */
+  margin-bottom: 20px;
 
   select,
   input {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    
   }
 
   .cadastrar {
@@ -37,26 +45,45 @@ export const Filter = styled.div`
       background: #45a049;
     }
   }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    select,
+    input {
+      width: 100%;
+    }
+
+    .cadastrar {
+      width: 100%;
+      padding: 10px;
+    }
+  }
 `;
 
 export const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
- 
-  
 
   th,
   td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
- 
   }
 
   th {
     background: #ddd;
     color: black;
+  }
+
+  @media (max-width: 768px) {
+    th,
+    td {
+      padding: 6px;
+    }
   }
 `;
 
@@ -78,6 +105,10 @@ export const ActionButton = styled.button`
 
   &:hover {
     color: red; /* Cor ao passar o mouse */
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
   }
 `;
 
@@ -111,11 +142,23 @@ export const Form = styled.form`
       background: #45a049;
     }
   }
+
+  @media (max-width: 768px) {
+    input,
+    select {
+      width: 100%;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+    }
+  }
 `;
 
 export const Modal = styled.div`
   position: fixed;
-  width: 66.67%; 
+  width: 66.67%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -124,10 +167,11 @@ export const Modal = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   z-index: 1000;
-  
+
   select {
     width: auto;
   }
+
   textarea {
     width: 100%;
     padding: 10px;
@@ -135,9 +179,10 @@ export const Modal = styled.div`
     border-radius: 5px;
     resize: vertical;
   }
+
   h2 {
     margin-bottom: 20px;
-  }  
+  }
 
   .button-group {
     display: flex;
@@ -172,6 +217,21 @@ export const Modal = styled.div`
     padding: 5px 10px;
     font-size: 14px;
   }
+
+  @media (max-width: 768px) {
+    width: 90%;
+    padding: 15px;
+
+    .button-group {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+    }
+  }
 `;
 
 export const ToastButton = styled.button`
@@ -186,6 +246,11 @@ export const ToastButton = styled.button`
   &:hover {
     background: #45a049;
   }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    margin: 5px 0;
+  }
 `;
 
 export const ToastNoButton = styled.button`
@@ -199,5 +264,10 @@ export const ToastNoButton = styled.button`
 
   &:hover {
     background: #d32f2f;
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    margin: 5px 0;
   }
 `;

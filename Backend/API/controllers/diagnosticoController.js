@@ -3,7 +3,7 @@ const db = require('../models/db');
 exports.getDiagnosticos = async (req, res) => {
   try {
     const result = await db.query(`
-      SELECT d.id, d.descricao, d.status, d.aluno_id, a.nome AS aluno_nome, a.matricula, a.data_nascimento, a.contato, a.turma_id
+      SELECT d.id, d.descricao, d.status, d.aluno_id, d.semestre, a.nome AS aluno_nome, a.matricula, a.data_nascimento, a.contato, a.turma_id
       FROM Diagnostico d
       JOIN Aluno a ON d.aluno_id = a.id
     `);
@@ -17,7 +17,7 @@ exports.getDiagnosticoById = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await db.query(`
-      SELECT d.id, d.descricao, d.status, d.aluno_id, a.nome AS aluno_nome, a.matricula, a.data_nascimento, a.contato, a.turma_id
+      SELECT d.id, d.descricao, d.status, d.aluno_id, d.semestre, a.nome AS aluno_nome, a.matricula, a.data_nascimento, a.contato, a.turma_id
       FROM Diagnostico d
       JOIN Aluno a ON d.aluno_id = a.id
       WHERE d.id = $1
@@ -30,10 +30,10 @@ exports.getDiagnosticoById = async (req, res) => {
 
 exports.createDiagnostico = async (req, res) => {
   try {
-    const { descricao, status, aluno_id } = req.body;
+    const { descricao, status, aluno_id, semestre } = req.body;
     const result = await db.query(
-      'INSERT INTO Diagnostico (descricao, status, aluno_id) VALUES ($1, $2, $3) RETURNING *',
-      [descricao, status, aluno_id]
+      'INSERT INTO Diagnostico (descricao, status, aluno_id, semestre) VALUES ($1, $2, $3, $4) RETURNING *',
+      [descricao, status, aluno_id, semestre]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -44,10 +44,10 @@ exports.createDiagnostico = async (req, res) => {
 exports.updateDiagnostico = async (req, res) => {
   try {
     const { id } = req.params;
-    const { descricao, status, aluno_id } = req.body;
+    const { descricao, status, aluno_id, semestre } = req.body;
     const result = await db.query(
-      'UPDATE Diagnostico SET descricao = $1, status = $2, aluno_id = $3 WHERE id = $4 RETURNING *',
-      [descricao, status, aluno_id, id]
+      'UPDATE Diagnostico SET descricao = $1, status = $2, aluno_id = $3, semestre = $4 WHERE id = $5 RETURNING *',
+      [descricao, status, aluno_id, semestre, id]
     );
     res.json(result.rows[0]);
   } catch (err) {

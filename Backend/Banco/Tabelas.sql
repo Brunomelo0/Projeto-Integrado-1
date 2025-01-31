@@ -57,6 +57,7 @@ CREATE TABLE Diagnostico (
     descricao TEXT NOT NULL,
     status VARCHAR(50) NOT NULL,
     aluno_id INT NOT NULL REFERENCES Aluno(ID)
+    
 );
 
 CREATE TABLE Aluno_Turma (
