@@ -7,6 +7,12 @@ export const NavbarContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.primary.main}; /* Cor de fundo */
   padding: 10px 20px;
   font-family: 'Merriweather Sans', sans-serif; /* Aplica a fonte Merriweather Sans */
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
 `;
 
 export const Menu = styled.div`
@@ -24,6 +30,18 @@ export const Menu = styled.div`
 
     &.active {
       color: #7DEC6F; /* Apenas muda a cor do texto para a rota ativa */
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    a {
+      width: 100%;
+      text-align: left;
+      padding: 10px 0;
+      border-bottom: 1px solid ${({ theme }) => theme.colors.primary.light};
     }
   }
 `;
@@ -53,5 +71,20 @@ export const UserContainer = styled.div`
     width: 40px;
     height: 40px;
     border-radius: 50%;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 10px;
+
+    .info {
+      margin-right: 0;
+    }
+
+    img {
+      width: 30px;
+      height: 30px;
+    }
   }
 `;
