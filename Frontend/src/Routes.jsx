@@ -4,17 +4,18 @@ import Attendance from './pages/Attendance';
 import Diario from './pages/Daily';
 import Diagnostico from './pages/Diagnosis/Diagnostico';
 import Home from './pages/Home';
+import Login from './pages/Login';
 import NewClass from './pages/NewClass';
 import NewRollCall from './pages/NewRollCall';
 import NewStudent from './pages/NewStudent';
 import RollCall from './pages/RollCall';
 import Students from './pages/Students';
 
-
 export default function Routes() {
   return (
     <RoutesDOM>
       <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/new" element={<NewStudent />} />
       <Route path="/alunos" element={<Students />} />
       <Route path="/frequencia" element={<Attendance />} />
