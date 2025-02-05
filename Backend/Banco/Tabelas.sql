@@ -32,6 +32,7 @@ CREATE TABLE Diario (
     ID SERIAL PRIMARY KEY,
     titulo VARCHAR(100) NOT NULL,
     descricao TEXT,
+    data DATE,
     professor_id INT NOT NULL REFERENCES Professor(ID)
 );
 

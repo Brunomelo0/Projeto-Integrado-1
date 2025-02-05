@@ -3,18 +3,12 @@ import { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FilterBar from "../../components/FilterBar";
 import {
   ActionButton,
-  Button,
   Container,
-  FilterContainer,
   Form,
-  Label,
-  LeftGroup,
   Modal,
-  RightGroup,
-  SearchInput,
-  Select,
   Table,
   ToastButton,
   ToastNoButton,
@@ -23,10 +17,16 @@ import {
 const Diario = () => {
   const [aulas, setAulas] = useState([]);
   const [turmas, setTurmas] = useState([]);
-  const [turma, setTurma] = useState("5A");
+  const [turma, setTurma] = useState("");
   const [filtroNome, setFiltroNome] = useState("");
   const [modalAberto, setModalAberto] = useState(false);
-  const [novaAula, setNovaAula] = useState({ titulo: "", descricao: "", professor_id: 1 });
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+  };
+
+  const [novaAula, setNovaAula] = useState({ titulo: "", descricao: "", professor_id: 1, data: getCurrentDate() });
 
   useEffect(() => {
     const fetchAulas = async () => {
@@ -105,13 +105,13 @@ const Diario = () => {
   };
 
   const cadastrarAulaModal = () => {
-    setNovaAula({ titulo: "", descricao: "", professor_id: 1 });
+    setNovaAula({ titulo: "", descricao: "", professor_id: 1, data: getCurrentDate() });
     setModalAberto(true);
   };
 
   const fecharModal = () => {
     setModalAberto(false);
-    setNovaAula({ titulo: "", descricao: "", professor_id: 1 });
+    setNovaAula({ titulo: "", descricao: "", professor_id: 1, data: getCurrentDate() });
   };
 
   const handleSalvar = async () => {
@@ -126,29 +126,15 @@ const Diario = () => {
 
   return (
     <Container>
-      <FilterContainer>
-        <LeftGroup>
-          <Label>Turma:</Label>
-          <Select value={turma} onChange={(e) => setTurma(e.target.value)}>
-            <option value="">Selecione uma turma</option>
-            {turmas.map((turma) => (
-              <option key={turma.id} value={turma.id}>
-                {turma.nome}
-              </option>
-            ))}
-          </Select>
-        </LeftGroup>
-        <RightGroup>
-          <Label>Busca</Label>
-          <SearchInput
-            type="text"
-            placeholder="Filtrar por título"
-            value={filtroNome}
-            onChange={(e) => setFiltroNome(e.target.value)}
-          />
-          <Button className="cadastrar" onClick={cadastrarAulaModal}>+ Cadastrar</Button>
-        </RightGroup>
-      </FilterContainer>
+      <FilterBar
+        showDateFilter={false}
+        showCreateButton={true}
+        selectedTurma={turma}
+        setSelectedTurma={setTurma}
+        searchTerm={filtroNome}
+        setSearchTerm={setFiltroNome}
+        cadastrarAulaModal={cadastrarAulaModal} // Passando a função para o FilterBar
+      />
 
       {modalAberto && (
         <Modal>
@@ -167,6 +153,12 @@ const Diario = () => {
               value={novaAula.descricao}
               onChange={(e) => setNovaAula({ ...novaAula, descricao: e.target.value })}
             />
+            <label>Data</label>
+            <input
+              type="date"
+              value={novaAula.data}
+              onChange={(e) => setNovaAula({ ...novaAula, data: e.target.value })}
+            />
             <div className="modal-buttons">
               <button type="button" onClick={fecharModal}>Cancelar</button>
               <button type="button" onClick={novaAula.id ? confirmEdit : handleSalvar}>
@@ -181,6 +173,7 @@ const Diario = () => {
           <tr>
             <th>Título</th>
             <th>Descrição</th>
+            <th>Data</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -193,6 +186,7 @@ const Diario = () => {
               <tr key={aula.id}>
                 <td>{aula.titulo}</td>
                 <td>{aula.descricao}</td>
+                <td>{aula.data}</td>
                 <td>
                   <ActionButton
                     className="editar"

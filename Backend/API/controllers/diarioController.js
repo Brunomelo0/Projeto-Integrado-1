@@ -21,10 +21,10 @@ exports.getDiarioById = async (req, res) => {
 
 exports.createDiario = async (req, res) => {
   try {
-    const { titulo, descricao, professor_id } = req.body;
+    const { titulo, descricao, professor_id, data } = req.body;
     const result = await db.query(
-      'INSERT INTO Diario (titulo, descricao, professor_id) VALUES ($1, $2, $3) RETURNING *',
-      [titulo, descricao, professor_id]
+      'INSERT INTO Diario (titulo, descricao, professor_id, data) VALUES ($1, $2, $3, $4) RETURNING *',
+      [titulo, descricao, professor_id, data]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -35,10 +35,10 @@ exports.createDiario = async (req, res) => {
 exports.updateDiario = async (req, res) => {
   try {
     const { id } = req.params;
-    const { titulo, descricao, professor_id } = req.body;
+    const { titulo, descricao, professor_id, data } = req.body;
     const result = await db.query(
-      'UPDATE Diario SET titulo = $1, descricao = $2, professor_id = $3 WHERE id = $4 RETURNING *',
-      [titulo, descricao, professor_id, id]
+      'UPDATE Diario SET titulo = $1, descricao = $2, professor_id = $3, data = $4 WHERE id = $5 RETURNING *',
+      [titulo, descricao, professor_id, data, id]
     );
     res.json(result.rows[0]);
   } catch (err) {
