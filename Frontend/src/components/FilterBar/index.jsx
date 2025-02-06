@@ -1,26 +1,26 @@
 import React from "react";
 import {
-  Button,
-  DateInput,
   FilterContainer,
-  Label,
   LeftGroup,
   RightGroup,
-  SearchInput,
+  Label,
   Select,
+  SearchInput,
+  Button,
+  DateInput,
 } from "./styles";
 
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
 
-export default function FilterBar({ showDateFilter, showCreateButton, showCreateRollCall, selectedTurma, setSelectedTurma, searchTerm, setSearchTerm, cadastrarAulaModal }) {
+export default function FilterBar({ showDateFilter, showCreateButton, selectedTurma, setSelectedTurma, searchTerm, setSearchTerm, cadastrarAulaModal }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const response = await axios({
-          url: "http://localhost:3000/api/turmas",
+          url: "http://localhost:3000/api/turmas", 
           method: "GET",
         });
         setData(response.data);
@@ -49,20 +49,15 @@ export default function FilterBar({ showDateFilter, showCreateButton, showCreate
 
       <RightGroup>
         <Label>Buscar:</Label>
-        <SearchInput
-          type="text"
-          placeholder="Digite o nome"
+        <SearchInput 
+          type="text" 
+          placeholder="Digite o nome" 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         {showCreateButton && (
           <>
             <Button onClick={cadastrarAulaModal}>+ Cadastrar</Button>
-          </>
-        )}
-        {showCreateRollCall && (
-          <>
-            <Button href="/professor/fazerchamada">+ Chamada</Button>
           </>
         )}
       </RightGroup>

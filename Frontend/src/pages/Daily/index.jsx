@@ -1,4 +1,5 @@
 import axios from "axios";
+import { format } from 'date-fns';
 import { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { ToastContainer, toast } from "react-toastify";
@@ -26,7 +27,7 @@ const Diario = () => {
     return today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
   };
 
-  const [novaAula, setNovaAula] = useState({ titulo: "", descricao: "", professor_id: 1, data: getCurrentDate() });
+  const [novaAula, setNovaAula] = useState({ titulo: "", descricao: "", professor_id: 1, data: getCurrentDate(), turma_id: "" });
 
   useEffect(() => {
     const fetchAulas = async () => {
@@ -105,13 +106,13 @@ const Diario = () => {
   };
 
   const cadastrarAulaModal = () => {
-    setNovaAula({ titulo: "", descricao: "", professor_id: 1, data: getCurrentDate() });
+    setNovaAula({ titulo: "", descricao: "", professor_id: 1, data: getCurrentDate(), turma_id: "" });
     setModalAberto(true);
   };
 
   const fecharModal = () => {
     setModalAberto(false);
-    setNovaAula({ titulo: "", descricao: "", professor_id: 1, data: getCurrentDate() });
+    setNovaAula({ titulo: "", descricao: "", professor_id: 1, data: getCurrentDate(), turma_id: "" });
   };
 
   const handleSalvar = async () => {
@@ -159,6 +160,18 @@ const Diario = () => {
               value={novaAula.data}
               onChange={(e) => setNovaAula({ ...novaAula, data: e.target.value })}
             />
+            <label>Turma</label>
+            <select
+              value={novaAula.turma_id}
+              onChange={(e) => setNovaAula({ ...novaAula, turma_id: e.target.value })}
+            >
+              <option value="">Selecione uma turma</option>
+              {turmas.map((turma) => (
+                <option key={turma.id} value={turma.id}>
+                  {turma.nome}
+                </option>
+              ))}
+            </select>
             <div className="modal-buttons">
               <button type="button" onClick={fecharModal}>Cancelar</button>
               <button type="button" onClick={novaAula.id ? confirmEdit : handleSalvar}>
@@ -174,6 +187,7 @@ const Diario = () => {
             <th>Título</th>
             <th>Descrição</th>
             <th>Data</th>
+            <th>Turma</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -186,7 +200,8 @@ const Diario = () => {
               <tr key={aula.id}>
                 <td>{aula.titulo}</td>
                 <td>{aula.descricao}</td>
-                <td>{aula.data}</td>
+                <td>{format(new Date(aula.data), 'dd/MM/yyyy')}</td>
+                <td>{turmas.find(t => t.id === aula.turma_id)?.nome || "N/A"}</td>
                 <td>
                   <ActionButton
                     className="editar"

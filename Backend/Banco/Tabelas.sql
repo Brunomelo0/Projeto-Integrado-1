@@ -34,6 +34,7 @@ CREATE TABLE Diario (
     descricao TEXT,
     data DATE,
     professor_id INT NOT NULL REFERENCES Professor(ID)
+    
 );
 
 CREATE TABLE Frequencia (
@@ -51,6 +52,7 @@ CREATE TABLE Relatorio (
     data DATE NOT NULL,
     descricao TEXT,
     professor_id INT NOT NULL REFERENCES Professor(ID)
+     turma_id INT NOT NULL REFERENCES Turma(ID)
 );
 
 CREATE TABLE Diagnostico (
