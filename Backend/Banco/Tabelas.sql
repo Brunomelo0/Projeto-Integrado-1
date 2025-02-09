@@ -1,4 +1,13 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 CREATE TABLE Diretor (
+    ID SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    contato VARCHAR(15),
+    senha VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Professor (
     ID SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     contato VARCHAR(15),
@@ -9,14 +18,7 @@ CREATE TABLE Turma (
     ID SERIAL PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,
     periodo VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE Professor (
-    ID SERIAL PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    contato VARCHAR(15),
-    senha VARCHAR(100) NOT NULL,
-    turma_id INT REFERENCES Turma(ID)
+    professor_id INT REFERENCES Professor(ID)
 );
 
 CREATE TABLE Aluno (

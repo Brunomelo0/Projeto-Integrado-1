@@ -25,6 +25,7 @@ router.put('/diretores/:id', diretorController.updateDiretor);
 router.delete('/diretores/:id', diretorController.deleteDiretor);
 
 // Rotas para Professor
+router.post('/loginProfessor', professorController.loginProfessor);
 router.get('/professores', professorController.getProfessores);
 router.get('/professores/:id', professorController.getProfessorById);
 router.post('/professores', professorController.createProfessor);
