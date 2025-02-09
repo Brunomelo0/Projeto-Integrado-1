@@ -17,7 +17,7 @@ CREATE TABLE Professor (
 CREATE TABLE Turma (
     ID SERIAL PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,
-    periodo VARCHAR(50) NOT NULL
+    periodo VARCHAR(50) NOT NULL,
     professor_id INT REFERENCES Professor(ID)
 );
 
