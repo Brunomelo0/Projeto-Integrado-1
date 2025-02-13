@@ -53,7 +53,7 @@ CREATE TABLE Relatorio (
     arquivo BYTEA,
     data DATE NOT NULL,
     descricao TEXT,
-    professor_id INT NOT NULL REFERENCES Professor(ID)
+    professor_id INT NOT NULL REFERENCES Professor(ID),
      turma_id INT NOT NULL REFERENCES Turma(ID)
 );
 
