@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import FilterBar from "../../components/FilterBar";
+import FilterBarPageAlunos from "../../components/FilterBarPageAlunos";
 import PageHeader from "../../components/PageHeader";
 import Table from "../../components/Table";
 import { Container, Content } from './styles';
@@ -77,7 +77,7 @@ export default function Student() {
     <Container>
       <PageHeader title="Alunos" />
       <Content>
-        <FilterBar
+        <FilterBarPageAlunos
           showDateFilter={false}
           showCreateButton
           selectedTurma={selectedTurma}
