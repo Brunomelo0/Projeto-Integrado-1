@@ -1,76 +1,78 @@
-import PropTypes from "prop-types";
-
-import { Form, ButtonContainer, Container } from "./styles";
-
-import FormGroup from "../FormGroup";
-import Input from "../Input";
-import Select from "../Select";
-import Button from "../Button";
-import { useState, useEffect } from "react";
-
 import axios from "axios";
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+import { ButtonContainer, Form, FormGroup, Input, Label, Select } from "../../pages/NewStudent/styles";
 
 export default function StudentForm({ buttonLabel, onSubmit }) {
-  const [name, setName] = useState();
-  const [matricula, setMatricula] = useState();
-  const [contato, setContato] = useState();
-  const [dataNascimento, setDataNascimento] = useState();
-  const [turma, setTurma] = useState();
-
+  const [nome, setNome] = useState("");
+  const [matricula, setMatricula] = useState("");
+  const [contato, setContato] = useState("");
+  const [dataNascimento, setDataNascimento] = useState("");
+  const [turma, setTurma] = useState("");
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios({
-          url: "http://localhost:3000/api/turmas", 
-          method: "GET",
-        });
+        const response = await axios.get("http://localhost:3000/api/turmas");
         setData(response.data);
       } catch (error) {
         console.log(error);
-        
       }
     };
     getData();
-  }, [])
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(nome, matricula, contato, dataNascimento, turma);
+    window.location.href = "/";
+  };
 
   return (
-    <Container>
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <FormGroup>
-        <Input placeholder="Nome" value={name} onChange={(event) => setName(event.target.value)}/>
+        <Label>Nome</Label>
+        <Input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required />
       </FormGroup>
 
       <FormGroup>
-        <Input placeholder="Matrícula" value={matricula} onChange={(event) => setMatricula(event.target.value)}/>
+        <Label>Matrícula</Label>
+        <Input type="text" value={matricula} onChange={(e) => setMatricula(e.target.value)} required />
       </FormGroup>
 
       <FormGroup>
-        <Input placeholder="Telefone do responsável" value={contato} onChange={(event) => setContato(event.target.value)}/>
+        <Label>Telefone do responsável</Label>
+        <Input type="text" value={contato} onChange={(e) => setContato(e.target.value)} />
       </FormGroup>
 
       <FormGroup>
-        <Input placeholder="Data de nascimento" value={dataNascimento} onChange={(event) => setDataNascimento(event.target.value)}/>
+        <Label>Data de nascimento</Label>
+        <Input type="date" value={dataNascimento} onChange={(e) => setDataNascimento(e.target.value)} required />
       </FormGroup>
 
       <FormGroup>
-        <Select value={turma} onChange={(event) => setTurma(event.target.value)}>
+        <Label>Turma</Label>
+        <Select value={turma} onChange={(e) => setTurma(e.target.value)} required>
           <option value="">Selecione uma turma</option>
-          {data.map((turma, index) => <option key={index} value={turma.id}>{turma.nome}</option>)}
+          {data.map((turmaItem, index) => (
+            <option key={index} value={turmaItem.id}>
+              {turmaItem.nome}
+            </option>
+          ))}
         </Select>
       </FormGroup>
 
       <ButtonContainer>
-        <Button type='button' onClick={() => onSubmit(name, matricula, contato, dataNascimento, turma)}>
-          { buttonLabel }
-        </Button>
+        <button type="submit" className="save-button">
+          {buttonLabel}
+        </button>
       </ButtonContainer>
     </Form>
-    </Container>
   );
 }
 
 StudentForm.propTypes = {
   buttonLabel: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
