@@ -24,46 +24,6 @@ export const Content = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 16px;
-
-  label {
-    align-self: flex-start;
-    margin-bottom: 4px;
-    font-weight: 500;
-  }
-
-  input, select {
-    width: 100%;
-    padding: 12px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    margin-bottom: 16px;
-  }
-
-  .button-group {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-
-    button {
-      padding: 12px 24px;
-      border-radius: 4px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .cancel-button {
-      background-color: #e74c3c;
-      color: white;
-      &:hover { background-color: #c0392b; }
-    }
-
-    .save-button {
-      background-color: #2ecc71;
-      color: white;
-      &:hover { background-color: #27ae60; }
-    }
-  }
 `;
 
 export const Form = styled.form`
@@ -105,18 +65,18 @@ export const ButtonContainer = styled.div`
     border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s ease;
-  }
-
-  .cancel-button {
-    background-color: #e74c3c;
-    color: white;
-    &:hover { background-color: #c0392b; }
+    border: none;
   }
 
   .save-button {
     background-color: #2ecc71;
     color: white;
     &:hover { background-color: #27ae60; }
+  }
+
+  .back-button {
+    background-color: #db3434;
+    color: white;
+    &:hover { background-color: #b92e29; }
   }
 `;

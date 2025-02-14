@@ -4,9 +4,9 @@ INSERT INTO Diretor (nome, contato, senha) VALUES
 
 
 INSERT INTO Professor (nome, contato, senha) VALUES
-('Carlos Mendes', '11955555555', 'senha789'),
-('Ana Souza', '31977777777', 'senha101'),
-('Pedro Costa', '21966666666', 'senha202');
+  ('Professor A', '123456789', crypt('senha123', gen_salt('bf'))),
+  ('Professor B', '987654321', crypt('senha456', gen_salt('bf'))),
+  ('Professor C', '555444333', crypt('senha789', gen_salt('bf')));
 
 
 INSERT INTO Aluno (nome, data_nascimento, contato, matricula) VALUES
@@ -31,6 +31,7 @@ INSERT INTO Aluno (nome, data_nascimento, contato, matricula) VALUES
 ('Isabela Santos', '2006-10-13', '31919191919', 'MAT019'),
 ('Renato Carvalho', '2005-03-17', '11920202020', 'MAT020');
 
+--__________________NAO FUNCIONA PRA BAIXO____________________--
 
 INSERT INTO Turma (nome, periodo) VALUES
 ('Turma A', 'Manhã'),

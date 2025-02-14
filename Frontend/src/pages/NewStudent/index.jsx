@@ -21,8 +21,9 @@ export default function NewStudent() {
     <Container>
       <PageHeader title="Novo estudante" />
       <Content>
-        <StudentForm onSubmit={handleSubmit} buttonLabel="Cadastrar" />
+        <StudentForm onSubmit={handleSubmit} buttonLabel="Cadastrar" />        
       </Content>
     </Container>
   );
+
 }

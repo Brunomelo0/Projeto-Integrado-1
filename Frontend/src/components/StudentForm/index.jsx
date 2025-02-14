@@ -64,6 +64,7 @@ export default function StudentForm({ buttonLabel, onSubmit }) {
       </FormGroup>
 
       <ButtonContainer>
+        <button className="back-button" onClick={() => window.location.href = "/"}>Cancelar</button>
         <button type="submit" className="save-button">
           {buttonLabel}
         </button>
