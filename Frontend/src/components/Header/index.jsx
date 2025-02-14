@@ -29,6 +29,9 @@ export default function Header() {
         <Link to="/relatorios" className={location.pathname === "/relatorios" ? "active" : ""}>
           Relatórios
         </Link>
+        <Link to="/professores" className={location.pathname === "/professores" ? "active" : ""}>
+          Professores
+        </Link>
       </Menu>
       <UserContainer>
         <div className="info">

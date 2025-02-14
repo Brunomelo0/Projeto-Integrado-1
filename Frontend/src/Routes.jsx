@@ -8,7 +8,7 @@ import RollCall from './pages/RollCall';
 import NewRollCall from './pages/NewRollCall';
 import NewStudent from './pages/NewStudent';
 import Students from './pages/Students';
-
+import Professores from "./pages/Professores/Professores";
 
 export default function Routes() {
   return (
@@ -21,6 +21,7 @@ export default function Routes() {
       <Route path="/professor/frequencia" element={<RollCall />} />
       <Route path="/professor/fazerchamada" element={<NewRollCall />} />
       <Route path="/diagnostico" element={<Diagnostico />} />
+      <Route path="/professores" element={<Professores />} />
 
     </RoutesDOM>
   );
