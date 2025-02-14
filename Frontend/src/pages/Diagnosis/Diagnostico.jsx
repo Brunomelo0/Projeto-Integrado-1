@@ -31,11 +31,11 @@ const Diagnostico = () => {
   const [novoDiagnostico, setNovoDiagnostico] = useState({
     descricao: "",
     status: "Não desenvolvido",
-    aluno_id: "", // Use aluno_id em vez de aluno_matricula
-    semestre: "", // Adicione o atributo semestre
+    aluno_id: "",
+    semestre: "",
   });
   const [alunosSemDiagnostico, setAlunosSemDiagnostico] = useState([]);
-  const [alunosFiltrados, setAlunosFiltrados] = useState([]); // Estado para armazenar os alunos filtrados
+  const [alunosFiltrados, setAlunosFiltrados] = useState([]);
 
   useEffect(() => {
     const fetchDiagnosticos = async () => {
@@ -157,7 +157,7 @@ const Diagnostico = () => {
           descricao: diagnosticoSelecionado.descricao,
           status: diagnosticoSelecionado.status,
           aluno_id: diagnosticoSelecionado.aluno_id,
-          semestre: diagnosticoSelecionado.semestre, // Adicione o atributo semestre
+          semestre: diagnosticoSelecionado.semestre,
         });
         const novosDiagnosticos = diagnosticos.map((d) =>
           d.id === diagnosticoSelecionado.id ? response.data : d
@@ -175,8 +175,8 @@ const Diagnostico = () => {
     setNovoDiagnostico({
       descricao: "",
       status: "Não desenvolvido",
-      aluno_id: "", // Use aluno_id em vez de aluno_matricula
-      semestre: "", // Adicione o atributo semestre
+      aluno_id: "",
+      semestre: "",
     });
     setModalCadastroAberto(true);
   };
@@ -192,8 +192,8 @@ const Diagnostico = () => {
       const response = await axios.post('http://localhost:3000/api/diagnosticos', {
         descricao: novoDiagnostico.descricao,
         status: novoDiagnostico.status,
-        aluno_id: novoDiagnostico.aluno_id, // Certifique-se de que está enviando aluno_id
-        semestre: novoDiagnostico.semestre, // Adicione o atributo semestre
+        aluno_id: novoDiagnostico.aluno_id,
+        semestre: novoDiagnostico.semestre,
       });
       setDiagnosticos([...diagnosticos, response.data]);
       setModalCadastroAberto(false);

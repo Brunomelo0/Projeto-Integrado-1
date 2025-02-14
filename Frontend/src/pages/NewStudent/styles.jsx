@@ -8,130 +8,115 @@ export const Container = styled.div`
   align-items: center;
   width: 100%;
 
-  .link-style {
-    text-decoration: none;
-    color: inherit;
-    padding: 16px;
+  h1 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 32px;
   }
 `;
 
 export const Content = styled.div`
-  width: 80%;
-`;
-
-export const Header = styled.header`
+  background-color: #f9f9f9;
+  padding: 32px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 32px;
+  gap: 16px;
 
-  strong {
-    font-size: 24px;
-    text-align: center;
+  label {
+    align-self: flex-start;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+
+  input, select {
     width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
     margin-bottom: 16px;
   }
 
-  a {
-    color: ${({theme}) => theme.colors.primary.main};
-    text-decoration: none;
-    font-weight: bold;
-    border: 2px solid ${({theme}) => theme.colors.primary.main};
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: all 0.2s ease-in;
-
-    &:hover {
-      background: ${({theme}) => theme.colors.primary.main};
-      color: #fff;
-    }
-  }
-`;
-
-export const ListContainer = styled.div`
-  margin-top: 24px;
-
-  header{
-    margin-bottom: 8px;
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 
     button {
-    background: transparent;
-    border: none;
-    display: flex;
-    align-items: center;
-
-      span {
-      margin-right: 8px;
+      padding: 12px 24px;
+      border-radius: 4px;
       font-weight: bold;
-      color: ${({theme}) => theme.colors.primary.main};
-      ;
-      }
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .cancel-button {
+      background-color: #e74c3c;
+      color: white;
+      &:hover { background-color: #c0392b; }
+    }
+
+    .save-button {
+      background-color: #2ecc71;
+      color: white;
+      &:hover { background-color: #27ae60; }
     }
   }
 `;
 
-export const Card = styled.div`
-  background: #fff;
-  box-shadow: 8px 4px 10px rgba(0, 0, 0, 0.04);
-  padding: 16px;
-  border-radius: 4px;
+export const Form = styled.form`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  width: 100%;
+`;
+
+export const FormGroup = styled.div`
+  margin-bottom: 16px;
+`;
+
+export const Label = styled.label`
+  margin-bottom: 8px;
+  font-weight: bold;
+`;
+
+export const Input = styled.input`
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+`;
+
+export const Select = styled.select`
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
   justify-content: space-between;
-
-  & + & {
-    margin-top: 16px;
-  }
-
-  .info {
-    .classroom-name {
-      display: flex;
-      align-items: center;
-
-      small {
-        background: ${({theme}) => theme.colors.primary.lighter};
-        color: ${({theme}) => theme.colors.primary.main};
-        font-weight: bold;
-        text-transform: uppercase;
-        padding: 4px;
-        border-radius: 4px;
-        margin-left: 8px;
-      }
-    }
-
-    span{
-      display: block;
-      font-size: 14px;
-      color: ${({theme}) => theme.colors.gray[200]};
-    }
-  }
-
-  .actions {
-      display: flex;
-      align-items: center;
-
-      button {
-        background: transparent;
-        border: none;
-        margin-left: 8px;
-      }
-    }
-`
-export const InputSearchContainer = styled.div`
   width: 100%;
 
-  input {
-    width: 100%;
-    background: #fff;
-    border: none;
-    border-radius: 25px;
-    height: 58px;
-    box-shadow: 8px 4px 10px rgba(0, 0, 0, 0.04);
-    outline: 0;
-    padding: 0 16px;
+  button {
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
 
-    &::placeholder {
-      color: #BCBCBC
-    }
+  .cancel-button {
+    background-color: #e74c3c;
+    color: white;
+    &:hover { background-color: #c0392b; }
+  }
+
+  .save-button {
+    background-color: #2ecc71;
+    color: white;
+    &:hover { background-color: #27ae60; }
   }
 `;

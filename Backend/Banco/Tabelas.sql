@@ -1,4 +1,13 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 CREATE TABLE Diretor (
+    ID SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    contato VARCHAR(15),
+    senha VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Professor (
     ID SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     contato VARCHAR(15),
@@ -8,15 +17,8 @@ CREATE TABLE Diretor (
 CREATE TABLE Turma (
     ID SERIAL PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,
-    periodo VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE Professor (
-    ID SERIAL PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    contato VARCHAR(15),
-    senha VARCHAR(100) NOT NULL,
-    turma_id INT REFERENCES Turma(ID)
+    periodo VARCHAR(50) NOT NULL,
+    professor_id INT REFERENCES Professor(ID)
 );
 
 CREATE TABLE Aluno (
@@ -32,7 +34,9 @@ CREATE TABLE Diario (
     ID SERIAL PRIMARY KEY,
     titulo VARCHAR(100) NOT NULL,
     descricao TEXT,
+    data DATE,
     professor_id INT NOT NULL REFERENCES Professor(ID)
+    
 );
 
 CREATE TABLE Frequencia (
@@ -49,7 +53,8 @@ CREATE TABLE Relatorio (
     arquivo BYTEA,
     data DATE NOT NULL,
     descricao TEXT,
-    professor_id INT NOT NULL REFERENCES Professor(ID)
+    professor_id INT NOT NULL REFERENCES Professor(ID),
+     turma_id INT NOT NULL REFERENCES Turma(ID)
 );
 
 CREATE TABLE Diagnostico (

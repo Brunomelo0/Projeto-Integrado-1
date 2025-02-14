@@ -33,16 +33,16 @@ export const Header = styled.header`
   }
 
   a {
-    color: ${({theme}) => theme.colors.primary.main};
+    color: ${({ theme }) => theme.colors.primary.main};
     text-decoration: none;
     font-weight: bold;
-    border: 2px solid ${({theme}) => theme.colors.primary.main};
+    border: 2px solid ${({ theme }) => theme.colors.primary.main};
     padding: 8px 16px;
     border-radius: 4px;
     transition: all 0.2s ease-in;
 
     &:hover {
-      background: ${({theme}) => theme.colors.primary.main};
+      background: ${({ theme }) => theme.colors.primary.main};
       color: #fff;
     }
   }
@@ -63,7 +63,7 @@ export const ListContainer = styled.div`
       span {
       margin-right: 8px;
       font-weight: bold;
-      color: ${({theme}) => theme.colors.primary.main};
+      color: ${({ theme }) => theme.colors.primary.main};
       ;
       }
     }
@@ -89,8 +89,8 @@ export const Card = styled.div`
       align-items: center;
 
       small {
-        background: ${({theme}) => theme.colors.primary.lighter};
-        color: ${({theme}) => theme.colors.primary.main};
+        background: ${({ theme }) => theme.colors.primary.lighter};
+        color: ${({ theme }) => theme.colors.primary.main};
         font-weight: bold;
         text-transform: uppercase;
         padding: 4px;
@@ -102,7 +102,7 @@ export const Card = styled.div`
     span{
       display: block;
       font-size: 14px;
-      color: ${({theme}) => theme.colors.gray[200]};
+      color: ${({ theme }) => theme.colors.gray[200]};
     }
   }
 
@@ -133,5 +133,46 @@ export const InputSearchContainer = styled.div`
     &::placeholder {
       color: #BCBCBC
     }
+  }
+`;
+
+export const TableContainer = styled.div`
+  width: 100%;
+  overflow-x: auto;
+`;
+
+export const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f4f4f4;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+`;
+
+export const ActionButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  margin: 0 2px;
+  color: #007bff;
+
+  &:hover {
+    color: #0056b3;
   }
 `;

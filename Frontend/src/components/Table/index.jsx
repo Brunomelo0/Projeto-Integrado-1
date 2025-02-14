@@ -1,9 +1,26 @@
-import React from 'react';
-import { FaTrash, FaEdit } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { FaEdit, FaSave, FaTrash } from 'react-icons/fa';
+import { ActionButton, StyledTable, TableContainer } from './styles';
 
-import { TableContainer, ActionButton, StyledTable } from './styles';
+const Table = ({ data = [], onEdit, onDelete, onSave }) => {
+  const [editingRow, setEditingRow] = useState(null);
+  const [editedData, setEditedData] = useState({});
 
-const Table = ({data = []}) => {
+  const handleEditClick = (row) => {
+    setEditingRow(row.id);
+    setEditedData(row);
+  };
+
+  const handleSaveClick = () => {
+    onSave(editedData);
+    setEditingRow(null);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedData({ ...editedData, [name]: value });
+  };
+
   return (
     <TableContainer>
       <StyledTable>
@@ -21,13 +38,39 @@ const Table = ({data = []}) => {
             <tr key={row.id}>
               <td>{row.turma_id}</td>
               <td>{row.matricula}</td>
-              <td>{row.nome}</td>
-              <td>{row.contato}</td>
+              <td>{editingRow === row.id ? (
+                <input
+                  type="text"
+                  name="nome"
+                  value={editedData.nome}
+                  onChange={handleChange}
+                  style={{ width: '100%' }}
+                />
+              ) : (
+                row.nome
+              )}</td>
+              <td>{editingRow === row.id ? (
+                <input
+                  type="text"
+                  name="contato"
+                  value={editedData.contato}
+                  onChange={handleChange}
+                  style={{ width: '100%' }}
+                />
+              ) : (
+                row.contato
+              )}</td>
               <td>
-                <ActionButton>
-                  <FaEdit />
-                </ActionButton>
-                <ActionButton>
+                {editingRow === row.id ? (
+                  <ActionButton onClick={handleSaveClick}>
+                    <FaSave />
+                  </ActionButton>
+                ) : (
+                  <ActionButton onClick={() => handleEditClick(row)}>
+                    <FaEdit />
+                  </ActionButton>
+                )}
+                <ActionButton onClick={() => onDelete(row.id)}>
                   <FaTrash />
                 </ActionButton>
               </td>

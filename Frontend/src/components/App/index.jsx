@@ -1,5 +1,5 @@
-import { ThemeProvider }  from 'styled-components';
-import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+import { BrowserRouter, useLocation } from 'react-router-dom';
 
 import GlobalStyles from '../../assets/styles/global';
 import defaultTheme from '../../assets/styles/themes/default';
@@ -10,17 +10,26 @@ import Header from '../Header';
 import { Container } from './styles';
 
 function App() {
+  const location = useLocation();
+  const hideHeaderRoutes = ['/login'];
+
   return (
-    <BrowserRouter>
     <ThemeProvider theme={defaultTheme}>
-    <GlobalStyles/>
-    <Container>
-      <Header/>
-      <Routes/>
-    </Container>
+      <GlobalStyles />
+      <Container>
+        {!hideHeaderRoutes.includes(location.pathname) && <Header />}
+        <Routes />
+      </Container>
     </ThemeProvider>
-    </BrowserRouter>
-  )
+  );
 }
 
-export default App
+function AppWrapper() {
+  return (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+}
+
+export default AppWrapper;

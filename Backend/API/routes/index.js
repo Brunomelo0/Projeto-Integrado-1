@@ -16,6 +16,7 @@ router.get('/alunos/:id', alunoController.getAlunoById);
 router.post('/alunos', alunoController.createAluno);
 router.put('/alunos/:id', alunoController.updateAluno);
 router.delete('/alunos/:id', alunoController.deleteAluno);
+router.put('/alunos/:id/removeFromTurma', alunoController.removeAlunoFromTurma);
 
 // Rotas para Diretor
 router.get('/diretores', diretorController.getDiretores);
@@ -25,6 +26,7 @@ router.put('/diretores/:id', diretorController.updateDiretor);
 router.delete('/diretores/:id', diretorController.deleteDiretor);
 
 // Rotas para Professor
+router.post('/loginProfessor', professorController.loginProfessor);
 router.get('/professores', professorController.getProfessores);
 router.get('/professores/:id', professorController.getProfessorById);
 router.post('/professores', professorController.createProfessor);

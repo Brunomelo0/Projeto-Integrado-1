@@ -55,3 +55,14 @@ exports.deleteAluno = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.removeAlunoFromTurma = async (req, res) => {
+  const { id } = req.params;
+  try {
+    // Atualizar o campo turma_id do aluno para NULL
+    await db.query('UPDATE Aluno SET turma_id = NULL WHERE id = $1', [id]);
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
