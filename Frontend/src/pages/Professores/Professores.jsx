@@ -32,6 +32,8 @@ const Professores = () => {
     nome: "",
     dataNascimento: "",
     turmas: [],
+    username: "",
+    password: ""
   });
 
   // Busca os professores
@@ -125,6 +127,8 @@ const Professores = () => {
       nome: "",
       dataNascimento: "",
       turmas: [],
+      username: "",
+      password: ""
     });
     setModalCadastroAberto(true);
   };
@@ -141,6 +145,7 @@ const Professores = () => {
     try {
       const response = await axios.post('http://localhost:3000/api/professores', novoProfessor);
       setProfessores([...professores, response.data]);
+
       setModalCadastroAberto(false);
     } catch (error) {
       console.error('Erro ao cadastrar novo professor:', error);
@@ -251,6 +256,18 @@ const Professores = () => {
                 </option>
               ))}
             </select>
+            <label>Username:</label>
+            <input
+              type="text"
+              value={novoProfessor.username}
+              onChange={(e) => setNovoProfessor({ ...novoProfessor, username: e.target.value })}
+            />
+            <label>Password:</label>
+            <input
+              type="password"
+              value={novoProfessor.password}
+              onChange={(e) => setNovoProfessor({ ...novoProfessor, password: e.target.value })}
+            />
             <div className="modal-buttons">
               <button type="button" onClick={fecharModal}>Cancelar</button>
               <button type="button" onClick={handleSalvar}>Salvar</button>
@@ -277,7 +294,7 @@ const Professores = () => {
               <tr key={professor.id}>
                 <td>{professor.nome}</td>
                 <td>{professor.dataNascimento}</td>
-                <td>{professor.turmas.join(", ")}</td>
+                <td>{(professor.turmas || []).join(", ")}</td>
                 <td>
                   <ActionButton
                     className="editar"

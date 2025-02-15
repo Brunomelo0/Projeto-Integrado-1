@@ -50,12 +50,33 @@ exports.getProfessorById = async (req, res) => {
 
 exports.createProfessor = async (req, res) => {
   try {
-    const { nome, contato, senha, turma_id } = req.body;
+    const { nome, dataNascimento, turmas, username, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Inserir professor na tabela Professor
     const result = await db.query(
-      'INSERT INTO Professor (nome, contato, senha, turma_id) VALUES ($1, $2, $3, $4) RETURNING *',
-      [nome, contato, senha, Number(turma_id)]
+      'INSERT INTO Professor (nome, dataNascimento) VALUES ($1, $2) RETURNING *',
+      [nome, dataNascimento]
     );
-    res.status(201).json(result.rows[0]);
+    const professor = result.rows[0];
+
+    // Inserir turmas na tabela Professor_Turma
+    if (turmas && turmas.length > 0) {
+      for (const turmaId of turmas) {
+        await db.query(
+          'INSERT INTO Professor_Turma (professor_id, turma_id) VALUES ($1, $2)',
+          [professor.id, turmaId]
+        );
+      }
+    }
+
+    // Criar um registro de usuário para login
+    await db.query(
+      'INSERT INTO Users (username, password, role) VALUES ($1, $2, $3)',
+      [username, hashedPassword, 'professor']
+    );
+
+    res.status(201).json(professor);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -64,12 +85,27 @@ exports.createProfessor = async (req, res) => {
 exports.updateProfessor = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nome, contato, senha, turma_id } = req.body;
+    const { nome, dataNascimento, turmas } = req.body;
+
+    // Atualizar professor na tabela Professor
     const result = await db.query(
-      'UPDATE Professor SET nome = $1, contato = $2, senha = $3, turma_id = $4 WHERE id = $5 RETURNING *',
-      [nome, contato, senha, turma_id, id]
+      'UPDATE Professor SET nome = $1, dataNascimento = $2 WHERE id = $3 RETURNING *',
+      [nome, dataNascimento, id]
     );
-    res.json(result.rows[0]);
+    const professor = result.rows[0];
+
+    // Atualizar turmas na tabela Professor_Turma
+    await db.query('DELETE FROM Professor_Turma WHERE professor_id = $1', [id]);
+    if (turmas && turmas.length > 0) {
+      for (const turmaId of turmas) {
+        await db.query(
+          'INSERT INTO Professor_Turma (professor_id, turma_id) VALUES ($1, $2)',
+          [id, turmaId]
+        );
+      }
+    }
+
+    res.status(200).json(professor);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

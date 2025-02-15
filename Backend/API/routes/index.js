@@ -7,8 +7,18 @@ const diarioController = require('../controllers/diarioController');
 const frequenciaController = require('../controllers/frequenciaController');
 const relatorioController = require('../controllers/relatorioController');
 const diagnosticoController = require('../controllers/diagnosticoController');
+const userController = require('../controllers/userController');
 
 const router = express.Router();
+
+// Rotas para Usuarios
+router.post('/users/login', userController.loginUser);
+router.get('/users', userController.getUsers);
+router.get('/me', userController.getUserProfile);
+router.get('/users/:id', userController.getUserById);
+router.post('/users', userController.createUser);
+router.put('/users/:id', userController.updateUser);
+router.delete('/users/:id', userController.deleteUser);
 
 // Rotas para Aluno
 router.get('/alunos', alunoController.getAlunos);

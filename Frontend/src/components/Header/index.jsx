@@ -1,9 +1,41 @@
-import { NavbarContainer, Menu, UserContainer } from "./styles";
-import { Link, useLocation } from "react-router-dom";
+import axios from 'axios';
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import home from "../../assets/images/icons/home.svg";
+import { Menu, NavbarContainer, UserContainer } from "./styles";
 
 export default function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [user, setUser] = useState({ name: '', role: '' });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          console.log('Token:', token); // Adiciona um console.log para ver o token
+          const response = await axios.get('http://localhost:3000/api/users/', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          const { username, role } = response.data;
+          setUser({ name: username, role: role });
+        } catch (err) {
+          console.error('Erro ao buscar dados do usuário:', err);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    navigate('/login');
+  };
 
   return (
     <NavbarContainer>
@@ -35,10 +67,11 @@ export default function Header() {
       </Menu>
       <UserContainer>
         <div className="info">
-          <span className="name">Helioneide Azevedo</span>
-          <span className="role">Diretora</span>
+          <span className="name">{user.name}</span>
+          <span className="role">{user.role}</span>
         </div>
-        <img src="src/assets/images/img/logoDire.jpg" alt="Helioneide Azevedo" />
+        <button onClick={handleLogout}>Sair</button>
+        <img src="src/assets/images/img/logoDire.jpg" alt={user.name} />
       </UserContainer>
     </NavbarContainer>
   );

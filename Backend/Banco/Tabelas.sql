@@ -11,7 +11,7 @@ CREATE TABLE Professor (
     ID SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     contato VARCHAR(15),
-    senha VARCHAR(100) NOT NULL
+    dataNascimento DATE NOT NULL 
 );
 
 CREATE TABLE Turma (
@@ -36,7 +36,6 @@ CREATE TABLE Diario (
     descricao TEXT,
     data DATE,
     professor_id INT NOT NULL REFERENCES Professor(ID)
-    
 );
 
 CREATE TABLE Frequencia (
@@ -47,14 +46,13 @@ CREATE TABLE Frequencia (
     presenca BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-
 CREATE TABLE Relatorio (
     ID SERIAL PRIMARY KEY,
     arquivo BYTEA,
     data DATE NOT NULL,
     descricao TEXT,
     professor_id INT NOT NULL REFERENCES Professor(ID),
-     turma_id INT NOT NULL REFERENCES Turma(ID)
+    turma_id INT NOT NULL REFERENCES Turma(ID)
 );
 
 CREATE TABLE Diagnostico (
@@ -75,4 +73,11 @@ CREATE TABLE Professor_Turma (
     professor_id INT NOT NULL REFERENCES Professor(ID),
     turma_id INT NOT NULL REFERENCES Turma(ID),
     PRIMARY KEY (professor_id, turma_id)
+);
+
+CREATE TABLE Users (
+    ID SERIAL PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    role VARCHAR(50) NOT NULL
 );
