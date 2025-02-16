@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import home from "../../assets/images/icons/home.svg";
 import { useAuth } from '../../components/AuthContext/AuthContext';
@@ -7,8 +8,15 @@ import { Menu, NavbarContainer, UserContainer } from "./styles";
 export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
-  const { allowedRoutes, handleNavigation } = useAllowedRoutes();
+  const { user, logout, login } = useAuth();
+  const { allowedRoutes, handleNavigation, getRouteName, fetchUserRole } = useAllowedRoutes();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token && !user.role) {
+      fetchUserRole(token);
+    }
+  }, [user.role, fetchUserRole]);
 
   const handleLinkClick = (path) => {
     handleNavigation(path);
@@ -16,24 +24,27 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
+    localStorage.removeItem('token');
     handleNavigation('/login');
   };
 
   const renderLinks = () => {
-    return allowedRoutes.map((path) => {
-      const routeName = path === '/' ? 'Home' : path.charAt(1).toUpperCase() + path.slice(2);
-      return (
-        <a key={path} onClick={() => handleLinkClick(path)} className={location.pathname === path ? "active" : ""}>
-          {routeName}
-        </a>
-      );
-    });
+    return allowedRoutes
+      .filter(path => path !== '/home' && path !== '/newclass')
+      .map((path) => {
+        const routeName = getRouteName(path);
+        return (
+          <a key={path} onClick={() => handleLinkClick(path)} className={location.pathname === path ? "active" : ""}>
+            {routeName}
+          </a>
+        );
+      });
   };
 
   return (
     <NavbarContainer>
       <Menu>
-        <a href="/">
+        <a href="/home">
           <img src={home} alt="Home" style={{ filter: "invert(1)" }} />
         </a>
         {renderLinks()}
