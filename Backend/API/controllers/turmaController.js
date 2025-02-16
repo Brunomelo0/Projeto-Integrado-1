@@ -21,10 +21,10 @@ exports.getTurmaById = async (req, res) => {
 
 exports.createTurma = async (req, res) => {
   try {
-    const { nome, periodo } = req.body;
+    const { nome, periodo, professor_id } = req.body;
     const result = await db.query(
-      'INSERT INTO Turma (nome, periodo) VALUES ($1, $2) RETURNING *',
-      [nome, periodo]
+      'INSERT INTO Turma (nome, periodo, professor_id) VALUES ($1, $2, $3) RETURNING *',
+      [nome, periodo, professor_id]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -35,10 +35,10 @@ exports.createTurma = async (req, res) => {
 exports.updateTurma = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nome, periodo } = req.body;
+    const { nome, periodo, professor_id } = req.body;
     const result = await db.query(
-      'UPDATE Turma SET nome = $1, periodo = $2 WHERE id = $3 RETURNING *',
-      [nome, periodo, id]
+      'UPDATE Turma SET nome = $1, periodo = $2, professor_id = $3 WHERE id = $4 RETURNING *',
+      [nome, periodo, professor_id, id]
     );
     res.json(result.rows[0]);
   } catch (err) {

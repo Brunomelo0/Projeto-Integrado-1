@@ -30,39 +30,36 @@ const Professores = () => {
   const [professorSelecionado, setProfessorSelecionado] = useState(null);
   const [novoProfessor, setNovoProfessor] = useState({
     nome: "",
+    contato: "",
     dataNascimento: "",
     turmas: [],
     username: "",
     password: ""
   });
 
-  // Busca os professores
   useEffect(() => {
-    const fetchProfessores = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/professores');
-        setProfessores(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar professores:', error);
-      }
-    };
     fetchProfessores();
-  }, []);
-
-  // Busca as turmas
-  useEffect(() => {
-    const fetchTurmas = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/turmas');
-        setTurmas(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar turmas:', error);
-      }
-    };
     fetchTurmas();
   }, []);
 
-  // Função para deletar um professor
+  const fetchProfessores = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/api/professores');
+      setProfessores(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar professores:', error);
+    }
+  };
+
+  const fetchTurmas = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/api/turmas');
+      setTurmas(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar turmas:', error);
+    }
+  };
+
   const handleDelete = (id) => {
     toast(
       ({ closeToast }) => (
@@ -80,19 +77,16 @@ const Professores = () => {
     );
   };
 
-  // Confirma a exclusão do professor
   const confirmDelete = async (id, closeToast) => {
     try {
       await axios.delete(`http://localhost:3000/api/professores/${id}`);
-      const novosProfessores = professores.filter((professor) => professor.id !== id);
-      setProfessores(novosProfessores);
+      setProfessores(professores.filter((professor) => professor.id !== id));
       closeToast();
     } catch (error) {
       console.error('Erro ao excluir professor:', error);
     }
   };
 
-  // Abre o modal de edição
   const editarModal = (professor) => {
     if (professor) {
       setProfessorSelecionado(professor);
@@ -102,7 +96,6 @@ const Professores = () => {
     }
   };
 
-  // Confirma a edição do professor
   const confirmEdit = async () => {
     if (professorSelecionado) {
       try {
@@ -110,10 +103,9 @@ const Professores = () => {
           `http://localhost:3000/api/professores/${professorSelecionado.id}`,
           professorSelecionado
         );
-        const novosProfessores = professores.map((p) =>
+        setProfessores(professores.map((p) =>
           p.id === professorSelecionado.id ? response.data : p
-        );
-        setProfessores(novosProfessores);
+        ));
         setModalAberto(false);
       } catch (error) {
         console.error('Erro ao editar professor:', error);
@@ -121,10 +113,10 @@ const Professores = () => {
     }
   };
 
-  // Abre o modal de cadastro
   const cadastrarProfessorModal = () => {
     setNovoProfessor({
       nome: "",
+      contato: "",
       dataNascimento: "",
       turmas: [],
       username: "",
@@ -133,19 +125,16 @@ const Professores = () => {
     setModalCadastroAberto(true);
   };
 
-  // Fecha os modais
   const fecharModal = () => {
     setModalAberto(false);
     setModalCadastroAberto(false);
     setProfessorSelecionado(null);
   };
 
-  // Salva o novo professor
   const handleSalvar = async () => {
     try {
       const response = await axios.post('http://localhost:3000/api/professores', novoProfessor);
       setProfessores([...professores, response.data]);
-
       setModalCadastroAberto(false);
     } catch (error) {
       console.error('Erro ao cadastrar novo professor:', error);
@@ -190,12 +179,12 @@ const Professores = () => {
                 setProfessorSelecionado({ ...professorSelecionado, nome: e.target.value })
               }
             />
-            <label>Data de Nascimento:</label>
+            <label>Contato:</label>
             <input
-              type="date"
-              value={professorSelecionado?.dataNascimento || ""}
+              type="text"
+              value={professorSelecionado?.contato || ""}
               onChange={(e) =>
-                setProfessorSelecionado({ ...professorSelecionado, dataNascimento: e.target.value })
+                setProfessorSelecionado({ ...professorSelecionado, contato: e.target.value })
               }
             />
             <label>Turmas:</label>
@@ -233,13 +222,19 @@ const Professores = () => {
               value={novoProfessor.nome}
               onChange={(e) => setNovoProfessor({ ...novoProfessor, nome: e.target.value })}
             />
+            <label>Contato:</label>
+            <input
+              type="text"
+              value={novoProfessor.contato}
+              onChange={(e) => setNovoProfessor({ ...novoProfessor, contato: e.target.value })}
+            />
             <label>Data de Nascimento:</label>
             <input
               type="date"
               value={novoProfessor.dataNascimento}
               onChange={(e) => setNovoProfessor({ ...novoProfessor, dataNascimento: e.target.value })}
             />
-            <label>Turmas:</label>
+            <label>Turmas (opcional):</label>
             <select
               multiple
               value={novoProfessor.turmas}
@@ -280,7 +275,7 @@ const Professores = () => {
         <thead>
           <tr>
             <th>Nome</th>
-            <th>Data de Nascimento</th>
+            <th>Contato</th>
             <th>Turmas</th>
             <th>Ações</th>
           </tr>
@@ -293,7 +288,7 @@ const Professores = () => {
             .map((professor) => (
               <tr key={professor.id}>
                 <td>{professor.nome}</td>
-                <td>{professor.dataNascimento}</td>
+                <td>{professor.contato}</td>
                 <td>{(professor.turmas || []).join(", ")}</td>
                 <td>
                   <ActionButton
