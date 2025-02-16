@@ -1,4 +1,6 @@
 import { Route, Routes as RoutesDOM } from 'react-router-dom';
+import useAllowedRoutes from './components/Hooks/useAllowedRoutes';
+import AccessDenied from './pages/AccessDenied/AccessDenied';
 import Attendance from './pages/Attendance';
 import Diario from './pages/Daily';
 import Diagnostico from './pages/Diagnosis/Diagnostico';
@@ -7,13 +9,11 @@ import Login from './pages/Login';
 import NewClass from './pages/NewClass';
 import NewRollCall from './pages/NewRollCall';
 import NewStudent from './pages/NewStudent';
+import Professores from "./pages/Professores/Professores";
+import Register from './pages/Register';
+import Report from './pages/Report';
 import RollCall from './pages/RollCall';
 import Students from './pages/Students';
-import Professores from "./pages/Professores/Professores";
-import Report from './pages/Report';
-import Register from './pages/Register';
-import AccessDenied from './pages/AccessDenied';
-import useAllowedRoutes from './components/Hooks/useAllowedRoutes';
 
 export default function Routes() {
   const { allowedRoutes } = useAllowedRoutes();

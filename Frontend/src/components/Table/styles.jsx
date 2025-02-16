@@ -29,6 +29,34 @@ export const StyledTable = styled.table`
   tr:hover {
     background-color: #f1f1f1;
   }
+
+  @media (max-width: 768px) {
+    th, td {
+      padding: 8px;
+    }
+
+    th {
+      font-size: 0.9rem;
+    }
+
+    td {
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    th, td {
+      padding: 6px;
+    }
+
+    th {
+      font-size: 0.8rem;
+    }
+
+    td {
+      font-size: 0.7rem;
+    }
+  }
 `;
 
 export const ActionButton = styled.button`
@@ -39,5 +67,13 @@ export const ActionButton = styled.button`
 
   &:hover {
     color: #ff6347;
+  }
+
+  @media (max-width: 768px) {
+    margin: 0 2px;
+  }
+
+  @media (max-width: 480px) {
+    margin: 0 1px;
   }
 `;
