@@ -13,8 +13,7 @@ const router = express.Router();
 
 // Rotas para Usuarios
 router.post('/users/login', userController.loginUser);
-router.get('/users', userController.getUsers);
-router.get('/me', userController.getUserProfile);
+router.get('/users', userController.getUser);
 router.get('/users/:id', userController.getUserById);
 router.post('/users', userController.createUser);
 router.put('/users/:id', userController.updateUser);

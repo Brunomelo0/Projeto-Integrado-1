@@ -1,6 +1,7 @@
 const db = require('../models/db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+require('dotenv').config();
 
 const SECRET_KEY = 'senha_secreta';
 
@@ -61,24 +62,21 @@ exports.deleteDiretor = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
+  const { username, password } = req.body;
   try {
-    const { username, password } = req.body;
-    
     const result = await db.query('SELECT * FROM Users WHERE username = $1', [username]);
     if (result.rows.length === 0) {
-      return res.status(401).json({ error: 'Nome ou senha inválidos' });
+      return res.status(401).json({ error: 'Credenciais inválidas' });
     }
-    
+
     const user = result.rows[0];
-    
-    const senhaValida = await bcrypt.compare(password, user.password);
-    if (!senhaValida) {
-      return res.status(401).json({ error: 'Nome ou senha inválidos' });
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: 'Credenciais inválidas' });
     }
-    
-    const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, SECRET_KEY, { expiresIn: '1h' });
-    
-    res.json({ token, role: user.role });
+
+    const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.status(200).json({ token });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -148,6 +146,20 @@ exports.deleteUser = async (req, res) => {
     const { id } = req.params;
     await db.query('DELETE FROM Users WHERE id = $1', [id]);
     res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getUser = async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Usar a chave secreta das variáveis de ambiente
+    const result = await db.query('SELECT username, role FROM Users WHERE id = $1', [decoded.id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+    res.status(200).json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

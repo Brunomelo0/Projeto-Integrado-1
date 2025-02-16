@@ -9,8 +9,8 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (event) => {
-    event.preventDefault(); // Prevenir o comportamento padrão do formulário
+  const handleLogin = async (event) => {   
+    event.preventDefault(); 
     if (username && password) {
       try {
         console.log('Senha enviada para autenticação:', password); // Adiciona um console.log para ver a senha
@@ -19,17 +19,12 @@ const Login = () => {
           username,
           password,
         });
+        console.log('Resposta do login:', response); // Adiciona um console.log para ver a resposta do login
         if (response.status === 200) {
-          const { token, role } = response.data;
-          localStorage.setItem('token', token);
-          localStorage.setItem('role', role);
+          const { token } = response.data;
 
-          // Navegar para a próxima página com base na função do usuário
-          if (role === 'diretor') {
-            navigate('/alunos');
-          } else if (role === 'professor') {
-            navigate('/professor/frequencia');
-          }
+          // Navegar para a próxima página com o token
+          navigate('/home', { state: { token } });
         }
       } catch (err) {
         setError('Credenciais inválidas');
