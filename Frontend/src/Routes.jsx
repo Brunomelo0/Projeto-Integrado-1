@@ -14,6 +14,7 @@ import Register from './pages/Register';
 import Report from './pages/Report';
 import RollCall from './pages/RollCall';
 import Students from './pages/Students';
+import TurmaDetails from './pages/TurmaDetails/TurmaDetails';
 
 export default function Routes() {
   const { allowedRoutes } = useAllowedRoutes();
@@ -34,6 +35,7 @@ export default function Routes() {
       {allowedRoutes.includes('/professor/fazerchamada') && <Route path="/professor/fazerchamada" element={<NewRollCall />} />}
       {allowedRoutes.includes('/relatorios') && <Route path="/relatorios" element={<Report />} />}
       {allowedRoutes.includes('/register') && <Route path="/register" element={<Register />} />}
+      <Route path="/turma/:id" element={<TurmaDetails />} />
       <Route path="/access-denied" element={<AccessDenied />} />
     </RoutesDOM>
   );

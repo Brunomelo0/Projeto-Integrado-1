@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ export const Message = styled.p`
   margin-bottom: 20px;
 `;
 
-export const HomeLink = styled(Link)`
+export const LoginLink = styled(Link)`
   font-size: 1rem;
   color: #007bff;
   text-decoration: none;
