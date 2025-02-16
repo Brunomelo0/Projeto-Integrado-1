@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import FilterBarPageAlunos from "../../components/FilterBarPageAlunos";
+import FilterBar from "../../components/FilterBar";
 import PageHeader from "../../components/PageHeader";
 import Table from "../../components/Table";
 import { Container, Content } from './styles';
@@ -12,6 +12,35 @@ export default function Student() {
   const [turmas, setTurmas] = useState([]);
   const [selectedTurma, setSelectedTurma] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+
+  useEffect(() => {
+    if (selectedTurma) {
+      const filteredData = data.filter((student) => student.turma_id === selectedTurma);
+      setFilteredData(filteredData);
+    } else if (searchTerm) {
+      const filteredData = data.filter((student) => {
+        return student.nome.toLowerCase().includes(searchTerm.toLowerCase());
+      });
+      setFilteredData(filteredData);
+    } else {
+      setFilteredData(data);
+    }
+  }, [data, selectedTurma]);
+
+  useEffect(() => {
+    if (searchTerm) {
+      const filteredData = data.filter((student) => {
+        return student.nome.toLowerCase().includes(searchTerm.toLowerCase());
+      });
+      setFilteredData(filteredData);
+    } else if(selectedTurma){
+      const filteredData = data.filter((student) => student.turma_id === selectedTurma);
+      setFilteredData(filteredData);
+    } else {
+      setFilteredData(data);
+    }
+  }, [data, searchTerm]);
 
   useEffect(() => {
     const getData = async () => {
@@ -77,7 +106,7 @@ export default function Student() {
     <Container>
       <PageHeader title="Alunos" />
       <Content>
-        <FilterBarPageAlunos
+        <FilterBar
           showDateFilter={false}
           showCreateButton
           selectedTurma={selectedTurma}
@@ -85,7 +114,7 @@ export default function Student() {
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
         />
-        <Table data={data} onEdit={handleSaveEdit} onDelete={handleRemoveFromTurma} onSave={handleSaveEdit} />
+        <Table data={filteredData} onEdit={handleSaveEdit} onDelete={handleRemoveFromTurma} onSave={handleSaveEdit} />
         <ToastContainer />
       </Content>
     </Container>

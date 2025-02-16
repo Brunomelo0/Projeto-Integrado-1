@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function FilterBar({ showDateFilter, showCreateButton, selectedTurma, setSelectedTurma, searchTerm, setSearchTerm, cadastrarAulaModal }) {
+export default function FilterBar({ showDateFilter, showCreateButton, selectedTurma, setSelectedTurma, searchTerm, setSearchTerm, cadastrarAulaModal, date, setDate }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function FilterBar({ showDateFilter, showCreateButton, selectedTu
         {showDateFilter && (
           <>
             <Label>Data:</Label>
-            <DateInput type="date" />
+            <DateInput type="date" value={date} onChange={(e) => setDate(e.target.value)}/>
           </>
         )}
       </LeftGroup>
