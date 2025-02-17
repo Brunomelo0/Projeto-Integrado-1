@@ -16,6 +16,7 @@ import RollCall from './pages/RollCall';
 import Students from './pages/Students';
 import TurmaDetails from './pages/TurmaDetails/TurmaDetails';
 import Profile from './pages/Profile/Profile';
+import Welcome from './pages/Welcome/Welcome';
 
 export default function Routes() {
   const { allowedRoutes } = useAllowedRoutes();
@@ -26,6 +27,7 @@ export default function Routes() {
       <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/" element={<Welcome />} />
       {allowedRoutes.includes('/new') && <Route path="/new" element={<NewStudent />} />}
       {allowedRoutes.includes('/alunos') && <Route path="/alunos" element={<Students />} />}
       {allowedRoutes.includes('/frequencia') && <Route path="/frequencia" element={<Attendance />} />}

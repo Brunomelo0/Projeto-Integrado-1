@@ -6,7 +6,7 @@ const AccessDenied = () => {
     <Container>
       <Title>Acesso Negado</Title>
       <Message>Você não tem permissão para acessar esta página.</Message>
-      <LoginLink to="/login">Voltar para o Login</LoginLink>
+      <LoginLink to="/">Voltar para o Inicio</LoginLink>
     </Container>
   );
 };

@@ -22,6 +22,7 @@ import TurmaDetails from '../../pages/TurmaDetails/TurmaDetails';
 import Header from '../Header';
 
 import { Container } from './styles';
+import Welcome from '../../pages/Welcome/Welcome';
 
 function App() {
   const location = useLocation();
@@ -33,7 +34,7 @@ function App() {
       <Container>
         {!hideHeaderRoutes.includes(location.pathname) && <Header />}
         <RouterRoutes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Welcome />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/new" element={<NewStudent />} />
