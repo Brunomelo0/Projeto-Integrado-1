@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 
 import GlobalStyles from '../../assets/styles/global';
 import defaultTheme from '../../assets/styles/themes/default';
-
+import Profile from '../../pages/Profile/Profile';
 import AccessDenied from '../../pages/AccessDenied/AccessDenied';
 import Attendance from '../../pages/Attendance';
 import Diario from '../../pages/Daily';
@@ -48,6 +48,7 @@ function App() {
           <Route path="/relatorios" element={<Report />} />
           <Route path="/register" element={<Register />} />
           <Route path="/turma/:id" element={<TurmaDetails />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/access-denied" element={<AccessDenied />} />
         </RouterRoutes>
       </Container>

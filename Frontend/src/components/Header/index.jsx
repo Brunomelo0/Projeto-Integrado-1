@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import home from "../../assets/images/icons/home.svg";
 import { useAuth } from '../../components/AuthContext/AuthContext';
 import useAllowedRoutes from '../../components/Hooks/useAllowedRoutes';
+import DropdownMenu from '../../components/DropdownMenu/DropdownMenu';
 import { Menu, NavbarContainer, UserContainer } from "./styles";
 
 export default function Header() {
@@ -54,8 +55,7 @@ export default function Header() {
           <span className="name">{user.name}</span>
           <span className="role">{user.role}</span>
         </div>
-        <img src="src/assets/images/img/logoDire.jpg" alt={user.name} />
-        <button onClick={handleLogout}>Sair</button>
+        <DropdownMenu onLogout={handleLogout} />
       </UserContainer>
     </NavbarContainer>
   );

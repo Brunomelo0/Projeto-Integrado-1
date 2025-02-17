@@ -1,3 +1,10 @@
+-- Inserir novos usuários na tabela Users
+INSERT INTO Users (username, password, role, image) VALUES
+('admin', crypt('admin123', gen_salt('bf')), 'diretor', NULL),
+('profA', crypt('senha123', gen_salt('bf')), 'professor', NULL),
+('profB', crypt('senha456', gen_salt('bf')), 'professor', NULL),
+('profC', crypt('senha789', gen_salt('bf')), 'professor', NULL);
+
 -- Inserir dados na tabela Diretor
 INSERT INTO Diretor (nome, contato, senha) VALUES
 ('João da Silva', '11999999999', crypt('senha123', gen_salt('bf'))),
@@ -73,10 +80,3 @@ INSERT INTO Diagnostico (descricao, status, semestre, aluno_id) VALUES
 ('Ótimo desempenho em ciências', 'Desenvolvido', '2024/1', 2),
 ('Necessidade de reforço em inglês', 'Em desenvolvimento', '2024/1', 3),
 ('Progresso positivo em história', 'Desenvolvido', '2024/1', 4);
-
--- Inserir dados na tabela Users
-INSERT INTO Users (username, password, role) VALUES
-('admin', crypt('admin123', gen_salt('bf')), 'diretor'),
-('profA', crypt('senha123', gen_salt('bf')), 'professor'),
-('profB', crypt('senha456', gen_salt('bf')), 'professor'),
-('profC', crypt('senha789', gen_salt('bf')), 'professor');

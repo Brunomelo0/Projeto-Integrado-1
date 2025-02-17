@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 
-const SECRET_KEY = 'senha_secreta';
+const SECRET_KEY = process.env.JWT_SECRET || 'senha_secreta';
 
 exports.getDiretores = async (req, res) => {
   try {
@@ -86,8 +86,11 @@ exports.getUserProfile = async (req, res) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
     const decoded = jwt.verify(token, SECRET_KEY);
-    const result = await db.query('SELECT username, role FROM Users WHERE id = $1', [decoded.id]);
-    res.json(result.rows[0]);
+    const result = await db.query('SELECT id, username, role, image FROM Users WHERE id = $1', [decoded.id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+    res.status(200).json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -105,7 +108,10 @@ exports.getUsers = async (req, res) => {
 exports.getUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await db.query('SELECT * FROM Users WHERE id = $1', [id]);
+    const result = await db.query('SELECT id, username, role, image FROM Users WHERE id = $1', [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
     res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
