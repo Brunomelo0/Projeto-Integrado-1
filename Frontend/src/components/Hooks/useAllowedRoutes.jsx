@@ -16,9 +16,6 @@ const routeNames = {
   '/login': 'Login',
   '/register': 'Registrar',
   '/professor/frequencia': 'Frequência',
-  '/professor/relatorios': 'Relatórios',
-  '/professor/diario': 'Diário',
-  '/professor/diagnostico': 'Diagnóstico'
 };
 
 const useAllowedRoutes = () => {
@@ -41,7 +38,7 @@ const useAllowedRoutes = () => {
       if (role === 'diretor') {
         setAllowedRoutes(['/', '/home', '/alunos', '/professores', '/newclass', '/frequencia', '/diagnostico', '/diario', '/relatorios', '/login', '/register']);
       } else if (role === 'professor') {
-        setAllowedRoutes(['/professor/frequencia', '/professor/relatorios', '/professor/diario', '/professor/diagnostico']);
+        setAllowedRoutes(['/professor/frequencia', '/relatorios', '/diario', '/diagnostico']);
       } else {
         setAllowedRoutes([]);
       }
@@ -58,7 +55,7 @@ const useAllowedRoutes = () => {
       if (user.role === 'diretor') {
         setAllowedRoutes(['/', '/home', '/alunos', '/professores', '/newclass', '/frequencia', '/diagnostico', '/diario', '/relatorios', '/login', '/register']);
       } else if (user.role === 'professor') {
-        setAllowedRoutes(['/professor/frequencia', '/professor/relatorios', '/professor/diario', '/professor/diagnostico']);
+        setAllowedRoutes(['/frequencia', '/relatorios', '/diario', '/diagnostico']);
       } else {
         setAllowedRoutes([]);
       }
