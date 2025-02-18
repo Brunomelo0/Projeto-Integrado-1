@@ -1,4 +1,29 @@
 const db = require('../models/db');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
+const SECRET_KEY = 'senha_diretor';
+
+exports.loginDiretor = async (req, res) => {
+  try {
+    const { nome, senha } = req.body;
+    const result = await db.query('SELECT * FROM Diretor WHERE nome = $1', [nome]);
+    if (result.rows.length === 0) {
+      return res.status(401).json({ error: 'Nome ou senha inválidos' });
+    }
+
+    const diretor = result.rows[0];
+    const senhaValida = await bcrypt.compare(senha, diretor.senha);
+    if (!senhaValida) {
+      return res.status(401).json({ error: 'Nome ou senha inválidos' });
+    }
+
+    const token = jwt.sign({ id: diretor.id, nome: diretor.nome }, SECRET_KEY, { expiresIn: '1h' });
+    res.json({ token });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 exports.getDiretores = async (req, res) => {
   try {

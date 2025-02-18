@@ -28,6 +28,7 @@ router.delete('/alunos/:id', alunoController.deleteAluno);
 router.put('/alunos/:id/removeFromTurma', alunoController.removeAlunoFromTurma);
 
 // Rotas para Diretor
+router.post('/loginDiretor', diretorController.loginDiretor);
 router.get('/diretores', diretorController.getDiretores);
 router.get('/diretores/:id', diretorController.getDiretorById);
 router.post('/diretores', diretorController.createDiretor);
