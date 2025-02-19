@@ -59,6 +59,14 @@ export const StyledTable = styled.table`
   }
 `;
 
+export const EditableInput = styled.input`
+  width: calc(100% - 20px);
+  margin: 0 10px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+`;
+
 export const ActionButton = styled.button`
   background: none;
   border: none;

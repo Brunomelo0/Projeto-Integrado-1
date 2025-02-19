@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaEdit, FaSave, FaTrash } from 'react-icons/fa';
-import { ActionButton, StyledTable, TableContainer } from './styles';
+import { ActionButton, EditableInput, StyledTable, TableContainer } from './styles';
 
 const Table = ({ data = [], onEdit, onDelete, onSave }) => {
   const [editingRow, setEditingRow] = useState(null);
@@ -39,23 +39,21 @@ const Table = ({ data = [], onEdit, onDelete, onSave }) => {
               <td>{row.turma_id}</td>
               <td>{row.matricula}</td>
               <td>{editingRow === row.id ? (
-                <input
+                <EditableInput
                   type="text"
                   name="nome"
                   value={editedData.nome}
                   onChange={handleChange}
-                  style={{ width: '100%' }}
                 />
               ) : (
                 row.nome
               )}</td>
               <td>{editingRow === row.id ? (
-                <input
+                <EditableInput
                   type="text"
                   name="contato"
                   value={editedData.contato}
                   onChange={handleChange}
-                  style={{ width: '100%' }}
                 />
               ) : (
                 row.contato
