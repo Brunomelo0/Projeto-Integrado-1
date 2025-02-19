@@ -1,110 +1,63 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import FilterBar from "../../components/FilterBar";
-import PageHeader from "../../components/PageHeader";
-import Table from "../../components/Table";
-import { Container, Content } from './styles';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import FilterBar from '../../components/FilterBar';
+import Table from '../../components/Table';
+import { Container, Content, Header } from './styles';
 
-export default function Student() {
-  const [data, setData] = useState([]);
-  const [turmas, setTurmas] = useState([]);
-  const [selectedTurma, setSelectedTurma] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+export default function Students() {
+  const [selectedTurma, setSelectedTurma] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [date, setDate] = useState('');
+  const [alunos, setAlunos] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    if (selectedTurma) {
-      const filteredData = data.filter((student) => student.turma_id === selectedTurma);
-      setFilteredData(filteredData);
-    } else if (searchTerm) {
-      const filteredData = data.filter((student) => {
-        return student.nome.toLowerCase().includes(searchTerm.toLowerCase());
-      });
-      setFilteredData(filteredData);
-    } else {
-      setFilteredData(data);
-    }
-  }, [data, selectedTurma]);
-
-  useEffect(() => {
-    if (searchTerm) {
-      const filteredData = data.filter((student) => {
-        return student.nome.toLowerCase().includes(searchTerm.toLowerCase());
-      });
-      setFilteredData(filteredData);
-    } else if(selectedTurma){
-      const filteredData = data.filter((student) => student.turma_id === selectedTurma);
-      setFilteredData(filteredData);
-    } else {
-      setFilteredData(data);
-    }
-  }, [data, searchTerm]);
-
-  useEffect(() => {
-    const getData = async () => {
+    const fetchAlunos = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/alunos");
-        setData(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getData();
-  }, []);
-
-  useEffect(() => {
-    const fetchTurmas = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/turmas');
-        setTurmas(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar turmas:', error);
-      }
-    };
-    fetchTurmas();
-  }, []);
-
-  useEffect(() => {
-    if (selectedTurma) {
-      const fetchFilteredData = async () => {
-        try {
-          const response = await axios.get(`http://localhost:3000/api/alunos?turma=${selectedTurma}`);
-          setData(response.data);
-        } catch (error) {
-          console.error('Erro ao buscar alunos filtrados:', error);
+        let response;
+        if (selectedTurma) {
+          response = await axios.get(`http://localhost:3000/api/turmas/${selectedTurma}/alunos`);
+        } else {
+          response = await axios.get('http://localhost:3000/api/alunos');
         }
-      };
-      fetchFilteredData();
-    }
+        setAlunos(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar alunos:', error);
+      }
+    };
+    fetchAlunos();
   }, [selectedTurma]);
 
-  const handleSaveEdit = async (editedStudent) => {
-    try {
-      const response = await axios.put(`http://localhost:3000/api/alunos/${editedStudent.id}`, editedStudent);
-      setData(data.map((s) => s.id === editedStudent.id ? response.data : s));
-      toast.success('Aluno atualizado com sucesso!');
-    } catch (error) {
-      console.error('Erro ao atualizar aluno:', error);
-      toast.error('Erro ao atualizar aluno.');
-    }
-  };
+  useEffect(() => {
+    const filtered = alunos.filter(aluno => aluno.nome.toLowerCase().includes(searchTerm.toLowerCase()));
+    setFilteredData(filtered);
+  }, [alunos, searchTerm]);
 
   const handleRemoveFromTurma = async (id) => {
     try {
-      await axios.put(`http://localhost:3000/api/alunos/${id}/removeFromTurma`);
-      setData(data.map((student) => student.id === id ? { ...student, turma_id: null } : student));
-      toast.success('Aluno removido da turma com sucesso!');
+      // Lógica para remover aluno da turma
     } catch (error) {
       console.error('Erro ao remover aluno da turma:', error);
-      toast.error('Erro ao remover aluno da turma.');
     }
+  };
+
+  const handleSaveEdit = async (editedData) => {
+    try {
+      // Lógica para salvar edição do aluno
+    } catch (error) {
+      console.error('Erro ao salvar edição do aluno:', error);
+    }
+  };
+
+  const handleTurmaChange = (turmaId) => {
+    setSelectedTurma(turmaId);
   };
 
   return (
     <Container>
-      <PageHeader title="Alunos" />
+      <Header>
+        <strong>Alunos</strong>
+      </Header>
       <Content>
         <FilterBar
           showDateFilter={false}
@@ -113,9 +66,11 @@ export default function Student() {
           setSelectedTurma={setSelectedTurma}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
+          date={date}
+          setDate={setDate}
+          onTurmaChange={handleTurmaChange}
         />
         <Table data={filteredData} onEdit={handleSaveEdit} onDelete={handleRemoveFromTurma} onSave={handleSaveEdit} />
-        <ToastContainer />
       </Content>
     </Container>
   );

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { FaEdit, FaSave, FaTrash } from 'react-icons/fa';
-import { ActionButton, EditableInput, StyledTable, TableContainer } from './styles';
+import { ActionButton, EditableInput, PaginationButton, PaginationContainer, StyledTable, TableContainer } from './styles';
 
 const Table = ({ data = [], onEdit, onDelete, onSave }) => {
   const [editingRow, setEditingRow] = useState(null);
   const [editedData, setEditedData] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 10;
 
   const handleEditClick = (row) => {
     setEditingRow(row.id);
@@ -21,6 +23,15 @@ const Table = ({ data = [], onEdit, onDelete, onSave }) => {
     setEditedData({ ...editedData, [name]: value });
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = data.slice(indexOfFirstRow, indexOfLastRow);
+  const totalPages = Math.ceil(data.length / rowsPerPage);
+
   return (
     <TableContainer>
       <StyledTable>
@@ -34,7 +45,7 @@ const Table = ({ data = [], onEdit, onDelete, onSave }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((row) => (
+          {currentRows.map((row) => (
             <tr key={row.id}>
               <td>{row.turma_id}</td>
               <td>{row.matricula}</td>
@@ -76,6 +87,17 @@ const Table = ({ data = [], onEdit, onDelete, onSave }) => {
           ))}
         </tbody>
       </StyledTable>
+      <PaginationContainer>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <PaginationButton
+            key={index + 1}
+            onClick={() => handlePageChange(index + 1)}
+            $active={currentPage === index + 1}
+          >
+            {index + 1}
+          </PaginationButton>
+        ))}
+      </PaginationContainer>
     </TableContainer>
   );
 };

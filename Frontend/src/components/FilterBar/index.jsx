@@ -14,7 +14,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function FilterBar({ showDateFilter, showCreateButton, selectedTurma, setSelectedTurma, searchTerm, setSearchTerm,  date, setDate }) {
+export default function FilterBar({ showDateFilter, showCreateButton, selectedTurma, setSelectedTurma, searchTerm, setSearchTerm, date, setDate, onTurmaChange }) {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
@@ -33,15 +33,21 @@ export default function FilterBar({ showDateFilter, showCreateButton, selectedTu
     getData();
   }, []);
 
-  const handleCadastrarClick = () => {   
+  const handleCadastrarClick = () => {
     navigate('/new');
+  };
+
+  const handleTurmaChange = (e) => {
+    const turmaId = e.target.value;
+    setSelectedTurma(turmaId);
+    onTurmaChange(turmaId);
   };
 
   return (
     <FilterContainer>
       <LeftGroup>
         <Label>Turma:</Label>
-        <Select value={selectedTurma} onChange={(e) => setSelectedTurma(e.target.value)}>
+        <Select value={selectedTurma} onChange={handleTurmaChange}>
           <option value="">Selecione uma turma</option>
           {data.map((turma, index) => <option key={index} value={turma.id}>{turma.nome}</option>)}
         </Select>

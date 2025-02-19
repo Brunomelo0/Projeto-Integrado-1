@@ -85,3 +85,24 @@ export const ActionButton = styled.button`
     margin: 0 1px;
   }
 `;
+
+export const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+export const PaginationButton = styled.button`
+  background: ${({ $active }) => ($active ? '#4caf50' : '#fff')};
+  color: ${({ $active }) => ($active ? '#fff' : '#4caf50')};
+  border: 1px solid #4caf50;
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    background: #4caf50;
+    color: #fff;
+  }
+`;
