@@ -1,10 +1,7 @@
 import React from 'react';
+import { StyledTable, TableContainer } from './styles';
 
-import { TableContainer, StyledTable } from './styles';
-
-const Table = ({data = [], origin, alunoPresente}) => {
-  console.log(origin);
-  
+const RollCall = ({ data = [], origin, alunoPresente }) => {
   return (
     <TableContainer>
       <StyledTable>
@@ -12,12 +9,12 @@ const Table = ({data = [], origin, alunoPresente}) => {
           <tr>
             <th>Matrícula</th>
             <th>Nome</th>
-            {origin==="rollcall" && (
+            {origin === "rollcall" && (
               <>
                 <th>Presença(%)</th>
               </>
             )}
-            {origin==="newrollcall" && (
+            {origin === "newrollcall" && (
               <>
                 <th>Presença</th>
                 <th>Falta</th>
@@ -31,24 +28,24 @@ const Table = ({data = [], origin, alunoPresente}) => {
             <tr key={row.id}>
               <td>{row.matricula}</td>
               <td>{row.nome}</td>
-              {origin==="rollcall" && (
-              <>
-                <td>{row.presencapercente}</td>
-              </>
-            )}
-            {origin==="newrollcall" && (
-              <>
-                <td>{row.presenca}</td>
-                <td>{row.falta}</td>
-                <td>
-                  <select onChange={(e) => alunoPresente(row, e.target.value === "ausente")}>
-                    <option value="">Selecione</option>
-                    <option value="presente">Presente</option>
-                    <option value="ausente">Ausente</option>
-                  </select>
-                </td>
-              </>
-            )}
+              {origin === "rollcall" && (
+                <>
+                  <td>{row.presencapercente}</td>
+                </>
+              )}
+              {origin === "newrollcall" && (
+                <>
+                  <td>{row.presenca}</td>
+                  <td>{row.falta}</td>
+                  <td>
+                    <select onChange={(e) => alunoPresente(row, e.target.value === "ausente")}>
+                      <option value="">Selecione</option>
+                      <option value="presente">Presente</option>
+                      <option value="ausente">Ausente</option>
+                    </select>
+                  </td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>
@@ -57,4 +54,4 @@ const Table = ({data = [], origin, alunoPresente}) => {
   );
 };
 
-export default Table;
+export default RollCall;

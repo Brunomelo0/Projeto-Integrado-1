@@ -1,41 +1,64 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
+import FilterBar from "../../components/FilterBar";
 import PageHeader from "../../components/PageHeader";
 import RollCall from "../../components/RollCall";
-import FilterBar from "../../components/FilterBar";
-
 import { Container, Content } from './styles';
-import { use } from "react";
 
 export default function Attendance() {
   const [data, setData] = useState([]);
   const [turmas, setTurmas] = useState([]);
   const [selectedTurma, setSelectedTurma] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedData, setSelectedData] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-  const [date, setDate] = useState();
-  
+  const [date, setDate] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/frequencias");
+        setData(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar dados de frequência:", error);
+      }
+    };
+
+    const fetchTurmas = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/turmas");
+        setTurmas(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar turmas:", error);
+      }
+    };
+
+    fetchData();
+    fetchTurmas();
+  }, []);
+
   useEffect(() => {
     let filteredData = data;
     if (selectedTurma) {
-      filteredData = data.filter((frequencia) => frequencia.turma_id === selectedTurma);
+      filteredData = filteredData.filter((frequencia) => frequencia.turma_id === selectedTurma);
     }
     if (searchTerm) {
-      filteredData = data.filter((frequencia) => frequencia.aluno.nome.toLowerCase().includes(searchTerm.toLowerCase()));
+      filteredData = filteredData.filter((frequencia) => frequencia.aluno.nome.toLowerCase().includes(searchTerm.toLowerCase()));
     }
     if (date) {
-      filteredData = data.filter((frequencia) => frequencia.data === date);
+      filteredData = filteredData.filter((frequencia) => frequencia.data === date);
     }
     setFilteredData(filteredData);
+  }, [data, searchTerm, selectedTurma, date]);
 
-  }, [data, selectedData, searchTerm, selectedTurma, date]);
-
+  const handleTurmaChange = (turmaId) => {
+    setSelectedTurma(turmaId);
+  };
 
   return (
     <Container>
       <PageHeader title="Alunos" />
       <Content>
-        <FilterBar 
+        <FilterBar
           showDateFilter={true}
           showCreateButton={false}
           selectedTurma={selectedTurma}
@@ -43,9 +66,10 @@ export default function Attendance() {
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           date={date}
-          setDate={setDate} 
+          setDate={setDate}
+          onTurmaChange={handleTurmaChange}
         />
-        <RollCall data={filteredData} origin={'rollcall'}/>
+        <RollCall data={filteredData} origin={'rollcall'} />
       </Content>
     </Container>
   );

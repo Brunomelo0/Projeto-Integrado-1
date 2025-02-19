@@ -1,4 +1,6 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   DateInput,
@@ -10,10 +12,6 @@ import {
   Select,
 } from "./styles";
 
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 export default function FilterBar({ showDateFilter, showCreateButton, selectedTurma, setSelectedTurma, searchTerm, setSearchTerm, date, setDate, onTurmaChange }) {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
@@ -21,10 +19,7 @@ export default function FilterBar({ showDateFilter, showCreateButton, selectedTu
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios({
-          url: "http://localhost:3000/api/turmas",
-          method: "GET",
-        });
+        const response = await axios.get("http://localhost:3000/api/turmas");
         setData(response.data);
       } catch (error) {
         console.log(error);
