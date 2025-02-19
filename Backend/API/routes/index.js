@@ -49,6 +49,8 @@ router.get('/turmas/:id', turmaController.getTurmaById);
 router.post('/turmas', turmaController.createTurma);
 router.put('/turmas/:id', turmaController.updateTurma);
 router.delete('/turmas/:id', turmaController.deleteTurma);
+// Nova rota para buscar alunos de uma turma específica
+router.get('/turmas/:id/alunos', turmaController.getAlunosByTurmaId);
 
 // Rotas para Diario
 router.get('/diarios', diarioController.getDiarios);

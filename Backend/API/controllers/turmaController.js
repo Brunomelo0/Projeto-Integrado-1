@@ -55,3 +55,14 @@ exports.deleteTurma = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// Novo endpoint para buscar alunos de uma turma específica
+exports.getAlunosByTurmaId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await db.query('SELECT * FROM Aluno WHERE turma_id = $1', [id]);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

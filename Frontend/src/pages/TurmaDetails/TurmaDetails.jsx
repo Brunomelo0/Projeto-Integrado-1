@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Header, Content, List } from './styles';
+import { Container, Content, Header, List } from './styles';
 
 export default function TurmaDetails() {
   const { id } = useParams();
@@ -10,7 +10,9 @@ export default function TurmaDetails() {
   useEffect(() => {
     const fetchAlunos = async () => {
       try {
+        console.log('Fetching alunos for turma ID:', id); // Log do ID da turma
         const response = await axios.get(`http://localhost:3000/api/turmas/${id}/alunos`);
+        console.log('API Response:', response.data); // Log da resposta da API
         setAlunos(response.data);
       } catch (error) {
         console.error('Erro ao buscar alunos:', error);
@@ -26,11 +28,15 @@ export default function TurmaDetails() {
       </Header>
       <Content>
         <List>
-          {alunos.map((aluno) => (
-            <li key={aluno.id}>
-              {aluno.nome}
-            </li>
-          ))}
+          {alunos.length > 0 ? (
+            alunos.map((aluno) => (
+              <li key={aluno.id}>
+                {aluno.nome}
+              </li>
+            ))
+          ) : (
+            <li>Nenhum aluno cadastrado nesta turma.</li>
+          )}
         </List>
       </Content>
     </Container>
