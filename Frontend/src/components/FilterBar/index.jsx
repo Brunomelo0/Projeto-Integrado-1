@@ -12,9 +12,11 @@ import {
 
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function FilterBar({ showDateFilter, showCreateButton, selectedTurma, setSelectedTurma, searchTerm, setSearchTerm, cadastrarAulaModal, date, setDate }) {
+export default function FilterBar({ showDateFilter, showCreateButton, selectedTurma, setSelectedTurma, searchTerm, setSearchTerm,  date, setDate }) {
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -31,6 +33,10 @@ export default function FilterBar({ showDateFilter, showCreateButton, selectedTu
     getData();
   }, []);
 
+  const handleCadastrarClick = () => {   
+    navigate('/new');
+  };
+
   return (
     <FilterContainer>
       <LeftGroup>
@@ -42,7 +48,7 @@ export default function FilterBar({ showDateFilter, showCreateButton, selectedTu
         {showDateFilter && (
           <>
             <Label>Data:</Label>
-            <DateInput type="date" value={date} onChange={(e) => setDate(e.target.value)}/>
+            <DateInput type="date" value={date} onChange={(e) => setDate(e.target.value)} />
           </>
         )}
       </LeftGroup>
@@ -57,7 +63,7 @@ export default function FilterBar({ showDateFilter, showCreateButton, selectedTu
         />
         {showCreateButton && (
           <>
-            <Button onClick={cadastrarAulaModal}>+ Cadastrar</Button>
+            <Button onClick={handleCadastrarClick}>+ Cadastrar</Button>
           </>
         )}
       </RightGroup>

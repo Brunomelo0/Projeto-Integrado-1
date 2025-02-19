@@ -26,7 +26,7 @@ export default function StudentForm({ buttonLabel, onSubmit }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(nome, matricula, contato, dataNascimento, turma);
-    window.location.href = "/";
+    window.location.href = "/alunos";
   };
 
   return (
