@@ -4,14 +4,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext/AuthContext';
 
 const routeNames = {
-  '/': 'Turmas',
-  '/home': 'Turmas',
-  '/alunos': 'Alunos',
-  '/professores': 'Professores',
-  '/newclass': 'Nova Aula',
-  '/frequencia': 'Frequência',
+  '/': 'Inicio',
   '/diagnostico': 'Diagnóstico',
   '/diario': 'Diário',
+  '/alunos': 'Alunos',
+  '/professores': 'Professores',
+  '/home': 'Turmas',
+  '/newclass': 'Nova Turma',
+  '/frequencia': 'Frequência',
   '/relatorios': 'Relatórios',
   '/login': 'Login',
   '/register': 'Registrar',
@@ -36,9 +36,9 @@ const useAllowedRoutes = () => {
       login({ name: username, role: role });
 
       if (role === 'diretor') {
-        setAllowedRoutes(['/', '/home', '/alunos', '/professores', '/newclass', '/frequencia', '/diagnostico', '/diario', '/relatorios', '/login', '/register']);
+        setAllowedRoutes(['/', '/home', '/diagnostico', '/diario', '/alunos', '/professores', '/newclass', '/frequencia', '/relatorios', '/login', '/register']);
       } else if (role === 'professor') {
-        setAllowedRoutes(['/professor/frequencia', '/relatorios', '/diario', '/diagnostico','/login', '/profile']);
+        setAllowedRoutes(['/diario', '/diagnostico', '/professor/frequencia', '/relatorios', '/login', '/profile']);
       } else {
         setAllowedRoutes([]);
       }
