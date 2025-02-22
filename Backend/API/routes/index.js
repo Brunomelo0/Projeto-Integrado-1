@@ -68,6 +68,7 @@ router.get('/frequencias/:id', frequenciaController.getFrequenciaById);
 router.delete('/frequencias/:id', frequenciaController.deleteFrequencia);
 
 // Rotas para Relatorio
+router.get('/relatorios/:id/pdf', relatorioController.generateRelatorioPDF);
 router.get('/relatorios', relatorioController.getRelatorios);
 router.get('/relatorios/:id', relatorioController.getRelatorioById);
 router.post('/relatorios', relatorioController.createRelatorio);

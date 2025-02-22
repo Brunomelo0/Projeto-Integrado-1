@@ -1,4 +1,50 @@
 const db = require('../models/db');
+const PDFDocument = require('pdfkit');
+
+exports.generateRelatorioPDF = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await db.query(`
+      SELECT r.descricao, p.nome AS professor, t.nome AS turma
+      FROM Relatorio r
+      JOIN Professor p ON r.professor_id = p.id
+      JOIN Turma t ON r.turma_id = t.id
+      WHERE r.id = $1
+    `, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Relatório não encontrado' });
+    }
+
+    const relatorio = result.rows[0];
+
+    res.setHeader('Content-Disposition', `attachment; filename=relatorio_${id}.pdf`);
+    res.setHeader('Content-Type', 'application/pdf');
+
+    const doc = new PDFDocument();
+    doc.pipe(res);
+
+    doc.fontSize(18).text('Relatório', { align: 'center' });
+    doc.moveDown(2);
+
+    doc.fontSize(14).text(`Descrição:`, { bold: true });
+    doc.fontSize(12).text(relatorio.descricao || 'Não informado');
+    doc.moveDown();
+
+    doc.fontSize(14).text(`Professor:`, { bold: true });
+    doc.fontSize(12).text(relatorio.professor || 'Não informado');
+    doc.moveDown();
+
+    doc.fontSize(14).text(`Turma:`, { bold: true });
+    doc.fontSize(12).text(relatorio.turma || 'Não informado');
+    doc.moveDown();
+
+    doc.end();
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 exports.getRelatorios = async (req, res) => {
   try {
