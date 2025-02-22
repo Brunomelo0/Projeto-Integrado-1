@@ -17,27 +17,27 @@ INSERT INTO Professor (nome, contato, dataNascimento) VALUES
   ('Professor C', '555444333', '1990-03-03');
 
 -- Inserir dados na tabela Aluno
-INSERT INTO Aluno (nome, data_nascimento, contato, matricula) VALUES
-('Lucas Pereira', '2005-03-12', '11944444444', 'MAT001'),
-('Fernanda Lima', '2004-07-21', '21933333333', 'MAT002'),
-('Mariana Silva', '2006-11-15', '31922222222', 'MAT003'),
-('Rafael Santos', '2005-05-05', '11911111111', 'MAT004'),
-('Ana Paula', '2005-08-10', '11955555555', 'MAT005'),
-('Carlos Eduardo', '2004-02-20', '21966666666', 'MAT006'),
-('Beatriz Souza', '2006-09-25', '31977777777', 'MAT007'),
-('João Pedro', '2005-12-30', '11988888888', 'MAT008'),
+INSERT INTO Aluno (nome, data_nascimento, contato, matricula, turma_id) VALUES
+('Lucas Pereira', '2005-03-12', '11944444444', 'MAT001'),(1),
+('Fernanda Lima', '2004-07-21', '21933333333', 'MAT002'),(1),
+('Mariana Silva', '2006-11-15', '31922222222', 'MAT003'),(1),
+('Rafael Santos', '2005-05-05', '11911111111', 'MAT004'),(1),
+('Ana Paula', '2005-08-10', '11955555555', 'MAT005'),(2),
+('Carlos Eduardo', '2004-02-20', '21966666666', 'MAT006'),(1),
+('Beatriz Souza', '2006-09-25', '31977777777', 'MAT007'),(1),
+('João Pedro', '2005-12-30', '11988888888', 'MAT008'),(1),
 ('Larissa Oliveira', '2004-04-14', '21999999999', 'MAT009'),
-('Gabriel Costa', '2006-06-18', '31910101010', 'MAT010'),
-('Juliana Mendes', '2005-01-22', '11911111112', 'MAT011'),
-('Felipe Rocha', '2004-03-15', '21912121212', 'MAT012'),
-('Camila Ferreira', '2006-07-19', '31913131313', 'MAT013'),
-('Thiago Almeida', '2005-11-23', '11914141414', 'MAT014'),
-('Patrícia Gomes', '2004-05-27', '21915151515', 'MAT015'),
-('Rodrigo Martins', '2006-08-31', '31916161616', 'MAT016'),
-('Vanessa Ribeiro', '2005-02-05', '11917171717', 'MAT017'),
-('Bruno Silva', '2004-06-09', '21918181818', 'MAT018'),
-('Isabela Santos', '2006-10-13', '31919191919', 'MAT019'),
-('Renato Carvalho', '2005-03-17', '11920202020', 'MAT020');
+('Gabriel Costa', '2006-06-18', '31910101010', 'MAT010'),(2),
+('Juliana Mendes', '2005-01-22', '11911111112', 'MAT011'),(2),
+('Felipe Rocha', '2004-03-15', '21912121212', 'MAT012'),(2),
+('Camila Ferreira', '2006-07-19', '31913131313', 'MAT013'),(2),
+('Thiago Almeida', '2005-11-23', '11914141414', 'MAT014'),(2),
+('Patrícia Gomes', '2004-05-27', '21915151515', 'MAT015'),(3),
+('Rodrigo Martins', '2006-08-31', '31916161616', 'MAT016'),(3),
+('Vanessa Ribeiro', '2005-02-05', '11917171717', 'MAT017'),(3),
+('Bruno Silva', '2004-06-09', '21918181818', 'MAT018'),(3),
+('Isabela Santos', '2006-10-13', '31919191919', 'MAT019'),(3),
+('Renato Carvalho', '2005-03-17', '11920202020', 'MAT020'),(3);
 
 -- Inserir dados na tabela Turma
 INSERT INTO Turma (nome, periodo) VALUES
