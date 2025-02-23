@@ -1,9 +1,8 @@
-import { BrowserRouter, Route, Routes as RouterRoutes, useLocation } from 'react-router-dom';
+import { Route, Routes as RouterRoutes, useLocation } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-
+import Header from '../../components/Header';
 import GlobalStyles from '../../assets/styles/global';
 import defaultTheme from '../../assets/styles/themes/default';
-import Profile from '../../pages/Profile/Profile';
 import AccessDenied from '../../pages/AccessDenied/AccessDenied';
 import Attendance from '../../pages/Attendance';
 import Diario from '../../pages/Daily';
@@ -14,25 +13,23 @@ import NewClass from '../../pages/NewClass';
 import NewRollCall from '../../pages/NewRollCall';
 import NewStudent from '../../pages/NewStudent';
 import Professores from '../../pages/Professores/Professores';
+import Profile from '../../pages/Profile/Profile';
 import Register from '../../pages/Register';
 import Report from '../../pages/Report';
 import RollCall from '../../pages/RollCall';
 import Students from '../../pages/Students';
 import TurmaDetails from '../../pages/TurmaDetails/TurmaDetails';
-import Header from '../Header';
-
-import { Container } from './styles';
 import Welcome from '../../pages/Welcome/Welcome';
+import { Container } from './styles';
 
 function App() {
   const location = useLocation();
   const hideHeaderRoutes = ['/login'];
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyles />
-      <Container>
-        {!hideHeaderRoutes.includes(location.pathname) && <Header />}
+      <Container>      
+      {!hideHeaderRoutes.includes(location.pathname) && <Header />}       
         <RouterRoutes>
           <Route path="/" element={<Welcome />} />
           <Route path="/home" element={<Home />} />
@@ -57,12 +54,4 @@ function App() {
   );
 }
 
-function AppWrapper() {
-  return (
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  );
-}
-
-export default AppWrapper;
+export default App;

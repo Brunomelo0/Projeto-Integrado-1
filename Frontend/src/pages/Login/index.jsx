@@ -9,8 +9,8 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (event) => {   
-    event.preventDefault(); 
+  const handleLogin = async (event) => {
+    event.preventDefault();
     if (username && password) {
       try {
         console.log('Senha enviada para autenticação:', password); // Adiciona um console.log para ver a senha
@@ -22,9 +22,10 @@ const Login = () => {
         console.log('Resposta do login:', response); // Adiciona um console.log para ver a resposta do login
         if (response.status === 200) {
           const { token } = response.data;
+          localStorage.setItem('token', token); // Armazena o token no localStorage
 
-          // Navegar para a próxima página com o token
-          navigate('/home', { state: { token } });
+          // Navegar para a próxima página
+          navigate('/home');
         }
       } catch (err) {
         setError('Credenciais inválidas');

@@ -26,7 +26,7 @@ const useAllowedRoutes = () => {
 
   const fetchUserRole = useCallback(async (token) => {
     try {
-      const response = await axios.get('http://localhost:3000/api/users', {
+      const response = await axios.get('http://localhost:3000/api/users/profile', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -48,7 +48,7 @@ const useAllowedRoutes = () => {
   }, [login]);
 
   useEffect(() => {
-    const token = location.state?.token;
+    const token = localStorage.getItem('token');
     if (token && !user.role) {
       fetchUserRole(token);
     } else if (user.role) {

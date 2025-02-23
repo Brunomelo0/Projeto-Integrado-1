@@ -1,4 +1,6 @@
-import { Route, Routes as RoutesDOM } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Route, Routes as RouterRoutes, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from './components/AuthContext/AuthContext';
 import useAllowedRoutes from './components/Hooks/useAllowedRoutes';
 import AccessDenied from './pages/AccessDenied/AccessDenied';
 import Attendance from './pages/Attendance';
@@ -9,20 +11,32 @@ import Login from './pages/Login';
 import NewClass from './pages/NewClass';
 import NewRollCall from './pages/NewRollCall';
 import NewStudent from './pages/NewStudent';
-import Professores from "./pages/Professores/Professores";
+import Professores from './pages/Professores/Professores';
+import Profile from './pages/Profile/Profile';
 import Register from './pages/Register';
 import Report from './pages/Report';
 import RollCall from './pages/RollCall';
 import Students from './pages/Students';
 import TurmaDetails from './pages/TurmaDetails/TurmaDetails';
-import Profile from './pages/Profile/Profile';
 import Welcome from './pages/Welcome/Welcome';
 
 export default function Routes() {
-  const { allowedRoutes } = useAllowedRoutes();
+  const { allowedRoutes, fetchUserRole } = useAllowedRoutes();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token && !user.role) {
+      fetchUserRole(token);
+    } else if (!allowedRoutes.includes(location.pathname)) {
+      navigate('/access-denied');
+    }
+  }, [location.pathname, user.role, fetchUserRole, allowedRoutes, navigate]);
 
   return (
-    <RoutesDOM>
+    <RouterRoutes>
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
@@ -41,6 +55,6 @@ export default function Routes() {
       {allowedRoutes.includes('/register') && <Route path="/register" element={<Register />} />}
       <Route path="/turma/:id" element={<TurmaDetails />} />
       <Route path="/access-denied" element={<AccessDenied />} />
-    </RoutesDOM>
+    </RouterRoutes>
   );
 }

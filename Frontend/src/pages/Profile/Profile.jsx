@@ -17,7 +17,12 @@ const Profile = () => {
     const fetchProfileData = async () => {
       try {
         console.log('User from useAuth:', user); // Log dos dados do usuário do login
-        const response = await axios.get(`http://localhost:3000/api/users/${user.id}`);
+        const token = localStorage.getItem('token'); // Supondo que o token esteja armazenado no localStorage
+        const response = await axios.get(`http://localhost:3000/api/users/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         console.log('API Response:', response.data); // Log da resposta da API
         setProfileData((prevData) => ({
           ...prevData,
@@ -52,7 +57,12 @@ const Profile = () => {
     e.preventDefault();
     try {
       console.log('User on Submit:', user); // Log dos dados do usuário no submit
-      await axios.put(`http://localhost:3000/api/users/${user.id}`, profileData);
+      const token = localStorage.getItem('token'); // Supondo que o token esteja armazenado no localStorage
+      await axios.put(`http://localhost:3000/api/users/${user.id}`, profileData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       login({ ...user, name: profileData.name, image: profileData.image });
       alert('Perfil atualizado com sucesso!');
     } catch (error) {

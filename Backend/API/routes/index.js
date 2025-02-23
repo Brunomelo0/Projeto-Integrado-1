@@ -13,7 +13,8 @@ const router = express.Router();
 
 // Rotas para Usuarios
 router.post('/users/login', userController.loginUser);
-router.get('/users', userController.getUser);
+router.get('/users', userController.getUsers);
+router.get('/users/profile', userController.getUserProfile);
 router.get('/users/:id', userController.getUserById);
 router.post('/users', userController.createUser);
 router.put('/users/:id', userController.updateUser);
@@ -82,6 +83,5 @@ router.post('/diagnosticos', diagnosticoController.createDiagnostico);
 router.put('/diagnosticos/:id', diagnosticoController.updateDiagnostico);
 router.delete('/diagnosticos/:id', diagnosticoController.deleteDiagnostico);
 router.get('/turmas/:turma_id/diagnosticos', diagnosticoController.getDiagnosticosByTurma);
-
 
 module.exports = router;
