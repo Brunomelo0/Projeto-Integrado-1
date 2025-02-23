@@ -50,16 +50,25 @@ exports.createDiario = async (req, res) => {
 };
 
 exports.updateDiario = async (req, res) => {
+  const { id } = req.params;
+  const { titulo, descricao, professor_id, data, turma_id } = req.body;
+
+  console.log('Recebido para atualização:', { id, titulo, descricao, professor_id, data, turma_id });
+
   try {
-    const { id } = req.params;
-    const { titulo, descricao, professor_id, data, turma_id } = req.body;
     const result = await db.query(
       'UPDATE Diario SET titulo = $1, descricao = $2, professor_id = $3, data = $4, turma_id = $5 WHERE id = $6 RETURNING *',
       [titulo, descricao, professor_id, data, turma_id, id]
     );
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Diário não encontrado' });
+    }
+
+    res.status(200).json(result.rows[0]);
+  } catch (error) {
+    console.error('Erro ao atualizar diário:', error);
+    res.status(500).json({ error: 'Erro ao atualizar diário' });
   }
 };
 

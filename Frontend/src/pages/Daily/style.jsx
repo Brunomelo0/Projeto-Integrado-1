@@ -8,6 +8,11 @@ export const Container = styled.div`
     padding: 10px;
   }
 `;
+export const Content = styled.div`
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  `;
 
 export const FilterContainer = styled.div`
   display: flex;

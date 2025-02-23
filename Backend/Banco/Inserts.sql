@@ -40,10 +40,10 @@ INSERT INTO Aluno (nome, data_nascimento, contato, matricula, turma_id) VALUES
 ('Renato Carvalho', '2005-03-17', '11920202020', 'MAT020'),(3);
 
 -- Inserir dados na tabela Turma
-INSERT INTO Turma (nome, periodo) VALUES
-('Turma A', 'Manhã'),
-('Turma B', 'Tarde'),
-('Turma C', 'Noite');
+INSERT INTO Turma (nome, periodo, professor_id) VALUES
+('Turma A', 'Matutino', 1),
+('Turma B', 'Vespertino', 2),
+('Turma C', 'Noturno', 3);
 
 -- Inserir dados na tabela Aluno_Turma
 INSERT INTO Aluno_Turma (aluno_id, turma_id) VALUES
@@ -59,9 +59,9 @@ INSERT INTO Professor_Turma (professor_id, turma_id) VALUES
 (3, 3);
 
 -- Inserir dados na tabela Diario
-INSERT INTO Diario (titulo, descricao, data, professor_id) VALUES
-('Planejamento Semanal', 'Planejamento das atividades da semana', '2024-12-01', 1),
-('Acompanhamento de Projetos', 'Registro dos projetos em andamento', '2024-12-02', 2);
+INSERT INTO Diario (titulo, descricao, data, professor_id, turma_id) VALUES
+('Planejamento Semanal', 'Planejamento das atividades da semana', '2024-12-01', 1,1),
+('Acompanhamento de Projetos', 'Registro dos projetos em andamento', '2024-12-02', 2,2);
 
 -- Inserir dados na tabela Frequencia
 INSERT INTO Frequencia (data, turma_id, aluno_id, presenca) VALUES

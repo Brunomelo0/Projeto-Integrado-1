@@ -13,7 +13,7 @@ import {
   Select,
 } from "./styles";
 
-export default function FilterBar({ showDateFilter, showCreateButton, selectedTurma, setSelectedTurma, searchTerm, setSearchTerm }) {
+export default function FilterBar({ showDateFilter, showCreateButton, searchTerm, setSearchTerm, cadastrarDiarioModal }) {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
@@ -27,31 +27,10 @@ export default function FilterBar({ showDateFilter, showCreateButton, selectedTu
       }
     };
     getData();
-  }, []);
-
-  const handleButtonClick = () => {
-    navigate("/new");
-  };
+  }, []); 
 
   return (
-    <FilterContainer>
-      <LeftGroup>
-        <Label>Turma:</Label>
-        <Select value={selectedTurma} onChange={(e) => setSelectedTurma(e.target.value)}>
-          <option value="">Selecione uma turma</option>
-          {data.map((turma, index) => (
-            <option key={index} value={turma.id}>
-              {turma.nome}
-            </option>
-          ))}
-        </Select>
-        {showDateFilter && (
-          <>
-            <Label>Data:</Label>
-            <DateInput type="date" />
-          </>
-        )}
-      </LeftGroup>
+    <FilterContainer>    
 
       <RightGroup>
         <Label>Buscar:</Label>
@@ -63,7 +42,7 @@ export default function FilterBar({ showDateFilter, showCreateButton, selectedTu
         />
         {showCreateButton && (
           <>
-            <Button onClick={handleButtonClick}>Cadastrar</Button>
+            <Button onClick={cadastrarDiarioModal}>Cadastrar</Button>
           </>
         )}
       </RightGroup>
@@ -74,8 +53,6 @@ export default function FilterBar({ showDateFilter, showCreateButton, selectedTu
 FilterBar.propTypes = {
   showDateFilter: PropTypes.bool,
   showCreateButton: PropTypes.bool,
-  selectedTurma: PropTypes.string.isRequired,
-  setSelectedTurma: PropTypes.func.isRequired,
   searchTerm: PropTypes.string.isRequired,
   setSearchTerm: PropTypes.func.isRequired,
 };

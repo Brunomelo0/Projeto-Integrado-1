@@ -18,7 +18,7 @@ CREATE TABLE Turma (
     ID SERIAL PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,
     periodo VARCHAR(50) NOT NULL,
-    professor_id INT REFERENCES Professor(ID)
+    professor_id INT NOT NULL REFERENCES Professor(ID)
 );
 
 CREATE TABLE Aluno (
@@ -35,7 +35,8 @@ CREATE TABLE Diario (
     titulo VARCHAR(100) NOT NULL,
     descricao TEXT,
     data DATE,
-    professor_id INT NOT NULL REFERENCES Professor(ID)
+    professor_id INT NOT NULL REFERENCES Professor(ID),
+    turma_id INT NOT NULL REFERENCES Turma(ID)
 );
 
 CREATE TABLE Frequencia (
