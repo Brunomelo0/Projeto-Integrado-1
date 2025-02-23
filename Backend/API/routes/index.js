@@ -81,5 +81,7 @@ router.get('/diagnosticos/:id', diagnosticoController.getDiagnosticoById);
 router.post('/diagnosticos', diagnosticoController.createDiagnostico);
 router.put('/diagnosticos/:id', diagnosticoController.updateDiagnostico);
 router.delete('/diagnosticos/:id', diagnosticoController.deleteDiagnostico);
+router.get('/turmas/:turma_id/diagnosticos', diagnosticoController.getDiagnosticosByTurma);
+
 
 module.exports = router;

@@ -13,6 +13,7 @@ export const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -140,6 +141,20 @@ export const Table = styled.table`
       padding: 6px;
     }
   }
+
+  th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  tr:hover {
+    background-color: #f5f5f5;
+  }
 `;
 
 export const ActionButton = styled.button`
@@ -164,6 +179,20 @@ export const ActionButton = styled.button`
 
   @media (max-width: 768px) {
     font-size: 14px;
+  }
+
+  color: #007bff;
+
+  &:hover {
+    color: #0056b3;
+  }
+
+  &.deletar {
+    color: #dc3545;
+
+    &:hover {
+      color: #c82333;
+    }
   }
 `;
 
@@ -207,6 +236,26 @@ export const Form = styled.form`
     button {
       width: 100%;
       padding: 10px;
+    }
+  }
+
+  label {
+    margin-bottom: 8px;
+  }
+
+  input, select, textarea {
+    margin-bottom: 16px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      margin-left: 8px;
     }
   }
 `;
@@ -287,6 +336,15 @@ export const Modal = styled.div`
       padding: 10px;
     }
   }
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 `;
 
 export const ToastButton = styled.button`
@@ -325,4 +383,11 @@ export const ToastNoButton = styled.button`
     padding: 10px;
     margin: 5px 0;
   }
+`;
+
+export const Content = styled.div`
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;

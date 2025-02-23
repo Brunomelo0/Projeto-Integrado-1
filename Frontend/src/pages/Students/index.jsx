@@ -76,10 +76,7 @@ export default function Students() {
   };
 
   return (
-    <Container>
-      <Header>
-        <strong>Alunos</strong>
-      </Header>
+    <Container>      
       <Content>
         <FilterBar
           showDateFilter={false}

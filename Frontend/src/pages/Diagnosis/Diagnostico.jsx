@@ -3,28 +3,22 @@ import { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FilterBar from '../../components/FilterBarPageDiagnostico';
 import {
   ActionButton,
-  Button,
   Container,
-  FilterContainer,
+  Content,
   Form,
-  Label,
-  LeftGroup,
   Modal,
-  RightGroup,
-  SearchInput,
-  Select,
   Table,
   ToastButton,
-  ToastNoButton,
+  ToastNoButton
 } from "./styles";
 
 const Diagnostico = () => {
   const [diagnosticos, setDiagnosticos] = useState([]);
-  const [turmas, setTurmas] = useState([]);
-  const [turma, setTurma] = useState("");
-  const [filtroNome, setFiltroNome] = useState("");
+  const [selectedTurma, setSelectedTurma] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [modalAberto, setModalAberto] = useState(false);
   const [modalCadastroAberto, setModalCadastroAberto] = useState(false);
   const [diagnosticoSelecionado, setDiagnosticoSelecionado] = useState(null);
@@ -35,71 +29,29 @@ const Diagnostico = () => {
     semestre: "",
   });
   const [alunosSemDiagnostico, setAlunosSemDiagnostico] = useState([]);
-  const [alunosFiltrados, setAlunosFiltrados] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
+    console.log('selectedTurma:', selectedTurma);
     const fetchDiagnosticos = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/diagnosticos');
+        const response = selectedTurma
+          ? await axios.get(`http://localhost:3000/api/turmas/${selectedTurma}/diagnosticos`)
+          : await axios.get('http://localhost:3000/api/diagnosticos');
         setDiagnosticos(response.data);
       } catch (error) {
         console.error('Erro ao buscar diagnósticos:', error);
       }
     };
     fetchDiagnosticos();
-  }, []);
+  }, [selectedTurma]);
 
   useEffect(() => {
-    const fetchTurmas = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/turmas');
-        setTurmas(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar turmas:', error);
-      }
-    };
-    fetchTurmas();
-  }, []);
-
-  useEffect(() => {
-    if (turma) {
-      const fetchDiagnosticosByTurma = async () => {
-        try {
-          const response = await axios.get(`http://localhost:3000/api/diagnosticos/turma/${turma}`);
-          setDiagnosticos(response.data);
-        } catch (error) {
-          console.error('Erro ao buscar diagnósticos por turma:', error);
-        }
-      };
-      fetchDiagnosticosByTurma();
-    } else {
-      const fetchDiagnosticos = async () => {
-        try {
-          const response = await axios.get('http://localhost:3000/api/diagnosticos');
-          setDiagnosticos(response.data);
-        } catch (error) {
-          console.error('Erro ao buscar diagnósticos:', error);
-        }
-      };
-      fetchDiagnosticos();
-    }
-  }, [turma]);
-
-  useEffect(() => {
-    if (turma) {
-      const fetchAlunosByTurma = async () => {
-        try {
-          const response = await axios.get(`http://localhost:3000/api/alunos/turma/${turma}`);
-          setAlunosFiltrados(response.data);
-        } catch (error) {
-          console.error('Erro ao buscar alunos por turma:', error);
-        }
-      };
-      fetchAlunosByTurma();
-    } else {
-      setAlunosFiltrados([]);
-    }
-  }, [turma]);
+    const filtered = diagnosticos.filter(diagnostico =>
+      diagnostico.aluno_nome && diagnostico.aluno_nome.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredData(filtered);
+  }, [diagnosticos, searchTerm]);
 
   const fetchAlunosSemDiagnostico = async () => {
     try {
@@ -204,29 +156,56 @@ const Diagnostico = () => {
 
   return (
     <Container>
-      <FilterContainer>
-        <LeftGroup>
-          <Label>Turma:</Label>
-          <Select value={turma} onChange={(e) => setTurma(e.target.value)}>
-            <option value="">Selecione uma turma</option>
-            {turmas.map((turma) => (
-              <option key={turma.id} value={turma.id}>
-                {turma.nome}
-              </option>
+      <Content>
+        <FilterBar
+          showDateFilter={false}
+          showCreateButton={true}
+          selectedTurma={selectedTurma}
+          setSelectedTurma={setSelectedTurma}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          onTurmaChange={setSelectedTurma}
+          cadastrarDiagModal={cadastrarDiagModal}
+        />
+        <Table>
+          <thead>
+            <tr>
+              <th>Turma</th>
+              <th>Matrícula</th>
+              <th>Nome</th>              
+              <th>Desenvolvimento</th>
+              <th>Semestre</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredData.map((diagnostico) => (
+              <tr key={diagnostico.id}>
+                <td>{diagnostico.turma_id}</td>
+                <td>{diagnostico.matricula}</td>
+                <td>{diagnostico.aluno_nome}</td>               
+                <td>{diagnostico.status}</td>
+                <td>{diagnostico.semestre}</td>
+                <td>
+                  <ActionButton
+                    className="editar"
+                    onClick={() => editarModal(diagnostico)}
+                  >
+                    <FaEdit />
+                  </ActionButton>
+                  <ActionButton
+                    className="deletar"
+                    onClick={() => handleDelete(diagnostico.id)}
+                  >
+                    <FaTrash />
+                  </ActionButton>
+                </td>
+              </tr>
             ))}
-          </Select>
-        </LeftGroup>
-        <RightGroup>
-          <Label>Busca</Label>
-          <SearchInput
-            type="text"
-            placeholder="Filtrar por nome"
-            value={filtroNome}
-            onChange={(e) => setFiltroNome(e.target.value)}
-          />
-          <Button className="cadastrar" onClick={cadastrarDiagModal}>+ Cadastrar</Button>
-        </RightGroup>
-      </FilterContainer>
+          </tbody>
+        </Table>
+      </Content>
+      <ToastContainer />
 
       {modalAberto && (
         <Modal>
@@ -306,46 +285,6 @@ const Diagnostico = () => {
           </Form>
         </Modal>
       )}
-      <Table>
-        <thead>
-          <tr>
-            <th>Matrícula</th>
-            <th>Nome</th>
-            <th>Desenvolvimento</th>
-            <th>Semestre</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {diagnosticos
-            .filter((diagnostico) =>
-              diagnostico.aluno_nome ? diagnostico.aluno_nome.toLowerCase().includes(filtroNome.toLowerCase()) : false
-            )
-            .map((diagnostico) => (
-              <tr key={diagnostico.id}>
-                <td>{diagnostico.matricula}</td>
-                <td>{diagnostico.aluno_nome}</td>
-                <td>{diagnostico.status}</td>
-                <td>{diagnostico.semestre}</td>
-                <td>
-                  <ActionButton
-                    className="editar"
-                    onClick={() => editarModal(diagnostico)}
-                  >
-                    <FaEdit />
-                  </ActionButton>
-                  <ActionButton
-                    className="deletar"
-                    onClick={() => handleDelete(diagnostico.id)}
-                  >
-                    <FaTrash />
-                  </ActionButton>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </Table>
-      <ToastContainer />
     </Container>
   );
 };
