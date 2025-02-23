@@ -26,13 +26,12 @@ const Diagnostico = () => {
     descricao: "",
     status: "Não desenvolvido",
     aluno_id: "",
-    semestre: "",
+    semestre: "2025/1",
   });
   const [alunosSemDiagnostico, setAlunosSemDiagnostico] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    console.log('selectedTurma:', selectedTurma);
     const fetchDiagnosticos = async () => {
       try {
         const response = selectedTurma
@@ -128,7 +127,7 @@ const Diagnostico = () => {
       descricao: "",
       status: "Não desenvolvido",
       aluno_id: "",
-      semestre: "",
+      semestre: "2025/1",
     });
     setModalCadastroAberto(true);
   };
@@ -141,6 +140,16 @@ const Diagnostico = () => {
 
   const handleSalvar = async () => {
     try {
+      // Verificar se o aluno já possui dois diagnósticos no semestre atual
+      const diagnosticosAluno = diagnosticos.filter(diagnostico =>
+        diagnostico.aluno_id === novoDiagnostico.aluno_id && diagnostico.semestre === novoDiagnostico.semestre
+      );
+
+      if (diagnosticosAluno.length >= 2) {
+        toast.error('O aluno já possui dois diagnósticos neste semestre.');
+        return;
+      }
+
       const response = await axios.post('http://localhost:3000/api/diagnosticos', {
         descricao: novoDiagnostico.descricao,
         status: novoDiagnostico.status,
@@ -172,7 +181,7 @@ const Diagnostico = () => {
             <tr>
               <th>Turma</th>
               <th>Matrícula</th>
-              <th>Nome</th>              
+              <th>Nome</th>
               <th>Desenvolvimento</th>
               <th>Semestre</th>
               <th>Ações</th>
@@ -183,7 +192,7 @@ const Diagnostico = () => {
               <tr key={diagnostico.id}>
                 <td>{diagnostico.turma_id}</td>
                 <td>{diagnostico.matricula}</td>
-                <td>{diagnostico.aluno_nome}</td>               
+                <td>{diagnostico.aluno_nome}</td>
                 <td>{diagnostico.status}</td>
                 <td>{diagnostico.semestre}</td>
                 <td>
@@ -227,12 +236,13 @@ const Diagnostico = () => {
               onChange={(e) => setDiagnosticoSelecionado({ ...diagnosticoSelecionado, descricao: e.target.value })}
             />
             <label>Semestre</label>
-            <input
-              type="text"
-              placeholder="Semestre (ex: 2023-1)"
+            <select
               value={diagnosticoSelecionado.semestre}
               onChange={(e) => setDiagnosticoSelecionado({ ...diagnosticoSelecionado, semestre: e.target.value })}
-            />
+            >
+              <option value="2025/1">2025/1</option>
+              <option value="2025/2">2025/2</option>
+            </select>
             <div className="modal-buttons">
               <button type="button" onClick={fecharModal}>Cancelar</button>
               <button type="button" onClick={confirmEdit}>Salvar</button>
@@ -272,12 +282,13 @@ const Diagnostico = () => {
               onChange={(e) => setNovoDiagnostico({ ...novoDiagnostico, descricao: e.target.value })}
             />
             <label>Semestre</label>
-            <input
-              type="text"
-              placeholder="Semestre (ex: 2023-1)"
+            <select
               value={novoDiagnostico.semestre}
               onChange={(e) => setNovoDiagnostico({ ...novoDiagnostico, semestre: e.target.value })}
-            />
+            >
+              <option value="2025/1">2025/1</option>
+              <option value="2025/2">2025/2</option>
+            </select>
             <div className="modal-buttons">
               <button type="button" onClick={fecharModal}>Cancelar</button>
               <button type="button" onClick={handleSalvar}>Salvar</button>
