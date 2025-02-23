@@ -55,7 +55,7 @@ const useAllowedRoutes = () => {
       if (user.role === 'diretor') {
         setAllowedRoutes(['/', '/home', '/alunos', '/professores', '/newclass', '/frequencia', '/diagnostico', '/diario', '/relatorios', '/login', '/register']);
       } else if (user.role === 'professor') {
-        setAllowedRoutes(['/frequencia', '/relatorios', '/diario', '/diagnostico']);
+        setAllowedRoutes(['/diario', '/diagnostico', '/professor/frequencia', '/relatorios',]);
       } else {
         setAllowedRoutes([]);
       }
