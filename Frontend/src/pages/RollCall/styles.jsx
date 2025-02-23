@@ -33,16 +33,16 @@ export const Header = styled.header`
   }
 
   a {
-    color: ${({theme}) => theme.colors.primary.main};
+    color: ${({ theme }) => theme.colors.primary.main};
     text-decoration: none;
     font-weight: bold;
-    border: 2px solid ${({theme}) => theme.colors.primary.main};
+    border: 2px solid ${({ theme }) => theme.colors.primary.main};
     padding: 8px 16px;
     border-radius: 4px;
     transition: all 0.2s ease-in;
 
     &:hover {
-      background: ${({theme}) => theme.colors.primary.main};
+      background: ${({ theme }) => theme.colors.primary.main};
       color: #fff;
     }
   }
@@ -63,7 +63,7 @@ export const ListContainer = styled.div`
       span {
       margin-right: 8px;
       font-weight: bold;
-      color: ${({theme}) => theme.colors.primary.main};
+      color: ${({ theme }) => theme.colors.primary.main};
       ;
       }
     }
@@ -89,8 +89,8 @@ export const Card = styled.div`
       align-items: center;
 
       small {
-        background: ${({theme}) => theme.colors.primary.lighter};
-        color: ${({theme}) => theme.colors.primary.main};
+        background: ${({ theme }) => theme.colors.primary.lighter};
+        color: ${({ theme }) => theme.colors.primary.main};
         font-weight: bold;
         text-transform: uppercase;
         padding: 4px;
@@ -102,7 +102,7 @@ export const Card = styled.div`
     span{
       display: block;
       font-size: 14px;
-      color: ${({theme}) => theme.colors.gray[200]};
+      color: ${({ theme }) => theme.colors.gray[200]};
     }
   }
 
@@ -116,7 +116,8 @@ export const Card = styled.div`
         margin-left: 8px;
       }
     }
-`
+`;
+
 export const InputSearchContainer = styled.div`
   width: 100%;
 
@@ -134,4 +135,103 @@ export const InputSearchContainer = styled.div`
       color: #BCBCBC
     }
   }
+`;
+
+export const Modal = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 32px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 400px;
+  max-width: 90%;
+
+  h2 {
+    margin-bottom: 24px;
+  }
+
+  .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+
+    button {
+      margin-left: 8px;
+    }
+  }
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+
+  label {
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+
+  input, select {
+    margin-bottom: 16px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+`;
+
+export const ToastButton = styled.button`
+  background: ${({ theme }) => theme.colors.primary.main};
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primary.dark};
+  }
+`;
+
+export const ToastNoButton = styled.button`
+  background: #ccc;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #999;
+  }
+`;
+
+export const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+`;
+
+export const TableHeader = styled.th`
+  background: ${({ theme }) => theme.colors.primary.main};
+  color: #fff;
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+`;
+
+export const TableRow = styled.tr`
+  &:nth-child(even) {
+    background: #f9f9f9;
+  }
+`;
+
+export const TableCell = styled.td`
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
 `;

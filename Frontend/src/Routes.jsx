@@ -49,7 +49,7 @@ export default function Routes() {
       {allowedRoutes.includes('/professores') && <Route path="/professores" element={<Professores />} />}
       {allowedRoutes.includes('/diagnostico') && <Route path="/diagnostico" element={<Diagnostico />} />}
       {allowedRoutes.includes('/diario') && <Route path="/diario" element={<Diario />} />}
-      {allowedRoutes.includes('/frequencia') && <Route path="/frequencia" element={<RollCall />} />}
+      {allowedRoutes.includes('/professor/frequencia') && <Route path="/professor/frequencia" element={<RollCall />} />}
       {allowedRoutes.includes('/professor/fazerchamada') && <Route path="/professor/fazerchamada" element={<NewRollCall />} />}
       {allowedRoutes.includes('/relatorios') && <Route path="/relatorios" element={<Report />} />}
       {allowedRoutes.includes('/register') && <Route path="/register" element={<Register />} />}

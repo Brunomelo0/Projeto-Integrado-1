@@ -56,7 +56,7 @@ export default function Attendance() {
 
   return (
     <Container>
-      <PageHeader title="Alunos" />
+      <PageHeader title="AlunosATTTENCIA" />
       <Content>
         <FilterBar
           showDateFilter={true}

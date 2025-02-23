@@ -1,51 +1,31 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { StyledTable, TableContainer } from './styles';
 
-const RollCall = ({ data = [], origin, alunoPresente }) => {
+const RollCallTable = ({ data, origin, onEdit, onDelete }) => {
   return (
     <TableContainer>
       <StyledTable>
         <thead>
           <tr>
-            <th>Matrícula</th>
-            <th>Nome</th>
-            {origin === "rollcall" && (
-              <>
-                <th>Presença(%)</th>
-              </>
-            )}
-            {origin === "newrollcall" && (
-              <>
-                <th>Presença</th>
-                <th>Falta</th>
-                <th>Chamada</th>
-              </>
-            )}
+            <th>Aluno</th>
+            <th>Data</th>
+            <th>Presença</th>
+            <th>Porcentagem de Presença</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          {data.map((row) => (
-            <tr key={row.id}>
-              <td>{row.matricula}</td>
-              <td>{row.nome}</td>
-              {origin === "rollcall" && (
-                <>
-                  <td>{row.presencapercente}</td>
-                </>
-              )}
-              {origin === "newrollcall" && (
-                <>
-                  <td>{row.presenca}</td>
-                  <td>{row.falta}</td>
-                  <td>
-                    <select onChange={(e) => alunoPresente(row, e.target.value === "ausente")}>
-                      <option value="">Selecione</option>
-                      <option value="presente">Presente</option>
-                      <option value="ausente">Ausente</option>
-                    </select>
-                  </td>
-                </>
-              )}
+          {data.map((item) => (
+            <tr key={item.id}>
+              <td>{item.aluno_nome}</td>
+              <td>{item.data}</td>
+              <td>{item.presenca ? 'Presente' : 'Ausente'}</td>
+              <td>{item.porcentagem_presencas}%</td>
+              <td>
+                <button onClick={() => onEdit(item)}>Editar</button>
+                <button onClick={() => onDelete(item.id)}>Deletar</button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -54,4 +34,11 @@ const RollCall = ({ data = [], origin, alunoPresente }) => {
   );
 };
 
-export default RollCall;
+RollCallTable.propTypes = {
+  data: PropTypes.array.isRequired,
+  origin: PropTypes.string.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
+
+export default RollCallTable;
