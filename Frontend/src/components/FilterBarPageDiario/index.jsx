@@ -1,21 +1,16 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Button,
-  DateInput,
   FilterContainer,
   Label,
-  LeftGroup,
   RightGroup,
   SearchInput,
-  Select,
 } from "./styles";
 
-export default function FilterBar({ showDateFilter, showCreateButton, searchTerm, setSearchTerm, cadastrarDiarioModal }) {
+export default function FilterBar({ showCreateButton, searchTerm, setSearchTerm, cadastrarDiarioModal }) {
   const [data, setData] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -27,10 +22,10 @@ export default function FilterBar({ showDateFilter, showCreateButton, searchTerm
       }
     };
     getData();
-  }, []); 
+  }, []);
 
   return (
-    <FilterContainer>    
+    <FilterContainer>
 
       <RightGroup>
         <Label>Buscar:</Label>
@@ -51,7 +46,6 @@ export default function FilterBar({ showDateFilter, showCreateButton, searchTerm
 }
 
 FilterBar.propTypes = {
-  showDateFilter: PropTypes.bool,
   showCreateButton: PropTypes.bool,
   searchTerm: PropTypes.string.isRequired,
   setSearchTerm: PropTypes.func.isRequired,
