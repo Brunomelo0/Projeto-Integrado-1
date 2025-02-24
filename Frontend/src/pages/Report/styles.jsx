@@ -159,6 +159,7 @@ export const Table = styled.table`
 
 export const ActionButton = styled.button`
   background: none;
+  padding-left: 20px;
   border: none;
   cursor: pointer;
   font-size: 16px;
@@ -169,7 +170,6 @@ export const ActionButton = styled.button`
   }
 
   &.deletar {
-    margin-left: 10px; /* Adiciona um espaço entre os ícones */
     color: black; /* Cor padrão dos ícones de deleção */
   }
 

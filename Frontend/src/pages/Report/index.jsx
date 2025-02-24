@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaFilePdf } from 'react-icons/fa'; // Import FaFilePdf
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { format } from 'date-fns';
@@ -30,12 +30,15 @@ const Report = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [modalAberto, setModalAberto] = useState(false);
+  const [modalVisualizacaoAberto, setModalVisualizacaoAberto] = useState(false);
   const [reportSelecionado, setReportSelecionado] = useState(null);
   const [filterProfessor, setFilterProfessor] = useState("");
   const [filterTurma, setFilterTurma] = useState("");
   const [filterData, setFilterData] = useState("");
   const [filterAluno, setFilterAluno] = useState("");
   const [turmas, setTurmas] = useState([]);
+  const [diagnostico, setDiagnostico] = useState(null);
+  const [presenca, setPresenca] = useState(null);
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -103,9 +106,40 @@ const Report = () => {
   const editarModal = (report) => {
     if (report) {
       setReportSelecionado(report);
+      fetchDiagnostico(report.aluno_id);
+      fetchPresenca(report.aluno_id, report.turma_id);
       setModalAberto(true);
     } else {
       console.error('Relatório inválido');
+    }
+  };
+
+  const visualizarModal = (report) => {
+    if (report) {
+      setReportSelecionado(report);
+      fetchDiagnostico(report.aluno_id);
+      fetchPresenca(report.aluno_id, report.turma_id);
+      setModalVisualizacaoAberto(true);
+    } else {
+      console.error('Relatório inválido');
+    }
+  };
+
+  const fetchDiagnostico = async (alunoId) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/diagnosticos/${alunoId}`);
+      setDiagnostico(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar diagnóstico:', error);
+    }
+  };
+
+  const fetchPresenca = async (alunoId, turmaId) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/frequencias/${alunoId}`);
+      setPresenca(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar presença:', error);
     }
   };
 
@@ -136,6 +170,15 @@ const Report = () => {
   const fecharModal = () => {
     setModalAberto(false);
     setReportSelecionado(null);
+    setDiagnostico(null);
+    setPresenca(null);
+  };
+
+  const fecharModalVisualizacao = () => {
+    setModalVisualizacaoAberto(false);
+    setReportSelecionado(null);
+    setDiagnostico(null);
+    setPresenca(null);
   };
 
   const abrirModalCadastro = () => {
@@ -148,7 +191,13 @@ const Report = () => {
       turma_id: '',
       aluno_id: ''
     });
+    setDiagnostico(null);
+    setPresenca(null);
     setModalAberto(true);
+  };
+
+  const exportarPDF = (id) => {
+    window.open(`http://localhost:3000/api/relatorios/${id}/pdf`, '_blank');
   };
 
   return (
@@ -206,6 +255,18 @@ const Report = () => {
                   >
                     <FaTrash />
                   </ActionButton>
+                  <ActionButton
+                    className="visualizar"
+                    onClick={() => visualizarModal(report)}
+                  >
+                    <FaEye />
+                  </ActionButton>
+                  <ActionButton
+                    className="exportar"
+                    onClick={() => exportarPDF(report.id)}
+                  >
+                    <FaFilePdf />
+                  </ActionButton>
                 </td>
               </tr>
             ))}
@@ -230,9 +291,52 @@ const Report = () => {
               value={reportSelecionado.descricao}
               onChange={(e) => setReportSelecionado({ ...reportSelecionado, descricao: e.target.value })}
             />
+            {diagnostico && (
+              <div>
+                <h3>Diagnóstico</h3>
+                <p>{diagnostico.descricao}</p>
+                <p>Status: {diagnostico.status}</p>
+                <p>Semestre: {diagnostico.semestre}</p>
+              </div>
+            )}
+            {presenca && (
+              <div>
+                <h3>Presença</h3>
+                <p>Porcentagem de Presença: {presenca.porcentagem_presencas}%</p>
+              </div>
+            )}
             <div className="modal-buttons">
               <button type="button" onClick={fecharModal}>Cancelar</button>
               <button type="button" onClick={confirmEdit}>Salvar</button>
+            </div>
+          </Form>
+        </Modal>
+      )}
+
+      {modalVisualizacaoAberto && (
+        <Modal>
+          <h2>Visualizar Relatório</h2>
+          <Form>
+            <label>Título</label>
+            <p>{reportSelecionado.titulo}</p>
+            <label>Descrição</label>
+            <p>{reportSelecionado.descricao}</p>
+            {diagnostico && (
+              <div>
+                <h3>Diagnóstico</h3>
+                <p>{diagnostico.descricao}</p>
+                <p>Status: {diagnostico.status}</p>
+                <p>Semestre: {diagnostico.semestre}</p>
+              </div>
+            )}
+            {presenca && (
+              <div>
+                <h3>Presença</h3>
+                <p>Porcentagem de Presença: {presenca.porcentagem_presencas}%</p>
+              </div>
+            )}
+            <div className="modal-buttons">
+              <button type="button" onClick={fecharModalVisualizacao}>Fechar</button>
             </div>
           </Form>
         </Modal>
