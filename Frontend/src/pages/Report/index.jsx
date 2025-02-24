@@ -20,7 +20,7 @@ const Report = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/reports');
+        const response = await axios.get('http://localhost:3000/api/relatorios');
         setReports(response.data);
       } catch (error) {
         console.error('Erro ao buscar relatórios:', error);
@@ -31,7 +31,7 @@ const Report = () => {
 
   useEffect(() => {
     const filtered = reports.filter(report =>
-      report.nome && report.nome.toLowerCase().includes(searchTerm.toLowerCase())
+      report.titulo && report.titulo.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredData(filtered);
   }, [reports, searchTerm]);
@@ -55,7 +55,7 @@ const Report = () => {
 
   const confirmDelete = async (id, closeToast) => {
     try {
-      await axios.delete(`http://localhost:3000/api/reports/${id}`);
+      await axios.delete(`http://localhost:3000/api/relatorios/${id}`);
       const novosReports = reports.filter((report) => report.id !== id);
       setReports(novosReports);
       closeToast();
@@ -74,39 +74,38 @@ const Report = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <Table>
-        <thead>
-  <tr>
-    <th>ID</th>
-    <th>Título</th>
-    <th>Aluno</th>
-    <th>Data</th>
-    <th>Ações</th>
-  </tr>
-</thead>
-<tbody>
-  {filteredData.map((report) => (
-    <tr key={report.id}>
-      <td>{report.titulo}</td>
-      <td>{report.aluno}</td>
-      <td>{report.id}</td>
-      <td>{report.data}</td>
-      
-      <td>
-        <ActionButton
-          className="editar"
-          onClick={() => console.log('Editar relatório', report.id)}
-        >
-          <FaEdit />
-        </ActionButton>
-        <ActionButton
-          className="deletar"
-          onClick={() => handleDelete(report.id)}
-        >
-          <FaTrash />
-        </ActionButton>
-      </td>
-    </tr>
-  ))}
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Título</th>
+              <th>Aluno</th>
+              <th>Data</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredData.map((report) => (
+              <tr key={report.id}>
+                <td>{report.id}</td>
+                <td>{report.titulo}</td>
+                <td>{report.aluno}</td>
+                <td>{report.data}</td>
+                <td>
+                  <ActionButton
+                    className="editar"
+                    onClick={() => console.log('Editar relatório', report.id)}
+                  >
+                    <FaEdit />
+                  </ActionButton>
+                  <ActionButton
+                    className="deletar"
+                    onClick={() => handleDelete(report.id)}
+                  >
+                    <FaTrash />
+                  </ActionButton>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </Content>
