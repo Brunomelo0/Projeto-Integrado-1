@@ -14,6 +14,16 @@ import {
   Modal,
   Form
 } from './styles';
+import {
+  Button,
+  DateInput,
+  FilterContainer,
+  Label,
+  LeftGroup,
+  RightGroup,
+  SearchInput,
+  Select,
+} from '../../components/FilterBar/styles';
 
 const Report = () => {
   const [reports, setReports] = useState([]);
@@ -21,6 +31,11 @@ const Report = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [modalAberto, setModalAberto] = useState(false);
   const [reportSelecionado, setReportSelecionado] = useState(null);
+  const [filterProfessor, setFilterProfessor] = useState("");
+  const [filterTurma, setFilterTurma] = useState("");
+  const [filterData, setFilterData] = useState("");
+  const [filterAluno, setFilterAluno] = useState("");
+  const [turmas, setTurmas] = useState([]);
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -35,11 +50,27 @@ const Report = () => {
   }, []);
 
   useEffect(() => {
+    const fetchTurmas = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/turmas');
+        setTurmas(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar turmas:', error);
+      }
+    };
+    fetchTurmas();
+  }, []);
+
+  useEffect(() => {
     const filtered = reports.filter(report =>
-      report.titulo && report.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+      report.titulo && report.titulo.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      report.professor_id && report.professor_id.toString().includes(filterProfessor) &&
+      report.turma_id && report.turma_id.toString().includes(filterTurma) &&
+      report.data && report.data.includes(filterData) &&
+      report.aluno_nome && report.aluno_nome.toLowerCase().includes(filterAluno.toLowerCase())
     );
     setFilteredData(filtered);
-  }, [reports, searchTerm]);
+  }, [reports, searchTerm, filterProfessor, filterTurma, filterData, filterAluno]);
 
   const handleDelete = (id) => {
     toast(
@@ -107,15 +138,44 @@ const Report = () => {
     setReportSelecionado(null);
   };
 
+  const abrirModalCadastro = () => {
+    setReportSelecionado({
+      id: '',
+      titulo: '',
+      descricao: '',
+      data: '',
+      professor_id: '',
+      turma_id: '',
+      aluno_id: ''
+    });
+    setModalAberto(true);
+  };
+
   return (
     <Container>
       <Content>
-        <input
-          type="text"
-          placeholder="Buscar relatório"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        <FilterContainer>
+          <LeftGroup>
+            <Label>Turma:</Label>
+            <Select value={filterTurma} onChange={(e) => setFilterTurma(e.target.value)}>
+              <option value="">Selecione uma turma</option>
+              {turmas.map((turma, index) => <option key={index} value={turma.id}>{turma.nome}</option>)}
+            </Select>
+            <Label>Data:</Label>
+            <DateInput type="date" value={filterData} onChange={(e) => setFilterData(e.target.value)} />
+          </LeftGroup>
+
+          <RightGroup>
+            <Label>Buscar:</Label>
+            <SearchInput
+              type="text"
+              placeholder="Digite o nome do aluno"
+              value={filterAluno}
+              onChange={(e) => setFilterAluno(e.target.value)}
+            />
+            <Button onClick={abrirModalCadastro}>+ Cadastrar</Button>
+          </RightGroup>
+        </FilterContainer>
         <Table>
           <thead>
             <tr>
@@ -156,7 +216,7 @@ const Report = () => {
 
       {modalAberto && (
         <Modal>
-          <h2>Editar Relatório</h2>
+          <h2>{reportSelecionado.id ? 'Editar Relatório' : 'Cadastrar Relatório'}</h2>
           <Form>
             <label>Título</label>
             <input
