@@ -49,7 +49,7 @@ exports.generateRelatorioPDF = async (req, res) => {
 exports.getRelatorios = async (req, res) => {
   try {
     const result = await db.query(`
-      SELECT r.id, r.titulo, r.data, r.descricao, a.nome AS aluno_nome, r.professor_id, r.turma_id
+      SELECT r.id, r.titulo, r.data, r.descricao, a.nome AS aluno_nome, r.professor_id, r.turma_id, r.aluno_id
       FROM Relatorio r
       JOIN Aluno a ON r.aluno_id = a.id
     `);
@@ -63,7 +63,7 @@ exports.getRelatorioById = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await db.query(`
-      SELECT r.id, r.titulo, r.data, r.descricao, a.nome AS aluno_nome, r.professor_id, r.turma_id
+      SELECT r.id, r.titulo, r.data, r.descricao, a.nome AS aluno_nome, r.professor_id, r.turma_id, r.aluno_id
       FROM Relatorio r
       JOIN Aluno a ON r.aluno_id = a.id
       WHERE r.id = $1

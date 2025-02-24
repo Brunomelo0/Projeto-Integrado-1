@@ -81,7 +81,6 @@ const Report = () => {
   const confirmEdit = async () => {
     if (reportSelecionado) {
       try {
-        console.log(reportSelecionado);  
         const response = await axios.put(`http://localhost:3000/api/relatorios/${reportSelecionado.id}`, {
           id: reportSelecionado.id,
           titulo: reportSelecionado.titulo,
@@ -93,7 +92,7 @@ const Report = () => {
         });
   
         const novosReports = reports.map((r) =>
-          r.id === reportSelecionado.id ? response.data : r
+          r.id === reportSelecionado.id ? { ...response.data, aluno_nome: r.aluno_nome } : r
         );
         setReports(novosReports);
         setModalAberto(false);
