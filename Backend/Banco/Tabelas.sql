@@ -50,8 +50,10 @@ CREATE TABLE Frequencia (
 CREATE TABLE Relatorio (
     ID SERIAL PRIMARY KEY,
     arquivo BYTEA,
+    titulo VARCHAR(100) NOT NULL,
     data DATE NOT NULL,
     descricao TEXT,
+    aluno_id INT NOT NULL REFERENCES Aluno(ID),
     professor_id INT NOT NULL REFERENCES Professor(ID),
     turma_id INT NOT NULL REFERENCES Turma(ID)
 );
