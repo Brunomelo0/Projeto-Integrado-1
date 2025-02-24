@@ -53,7 +53,7 @@ const useAllowedRoutes = () => {
       fetchUserRole(token);
     } else if (user.role) {
       if (user.role === 'diretor') {
-        setAllowedRoutes(['/', '/home', '/alunos', '/professores', '/newclass', '/frequencia', '/diagnostico', '/diario', '/relatorios', '/login', '/register']);
+        setAllowedRoutes(['/home', '/alunos', '/professores', '/newclass', '/frequencia', '/diagnostico', '/diario', '/relatorios']);
       } else if (user.role === 'professor') {
         setAllowedRoutes(['/diario', '/diagnostico', '/professor/frequencia', '/relatorios',]);
       } else {
