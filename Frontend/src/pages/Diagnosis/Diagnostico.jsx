@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from '../../components/AuthContext/AuthContext';
 import FilterBar from '../../components/FilterBarPageDiagnostico';
 import {
   ActionButton,
@@ -16,6 +17,7 @@ import {
 } from "./styles";
 
 const Diagnostico = () => {
+  const { user } = useAuth();
   const [diagnosticos, setDiagnosticos] = useState([]);
   const [selectedTurma, setSelectedTurma] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -175,6 +177,7 @@ const Diagnostico = () => {
           setSearchTerm={setSearchTerm}
           onTurmaChange={setSelectedTurma}
           cadastrarDiagModal={cadastrarDiagModal}
+          role={user.role} 
         />
         <Table>
           <thead>

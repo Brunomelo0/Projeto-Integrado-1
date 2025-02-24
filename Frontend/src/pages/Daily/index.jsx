@@ -5,6 +5,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FilterBar from "../../components/FilterBarPageDiario";
+import { useAuth } from '../../components/AuthContext/AuthContext';
 import {
   ActionButton,
   Container,
@@ -17,6 +18,7 @@ import {
 } from "./style";
 
 const Diario = () => {
+  const { user } = useAuth();
   const [diarios, setDiarios] = useState([]);
   const [turmas, setTurmas] = useState([]);
   const [turma, setTurma] = useState("");
@@ -134,7 +136,8 @@ const Diario = () => {
           showCreateButton={true}
           searchTerm={filtroNome}
           setSearchTerm={setFiltroNome}
-          cadastrarDiarioModal={cadastrarDiarioModal} // Passando a função para o FilterBar
+          cadastrarDiarioModal={cadastrarDiarioModal} 
+          role={user.role}
         />
 
         {modalAberto && (

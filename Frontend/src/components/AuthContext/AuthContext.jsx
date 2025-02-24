@@ -1,4 +1,4 @@
-import axios from 'axios'; // Adicione esta linha para importar axios
+import axios from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

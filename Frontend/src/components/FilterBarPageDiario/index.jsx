@@ -9,7 +9,7 @@ import {
   SearchInput,
 } from "./styles";
 
-export default function FilterBar({ showCreateButton, searchTerm, setSearchTerm, cadastrarDiarioModal }) {
+export default function FilterBar({ showCreateButton, searchTerm, setSearchTerm, cadastrarDiarioModal, role }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -26,7 +26,6 @@ export default function FilterBar({ showCreateButton, searchTerm, setSearchTerm,
 
   return (
     <FilterContainer>
-
       <RightGroup>
         <Label>Buscar:</Label>
         <SearchInput
@@ -35,10 +34,8 @@ export default function FilterBar({ showCreateButton, searchTerm, setSearchTerm,
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        {showCreateButton && (
-          <>
-            <Button onClick={cadastrarDiarioModal}>Cadastrar</Button>
-          </>
+        {showCreateButton && role !== 'diretor' && (
+          <Button onClick={cadastrarDiarioModal}>Cadastrar</Button>
         )}
       </RightGroup>
     </FilterContainer>
@@ -49,4 +46,5 @@ FilterBar.propTypes = {
   showCreateButton: PropTypes.bool,
   searchTerm: PropTypes.string.isRequired,
   setSearchTerm: PropTypes.func.isRequired,
+  role: PropTypes.string.isRequired,
 };

@@ -12,7 +12,7 @@ import {
   Select,
 } from "./styles";
 
-export default function FilterBar({ showDateFilter, showCreateButton, selectedTurma, setSelectedTurma, searchTerm, setSearchTerm, date, setDate, onTurmaChange, cadastrarDiagModal }) {
+export default function FilterBar({ showDateFilter, showCreateButton, selectedTurma, setSelectedTurma, searchTerm, setSearchTerm, date, setDate, onTurmaChange, cadastrarDiagModal, role }) {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
@@ -58,7 +58,7 @@ export default function FilterBar({ showDateFilter, showCreateButton, selectedTu
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        {showCreateButton && (
+        {showCreateButton && role !== 'diretor' && (
           <Button onClick={cadastrarDiagModal}>+ Cadastrar</Button>
         )}
       </RightGroup>
