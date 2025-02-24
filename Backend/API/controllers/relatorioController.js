@@ -5,13 +5,19 @@ exports.generateRelatorioPDF = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const result = await db.query(`
-      SELECT r.descricao, p.nome AS professor, t.nome AS turma
-      FROM Relatorio r
-      JOIN Professor p ON r.professor_id = p.id
-      JOIN Turma t ON r.turma_id = t.id
-      WHERE r.id = $1
-    `, [id]);
+    const result = await db.query(
+      `SELECT r.descricao AS relatorio_descricao, p.nome AS professor, t.nome AS turma,
+              d.descricao AS diagnostico_descricao, d.status AS diagnostico_status, d.semestre,
+              a.nome AS aluno, f.presenca
+       FROM Relatorio r
+       JOIN Professor p ON r.professor_id = p.id
+       JOIN Turma t ON r.turma_id = t.id
+       JOIN Aluno a ON r.aluno_id = a.id
+       LEFT JOIN Diagnostico d ON a.id = d.aluno_id
+       LEFT JOIN Frequencia f ON a.id = f.aluno_id AND f.turma_id = t.id
+       WHERE r.id = $1`,
+      [id]
+    );
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Relatório não encontrado' });
@@ -28,16 +34,30 @@ exports.generateRelatorioPDF = async (req, res) => {
     doc.fontSize(18).text('Relatório', { align: 'center' });
     doc.moveDown(2);
 
-    doc.fontSize(14).text(`Descrição:`, { bold: true });
-    doc.fontSize(12).text(relatorio.descricao || 'Não informado');
+    doc.fontSize(14).text('Descrição:', { bold: true });
+    doc.fontSize(12).text(relatorio.relatorio_descricao || 'Não informado');
     doc.moveDown();
 
-    doc.fontSize(14).text(`Professor:`, { bold: true });
+    doc.fontSize(14).text('Professor:', { bold: true });
     doc.fontSize(12).text(relatorio.professor || 'Não informado');
     doc.moveDown();
 
-    doc.fontSize(14).text(`Turma:`, { bold: true });
+    doc.fontSize(14).text('Turma:', { bold: true });
     doc.fontSize(12).text(relatorio.turma || 'Não informado');
+    doc.moveDown();
+
+    doc.fontSize(14).text('Aluno:', { bold: true });
+    doc.fontSize(12).text(relatorio.aluno || 'Não informado');
+    doc.moveDown();
+
+    doc.fontSize(14).text('Diagnóstico:', { bold: true });
+    doc.fontSize(12).text(`Status: ${relatorio.diagnostico_status || 'Não informado'}`);
+    doc.fontSize(12).text(`Descrição: ${relatorio.diagnostico_descricao || 'Não informado'}`);
+    doc.fontSize(12).text(`Semestre: ${relatorio.semestre || 'Não informado'}`);
+    doc.moveDown();
+
+    doc.fontSize(14).text('Presença do Aluno:', { bold: true });
+    doc.fontSize(12).text(relatorio.presenca ? 'Presente' : 'Ausente');
     doc.moveDown();
 
     doc.end();
