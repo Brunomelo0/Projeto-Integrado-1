@@ -10,13 +10,17 @@ import {
   Content,
   Table,
   ToastButton,
-  ToastNoButton
+  ToastNoButton,
+  Modal,
+  Form
 } from './styles';
 
 const Report = () => {
   const [reports, setReports] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [modalAberto, setModalAberto] = useState(false);
+  const [reportSelecionado, setReportSelecionado] = useState(null);
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -65,6 +69,45 @@ const Report = () => {
     }
   };
 
+  const editarModal = (report) => {
+    if (report) {
+      setReportSelecionado(report);
+      setModalAberto(true);
+    } else {
+      console.error('Relatório inválido');
+    }
+  };
+
+  const confirmEdit = async () => {
+    if (reportSelecionado) {
+      try {
+        console.log(reportSelecionado);  
+        const response = await axios.put(`http://localhost:3000/api/relatorios/${reportSelecionado.id}`, {
+          id: reportSelecionado.id,
+          titulo: reportSelecionado.titulo,
+          descricao: reportSelecionado.descricao,
+          data: reportSelecionado.data,
+          professor_id: reportSelecionado.professor_id,
+          turma_id: reportSelecionado.turma_id,
+          aluno_id: reportSelecionado.aluno_id,
+        });
+  
+        const novosReports = reports.map((r) =>
+          r.id === reportSelecionado.id ? response.data : r
+        );
+        setReports(novosReports);
+        setModalAberto(false);
+      } catch (error) {
+        console.error('Erro ao editar relatório:', error);
+      }
+    }
+  };
+
+  const fecharModal = () => {
+    setModalAberto(false);
+    setReportSelecionado(null);
+  };
+
   return (
     <Container>
       <Content>
@@ -94,7 +137,7 @@ const Report = () => {
                 <td>
                   <ActionButton
                     className="editar"
-                    onClick={() => console.log('Editar relatório', report.id)}
+                    onClick={() => editarModal(report)}
                   >
                     <FaEdit />
                   </ActionButton>
@@ -111,6 +154,30 @@ const Report = () => {
         </Table>
       </Content>
       <ToastContainer />
+
+      {modalAberto && (
+        <Modal>
+          <h2>Editar Relatório</h2>
+          <Form>
+            <label>Título</label>
+            <input
+              type="text"
+              value={reportSelecionado.titulo}
+              onChange={(e) => setReportSelecionado({ ...reportSelecionado, titulo: e.target.value })}
+            />
+            <label>Descrição</label>
+            <input
+              type="text"
+              value={reportSelecionado.descricao}
+              onChange={(e) => setReportSelecionado({ ...reportSelecionado, descricao: e.target.value })}
+            />
+            <div className="modal-buttons">
+              <button type="button" onClick={fecharModal}>Cancelar</button>
+              <button type="button" onClick={confirmEdit}>Salvar</button>
+            </div>
+          </Form>
+        </Modal>
+      )}
     </Container>
   );
 };
