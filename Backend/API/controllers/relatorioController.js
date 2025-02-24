@@ -48,7 +48,11 @@ exports.generateRelatorioPDF = async (req, res) => {
 
 exports.getRelatorios = async (req, res) => {
   try {
-    const result = await db.query('SELECT * FROM Relatorio');
+    const result = await db.query(`
+      SELECT r.id, r.titulo, r.data, r.descricao, a.nome AS aluno_nome, r.professor_id, r.turma_id
+      FROM Relatorio r
+      JOIN Aluno a ON r.aluno_id = a.id
+    `);
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -58,7 +62,17 @@ exports.getRelatorios = async (req, res) => {
 exports.getRelatorioById = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await db.query('SELECT * FROM Relatorio WHERE id = $1', [id]);
+    const result = await db.query(`
+      SELECT r.id, r.titulo, r.data, r.descricao, a.nome AS aluno_nome, r.professor_id, r.turma_id
+      FROM Relatorio r
+      JOIN Aluno a ON r.aluno_id = a.id
+      WHERE r.id = $1
+    `, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Relatório não encontrado' });
+    }
+
     res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
