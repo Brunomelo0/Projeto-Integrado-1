@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FaEdit, FaTrash, FaEye, FaFilePdf } from 'react-icons/fa'; // Import FaFilePdf
+import { FaEdit, FaTrash, FaEye, FaFilePdf } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { format } from 'date-fns';
@@ -37,10 +37,11 @@ const Report = () => {
   const [filterData, setFilterData] = useState("");
   const [filterAluno, setFilterAluno] = useState("");
   const [turmas, setTurmas] = useState([]);
-  const [alunos, setAlunos] = useState([]); // Add state for students
+  const [alunos, setAlunos] = useState([]);
   const [diagnostico, setDiagnostico] = useState(null);
   const [presenca, setPresenca] = useState(null);
-  const [turmaSelecionada, setTurmaSelecionada] = useState(""); // Add state for selected class
+  const [turmaSelecionada, setTurmaSelecionada] = useState("");
+  const [professorId, setProfessorId] = useState(1); // Supondo que o ID do professor logado seja 1
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -165,15 +166,12 @@ const Report = () => {
     if (reportSelecionado) {
       try {
         const response = await axios.put(`http://localhost:3000/api/relatorios/${reportSelecionado.id}`, {
-          id: reportSelecionado.id,
           titulo: reportSelecionado.titulo,
           descricao: reportSelecionado.descricao,
           data: reportSelecionado.data,
-          professor_id: reportSelecionado.professor_id,
-          turma_id: reportSelecionado.turma_id,
-          aluno_id: reportSelecionado.aluno_id,
+          professor_id: professorId, // Use o ID do professor logado
         });
-  
+
         const novosReports = reports.map((r) =>
           r.id === reportSelecionado.id ? { ...response.data, aluno_nome: r.aluno_nome } : r
         );
@@ -181,6 +179,35 @@ const Report = () => {
         setModalAberto(false);
       } catch (error) {
         console.error('Erro ao editar relatório:', error);
+      }
+    }
+  };
+
+  const confirmCreate = async () => {
+    if (reportSelecionado) {
+      try {
+        const response = await axios.post('http://localhost:3000/api/relatorios', {
+          titulo: reportSelecionado.titulo,
+          descricao: reportSelecionado.descricao,
+          data: reportSelecionado.data,
+          professor_id: professorId, // Use o ID do professor logado
+          turma_id: reportSelecionado.turma_id,
+          aluno_id: reportSelecionado.aluno_id,
+        });
+  
+        const novoReport = response.data;
+        setReports([...reports, novoReport]);
+        setFilteredData([...reports, novoReport].filter(report =>
+          report.titulo && report.titulo.toLowerCase().includes(searchTerm.toLowerCase()) &&
+          report.professor_id && report.professor_id.toString().includes(filterProfessor) &&
+          report.turma_id && report.turma_id.toString().includes(filterTurma) &&
+          report.data && report.data.includes(filterData) &&
+          report.aluno_nome && report.aluno_nome.toLowerCase().includes(filterAluno.toLowerCase())
+        ));
+        setModalAberto(false);
+        window.location.reload(); // Adiciona um refresh na página
+      } catch (error) {
+        console.error('Erro ao criar relatório:', error);
       }
     }
   };
@@ -204,8 +231,8 @@ const Report = () => {
       id: '',
       titulo: '',
       descricao: '',
-      data: '',
-      professor_id: '',
+      data: format(new Date(), 'yyyy-MM-dd'), // Define a data padrão como o dia de hoje
+      professor_id: professorId, // Use o ID do professor logado
       turma_id: '',
       aluno_id: ''
     });
@@ -309,6 +336,12 @@ const Report = () => {
               value={reportSelecionado.descricao}
               onChange={(e) => setReportSelecionado({ ...reportSelecionado, descricao: e.target.value })}
             />
+            <label>Data</label>
+            <DateInput
+              type="date"
+              value={reportSelecionado.data}
+              onChange={(e) => setReportSelecionado({ ...reportSelecionado, data: e.target.value })}
+            />
             <label>Turma</label>
             <Select
               value={reportSelecionado.turma_id}
@@ -316,6 +349,7 @@ const Report = () => {
                 setReportSelecionado({ ...reportSelecionado, turma_id: e.target.value });
                 setTurmaSelecionada(e.target.value);
               }}
+              disabled={!!reportSelecionado.id}
             >
               <option value="">Selecione uma turma</option>
               {turmas.map((turma) => (
@@ -326,6 +360,7 @@ const Report = () => {
             <Select
               value={reportSelecionado.aluno_id}
               onChange={(e) => setReportSelecionado({ ...reportSelecionado, aluno_id: e.target.value })}
+              disabled={!!reportSelecionado.id}
             >
               <option value="">Selecione um aluno</option>
               {alunos.map((aluno) => (
@@ -348,7 +383,7 @@ const Report = () => {
             )}
             <div className="modal-buttons">
               <button type="button" onClick={fecharModal}>Cancelar</button>
-              <button type="button" onClick={confirmEdit}>Salvar</button>
+              <button type="button" onClick={reportSelecionado.id ? confirmEdit : confirmCreate}>Salvar</button>
             </div>
           </Form>
         </Modal>
