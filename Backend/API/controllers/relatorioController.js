@@ -67,10 +67,10 @@ exports.getRelatorioById = async (req, res) => {
 
 exports.createRelatorio = async (req, res) => {
   try {
-    const { arquivo, data, descricao, professor_id } = req.body;
+    const {titulo, data, descricao, aluno_id, professor_id, turma_id } = req.body;
     const result = await db.query(
-      'INSERT INTO Relatorio (arquivo, data, descricao, professor_id) VALUES ($1, $2, $3, $4) RETURNING *',
-      [arquivo, data, descricao, professor_id]
+      'INSERT INTO Relatorio (titulo, data, descricao, aluno_id, professor_id, turma_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+      [titulo, data, descricao, aluno_id, professor_id, turma_id]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -81,10 +81,10 @@ exports.createRelatorio = async (req, res) => {
 exports.updateRelatorio = async (req, res) => {
   try {
     const { id } = req.params;
-    const { arquivo, data, descricao, professor_id } = req.body;
+    const { titulo, data, descricao, aluno_id, professor_id, turma_id } = req.body;
     const result = await db.query(
-      'UPDATE Relatorio SET arquivo = $1, data = $2, descricao = $3, professor_id = $4 WHERE id = $5 RETURNING *',
-      [arquivo, data, descricao, professor_id, id]
+      'UPDATE Relatorio SET titulo = $1, data = $2, descricao = $3, aluno_id = $4, professor_id = $5, turma_id = $6 WHERE id = $7 RETURNING *',
+      [titulo, data, descricao, aluno_id, professor_id, turma_id, id]
     );
     res.json(result.rows[0]);
   } catch (err) {
