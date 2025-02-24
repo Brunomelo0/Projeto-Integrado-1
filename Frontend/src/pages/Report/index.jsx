@@ -169,7 +169,7 @@ const Report = () => {
           titulo: reportSelecionado.titulo,
           descricao: reportSelecionado.descricao,
           data: reportSelecionado.data,
-          professor_id: professorId, // Use o ID do professor logado
+          professor_id: professorId,
         });
 
         const novosReports = reports.map((r) =>
