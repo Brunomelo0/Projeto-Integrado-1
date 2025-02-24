@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { format } from 'date-fns';
 import {
   ActionButton,
   Container,
@@ -88,8 +89,8 @@ const Report = () => {
               <tr key={report.id}>
                 <td>{report.id}</td>
                 <td>{report.titulo}</td>
-                <td>{report.aluno}</td>
-                <td>{report.data}</td>
+                <td>{report.aluno_nome}</td>
+                <td>{format(new Date(report.data), 'dd/MM/yyyy')}</td>
                 <td>
                   <ActionButton
                     className="editar"
