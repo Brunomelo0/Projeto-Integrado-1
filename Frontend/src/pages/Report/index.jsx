@@ -37,8 +37,10 @@ const Report = () => {
   const [filterData, setFilterData] = useState("");
   const [filterAluno, setFilterAluno] = useState("");
   const [turmas, setTurmas] = useState([]);
+  const [alunos, setAlunos] = useState([]); // Add state for students
   const [diagnostico, setDiagnostico] = useState(null);
   const [presenca, setPresenca] = useState(null);
+  const [turmaSelecionada, setTurmaSelecionada] = useState(""); // Add state for selected class
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -63,6 +65,22 @@ const Report = () => {
     };
     fetchTurmas();
   }, []);
+
+  useEffect(() => {
+    const fetchAlunos = async () => {
+      if (turmaSelecionada) {
+        try {
+          const response = await axios.get(`http://localhost:3000/api/turmas/${turmaSelecionada}/alunos`);
+          setAlunos(response.data);
+        } catch (error) {
+          console.error('Erro ao buscar alunos:', error);
+        }
+      } else {
+        setAlunos([]);
+      }
+    };
+    fetchAlunos();
+  }, [turmaSelecionada]);
 
   useEffect(() => {
     const filtered = reports.filter(report =>
@@ -291,6 +309,29 @@ const Report = () => {
               value={reportSelecionado.descricao}
               onChange={(e) => setReportSelecionado({ ...reportSelecionado, descricao: e.target.value })}
             />
+            <label>Turma</label>
+            <Select
+              value={reportSelecionado.turma_id}
+              onChange={(e) => {
+                setReportSelecionado({ ...reportSelecionado, turma_id: e.target.value });
+                setTurmaSelecionada(e.target.value);
+              }}
+            >
+              <option value="">Selecione uma turma</option>
+              {turmas.map((turma) => (
+                <option key={turma.id} value={turma.id}>{turma.nome}</option>
+              ))}
+            </Select>
+            <label>Aluno</label>
+            <Select
+              value={reportSelecionado.aluno_id}
+              onChange={(e) => setReportSelecionado({ ...reportSelecionado, aluno_id: e.target.value })}
+            >
+              <option value="">Selecione um aluno</option>
+              {alunos.map((aluno) => (
+                <option key={aluno.id} value={aluno.id}>{aluno.nome}</option>
+              ))}
+            </Select>
             {diagnostico && (
               <div>
                 <h3>Diagnóstico</h3>
