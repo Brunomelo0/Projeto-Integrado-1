@@ -10,11 +10,36 @@
   },
   "build": {
     "appId": "com.siga",
+    
     "files": [
       "dist/**/*",
+      "build/**/*",
       "main.mjs",
+      "node_modules/**/*",
       "preload.mjs"
+    ],"extraResources": [
+      "assets/**/*"
     ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "compression": "maximum"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
     "directories": {
       "buildResources": "assets"
     }
